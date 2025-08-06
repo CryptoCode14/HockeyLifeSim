@@ -1,0 +1,346 @@
+team_id,team_name,city,arena_name,league_id,overall_rating,offense_rating,defense_rating,goaltending_rating,market_size,fan_loyalty
+1001,Anaheim Ducks,Anaheim,Honda Center,1,82,83,81,82,8,7
+1002,Boston Bruins,Boston,TD Garden,1,93,94,92,93,9,10
+1003,Buffalo Sabres,Buffalo,KeyBank Center,1,84,85,83,84,6,8
+1004,Calgary Flames,Calgary,Scotiabank Saddledome,1,86,87,85,86,7,9
+1005,Carolina Hurricanes,Raleigh,PNC Arena,1,92,93,91,92,7,8
+1006,Chicago Blackhawks,Chicago,United Center,1,80,81,79,80,10,10
+1007,Colorado Avalanche,Denver,Ball Arena,1,94,95,93,94,8,9
+1008,Columbus Blue Jackets,Columbus,Nationwide Arena,1,83,84,82,83,7,7
+1009,Dallas Stars,Dallas,American Airlines Center,1,91,92,90,91,9,8
+1010,Detroit Red Wings,Detroit,Little Caesars Arena,1,85,86,84,85,9,10
+1011,Edmonton Oilers,Edmonton,Rogers Place,1,93,96,90,92,7,10
+1012,Florida Panthers,Sunrise,Amerant Bank Arena,1,95,95,94,95,6,7
+1013,Los Angeles Kings,Los Angeles,Crypto.com Arena,1,88,87,89,88,10,8
+1014,Minnesota Wild,Saint Paul,Xcel Energy Center,1,87,88,86,87,8,9
+1015,Montreal Canadiens,Montreal,Bell Centre,1,81,82,80,81,9,10
+1016,Nashville Predators,Nashville,Bridgestone Arena,1,88,89,87,88,7,8
+1017,New Jersey Devils,Newark,Prudential Center,1,89,91,87,88,8,7
+1018,New York Islanders,Elmont,UBS Arena,1,87,86,88,87,9,8
+1019,New York Rangers,New York,Madison Square Garden,1,92,93,91,92,10,10
+1020,Ottawa Senators,Ottawa,Canadian Tire Centre,1,84,85,83,84,6,8
+1021,Philadelphia Flyers,Philadelphia,Wells Fargo Center,1,82,83,81,82,9,9
+1022,Pittsburgh Penguins,Pittsburgh,PPG Paints Arena,1,86,88,84,85,8,10
+1023,San Jose Sharks,San Jose,SAP Center,1,78,79,77,78,8,7
+1024,Seattle Kraken,Seattle,Climate Pledge Arena,1,85,86,84,85,9,8
+1025,St. Louis Blues,St. Louis,Enterprise Center,1,86,87,85,86,8,9
+1026,Tampa Bay Lightning,Tampa,Amalie Arena,1,91,93,89,91,7,8
+1027,Toronto Maple Leafs,Toronto,Scotiabank Arena,1,93,95,91,92,10,10
+1028,Vancouver Canucks,Vancouver,Rogers Arena,1,90,91,89,90,8,9
+1029,Vegas Golden Knights,Las Vegas,T-Mobile Arena,1,90,91,89,90,7,8
+1030,Washington Capitals,Washington,Capital One Arena,1,85,87,83,84,9,9
+1031,Winnipeg Jets,Winnipeg,Canada Life Centre,1,88,87,89,88,6,9
+1032,Utah Hockey Club,Salt Lake City,Delta Center,1,81,82,80,81,6,7
+2001,Abbotsford Canucks,Abbotsford,Abbotsford Centre,2,76,77,75,76,6,6
+2002,Bakersfield Condors,Bakersfield,Mechanics Bank Arena,2,74,75,73,74,5,5
+2003,Belleville Senators,Belleville,CAA Arena,2,73,74,72,73,5,6
+2004,Bridgeport Islanders,Bridgeport,Total Mortgage Arena,2,72,73,71,72,5,5
+2005,Calgary Wranglers,Calgary,Scotiabank Saddledome,2,78,79,77,78,7,7
+2006,Charlotte Checkers,Charlotte,Bojangles' Coliseum,2,77,78,76,77,6,6
+2007,Chicago Wolves,Rosemont,Allstate Arena,2,75,76,74,75,9,7
+2008,Cleveland Monsters,Cleveland,Rocket Mortgage FieldHouse,2,74,75,73,74,7,6
+2009,Coachella Valley Firebirds,Thousand Palms,Acrisure Arena,2,79,80,78,79,5,5
+2010,Colorado Eagles,Loveland,Blue Arena,2,78,79,77,78,6,7
+2011,Grand Rapids Griffins,Grand Rapids,Van Andel Arena,2,76,77,75,76,6,7
+2012,Hartford Wolf Pack,Hartford,XL Center,2,75,76,74,75,6,6
+2013,Henderson Silver Knights,Henderson,Dollar Loan Center,2,73,74,72,73,6,5
+2014,Hershey Bears,Hershey,Giant Center,2,82,83,81,82,6,10
+2015,Iowa Wild,Des Moines,Wells Fargo Arena,2,72,73,71,72,5,5
+2016,Laval Rocket,Laval,Place Bell,2,76,77,75,76,7,7
+2017,Lehigh Valley Phantoms,Allentown,PPL Center,2,74,75,73,74,6,6
+2018,Manitoba Moose,Winnipeg,Canada Life Centre,2,75,76,74,75,6,7
+2019,Milwaukee Admirals,Milwaukee,UW-Milwaukee Panther Arena,2,79,80,78,79,6,7
+2020,Ontario Reign,Ontario,Toyota Arena,2,77,78,76,77,7,6
+2021,Providence Bruins,Providence,Amica Mutual Pavilion,2,78,79,77,78,6,7
+2022,Rochester Americans,Rochester,Blue Cross Arena,2,76,77,75,76,6,8
+2023,Rockford IceHogs,Rockford,BMO Center,2,73,74,72,73,5,6
+2024,San Diego Gulls,San Diego,Pechanga Arena,2,74,75,73,74,8,6
+2025,San Jose Barracuda,San Jose,Tech CU Arena,2,71,72,70,71,8,5
+2026,Springfield Thunderbirds,Springfield,MassMutual Center,2,75,76,74,75,5,6
+2027,Syracuse Crunch,Syracuse,Upstate Medical University Arena,2,77,78,76,77,6,7
+2028,Texas Stars,Cedar Park,H-E-B Center at Cedar Park,2,78,79,77,78,8,7
+2029,Toronto Marlies,Toronto,Coca-Cola Coliseum,2,80,81,79,80,10,8
+2030,Tucson Roadrunners,Tucson,Tucson Convention Center Arena,2,72,73,71,72,6,5
+2031,Utica Comets,Utica,Adirondack Bank Center,2,74,75,73,74,5,7
+2032,Wilkes-Barre/Scranton Penguins,Wilkes-Barre,Mohegan Sun Arena at Casey Plaza,2,76,77,75,76,5,7
+3001,Adirondack Thunder,Glens Falls,Cool Insuring Arena,3,65,66,64,65,4,6
+3002,Allen Americans,Allen,Credit Union of Texas Event Center,3,64,65,63,64,6,5
+3003,Atlanta Gladiators,Duluth,Gas South Arena,3,62,63,61,62,7,5
+3004,Cincinnati Cyclones,Cincinnati,Heritage Bank Center,3,66,67,65,66,6,6
+3005,Florida Everblades,Estero,Hertz Arena,3,69,70,68,69,6,7
+3006,Fort Wayne Komets,Fort Wayne,Allen County War Memorial Coliseum,3,67,68,66,67,5,8
+3007,Greenville Swamp Rabbits,Greenville,Bon Secours Wellness Arena,3,64,65,63,64,5,6
+3008,Idaho Steelheads,Boise,Idaho Central Arena,3,70,71,69,70,5,7
+3009,Indy Fuel,Indianapolis,Indiana Farmers Coliseum,3,65,66,64,65,7,6
+3010,Iowa Heartlanders,Coralville,Xtream Arena,3,61,62,60,61,5,5
+3011,Jacksonville Icemen,Jacksonville,VyStar Veterans Memorial Arena,3,66,67,65,66,7,6
+3012,Kalamazoo Wings,Kalamazoo,Wings Event Center,3,63,64,62,63,5,7
+3013,Kansas City Mavericks,Independence,Cable Dahmer Arena,3,68,69,67,68,7,6
+3014,Maine Mariners,Portland,Cross Insurance Arena,3,64,65,63,64,5,6
+3015,Newfoundland Growlers,St. John's,Mary Brown's Centre,3,69,70,68,69,5,8
+3016,Norfolk Admirals,Norfolk,Norfolk Scope,3,62,63,61,62,6,6
+3017,Orlando Solar Bears,Orlando,Amway Center,3,63,64,62,63,7,5
+3018,Rapid City Rush,Rapid City,The Monument,3,62,63,61,62,4,6
+3019,Reading Royals,Reading,Santander Arena,3,65,66,64,65,5,7
+3020,Savannah Ghost Pirates,Savannah,Enmarket Arena,3,61,62,60,61,6,5
+3021,South Carolina Stingrays,North Charleston,North Charleston Coliseum,3,67,68,66,67,6,7
+3022,Toledo Walleye,Toledo,Huntington Center,3,68,69,67,68,6,8
+3023,Trois-Rivières Lions,Trois-Rivières,Colisée Vidéotron,3,63,64,62,63,5,6
+3024,Tulsa Oilers,Tulsa,BOK Center,3,62,63,61,62,6,5
+3025,Utah Grizzlies,West Valley City,Maverik Center,3,64,65,63,64,6,6
+3026,Wheeling Nailers,Wheeling,WesBanco Arena,3,63,64,62,63,4,7
+3027,Wichita Thunder,Wichita,Intrust Bank Arena,3,62,63,61,62,6,5
+3028,Worcester Railers,Worcester,DCU Center,3,64,65,63,64,6,6
+4001,Barrie Colts,Barrie,Sadlon Arena,4,73,74,72,73,5,7
+4002,Brantford Bulldogs,Brantford,Brantford Civic Centre,4,75,76,74,75,5,6
+4003,Erie Otters,Erie,Erie Insurance Arena,4,71,72,70,71,5,6
+4004,Flint Firebirds,Flint,Dort Financial Center,4,70,71,69,70,5,5
+4005,Guelph Storm,Guelph,Sleeman Centre,4,74,75,73,74,5,7
+4006,Kingston Frontenacs,Kingston,Leons Centre,4,72,73,71,72,5,7
+4007,Kitchener Rangers,Kitchener,Kitchener Memorial Auditorium,4,76,77,75,76,6,8
+4008,London Knights,London,Budweiser Gardens,4,80,81,79,80,7,9
+4009,Mississauga Steelheads,Mississauga,Paramount Fine Foods Centre,4,73,74,72,73,7,6
+4010,Niagara IceDogs,St. Catharines,Meridian Centre,4,69,70,68,69,5,6
+4011,North Bay Battalion,North Bay,North Bay Memorial Gardens,4,74,75,73,74,4,7
+4012,Oshawa Generals,Oshawa,Tribute Communities Centre,4,75,76,74,75,6,8
+4013,Ottawa 67's,Ottawa,TD Place Arena,4,76,77,75,76,7,7
+4014,Owen Sound Attack,Owen Sound,Harry Lumley Bayshore Community Centre,4,72,73,71,72,4,8
+4015,Peterborough Petes,Peterborough,Peterborough Memorial Centre,4,73,74,72,73,5,8
+4016,Saginaw Spirit,Saginaw,Dow Event Center,4,78,79,77,78,5,6
+4017,Sarnia Sting,Sarnia,Progressive Auto Sales Arena,4,71,72,70,71,5,6
+4018,Sault Ste. Marie Greyhounds,Sault Ste. Marie,GFL Memorial Gardens,4,75,76,74,75,5,8
+4019,Sudbury Wolves,Sudbury,Sudbury Community Arena,4,72,73,71,72,5,7
+4020,Windsor Spitfires,Windsor,WFCU Centre,4,74,75,73,74,6,7
+5001,Brandon Wheat Kings,Brandon,Westoba Place,5,74,75,73,74,4,8
+5002,Calgary Hitmen,Calgary,Scotiabank Saddledome,5,73,74,72,73,7,7
+5003,Edmonton Oil Kings,Edmonton,Rogers Place,5,72,73,71,72,7,7
+5004,Everett Silvertips,Everett,Angel of the Winds Arena,5,76,77,75,76,6,7
+5005,Kamloops Blazers,Kamloops,Sandman Centre,5,75,76,74,75,5,7
+5006,Kelowna Rockets,Kelowna,Prospera Place,5,76,77,75,76,6,8
+5007,Lethbridge Hurricanes,Lethbridge,Enmax Centre,5,72,73,71,72,5,7
+5008,Medicine Hat Tigers,Medicine Hat,Co-op Place,5,73,74,72,73,5,8
+5009,Moose Jaw Warriors,Moose Jaw,Moose Jaw Events Centre,5,77,78,76,77,4,8
+5010,Portland Winterhawks,Portland,Veterans Memorial Coliseum,5,79,80,78,79,8,8
+5011,Prince Albert Raiders,Prince Albert,Art Hauser Centre,5,72,73,71,72,4,8
+5012,Prince George Cougars,Prince George,CN Centre,5,74,75,73,74,5,7
+5013,Red Deer Rebels,Red Deer,Peavey Mart Centrium,5,75,76,74,75,5,8
+5014,Regina Pats,Regina,Brandt Centre,5,71,72,70,71,5,9
+5015,Saskatoon Blades,Saskatoon,SaskTel Centre,5,78,79,77,78,6,8
+5016,Seattle Thunderbirds,Kent,accesso ShoWare Center,5,75,76,74,75,8,7
+5017,Spokane Chiefs,Spokane,Spokane Veterans Memorial Arena,5,72,73,71,72,6,7
+5018,Swift Current Broncos,Swift Current,InnovationPlex,5,71,72,70,71,4,8
+5019,Tri-City Americans,Kennewick,Toyota Center,5,70,71,69,70,6,6
+5020,Vancouver Giants,Langley,Langley Events Centre,5,73,74,72,73,8,6
+5021,Victoria Royals,Victoria,Save-On-Foods Memorial Centre,5,71,72,70,71,6,7
+5022,Wenatchee Wild,Wenatchee,Town Toyota Center,5,70,71,69,70,5,6
+6001,Acadie-Bathurst Titan,Bathurst,K. C. Irving Regional Centre,6,69,70,68,69,4,7
+6002,Baie-Comeau Drakkar,Baie-Comeau,Centre Henry-Leonard,6,76,77,75,76,4,8
+6003,Blainville-Boisbriand Armada,Boisbriand,Centre d'Excellence Sports Rousseau,6,71,72,70,71,6,6
+6004,Cape Breton Eagles,Sydney,Centre 200,6,72,73,71,72,5,7
+6005,Charlottetown Islanders,Charlottetown,Eastlink Centre,6,73,74,72,73,4,8
+6006,Chicoutimi Saguenéens,Saguenay,Centre Georges-Vézina,6,72,73,71,72,5,7
+6007,Drummondville Voltigeurs,Drummondville,Centre Marcel Dionne,6,77,78,76,77,5,7
+6008,Gatineau Olympiques,Gatineau,Slush Puppie Centre,6,70,71,69,70,6,7
+6009,Halifax Mooseheads,Halifax,Scotiabank Centre,6,75,76,74,75,7,8
+6010,Moncton Wildcats,Moncton,Avenir Centre,6,73,74,72,73,6,7
+6011,Quebec Remparts,Quebec City,Videotron Centre,6,74,75,73,74,8,9
+6012,Rimouski Océanic,Rimouski,Colisée Financière Sun Life,6,73,74,72,73,5,8
+6013,Rouyn-Noranda Huskies,Rouyn-Noranda,Aréna Glencore,6,75,76,74,75,4,8
+6014,Saint John Sea Dogs,Saint John,TD Station,6,70,71,69,70,5,7
+6015,Shawinigan Cataractes,Shawinigan,Centre Gervais Auto,6,71,72,70,71,5,8
+6016,Sherbrooke Phoenix,Sherbrooke,Palais des Sports Léopold-Drolet,6,74,75,73,74,6,7
+6017,Val-d'Or Foreurs,Val-d'Or,Centre Agnico Eagle,6,70,71,69,70,4,8
+6018,Victoriaville Tigres,Victoriaville,Colisée Desjardins,6,73,74,72,73,5,7
+7001,Cedar Rapids RoughRiders,Cedar Rapids,ImOn Ice Arena,7,70,71,69,70,5,6
+7002,Chicago Steel,Geneva,Fox Valley Ice Arena,7,75,76,74,75,8,6
+7003,Des Moines Buccaneers,Urbandale,Buccaneer Arena,7,68,69,67,68,6,6
+7004,Dubuque Fighting Saints,Dubuque,Mystique Ice Center,7,74,75,73,74,5,7
+7005,Fargo Force,Fargo,Scheels Arena,7,76,77,75,76,5,8
+7006,Green Bay Gamblers,Green Bay,Resch Center,7,71,72,70,71,6,7
+7007,Lincoln Stars,Lincoln,Ice Box,7,70,71,69,70,6,7
+7008,Madison Capitols,Middleton,Bob Suter's Capitol Ice Arena,7,69,70,68,69,6,6
+7009,Muskegon Lumberjacks,Muskegon,Trinity Health Arena,7,73,74,72,73,5,7
+7010,Omaha Lancers,Ralston,Liberty First Credit Union Arena,7,69,70,68,69,6,7
+7011,Sioux City Musketeers,Sioux City,Tyson Events Center,7,70,71,69,70,5,7
+7012,Sioux Falls Stampede,Sioux Falls,Denny Sanford Premier Center,7,69,70,68,69,5,7
+7013,Tri-City Storm,Kearney,Viaero Center,7,72,73,71,72,5,7
+7014,Waterloo Black Hawks,Waterloo,Young Arena,7,71,72,70,71,5,7
+7015,Youngstown Phantoms,Youngstown,Covelli Centre,7,72,73,71,72,5,6
+7016,USA Hockey NTDP,Plymouth,USA Hockey Arena,7,78,80,77,78,10,8
+8001,Aberdeen Wings,Aberdeen,Odde Ice Center,8,62,63,61,62,4,6
+8002,Amarillo Wranglers,Amarillo,Budweiser Bull Pen,8,59,60,58,59,5,5
+8003,Anchorage Wolverines,Anchorage,Ben Boeke Ice Rink,8,60,61,59,60,4,6
+8004,Austin Bruins,Austin,Riverside Arena,8,61,62,60,61,4,6
+8005,Bismarck Bobcats,Bismarck,VFW Sports Center,8,62,63,61,62,4,7
+8006,Chippewa Steel,Chippewa Falls,Chippewa Area Ice Arena,8,58,59,57,58,4,5
+8007,Corpus Christi IceRays,Corpus Christi,American Bank Center,8,57,58,56,57,5,5
+8008,Danbury Hat Tricks,Danbury,Danbury Ice Arena,8,59,60,58,59,5,5
+8009,El Paso Rhinos,El Paso,El Paso County Events Center,8,57,58,56,57,5,5
+8010,Fairbanks Ice Dogs,Fairbanks,Big Dipper Ice Arena,8,61,62,60,61,4,7
+8011,Janesville Jets,Janesville,Janesville Ice Arena,8,60,61,59,60,4,6
+8012,Johnstown Tomahawks,Johnstown,1st Summit Arena,8,60,61,59,60,5,7
+8013,Kenai River Brown Bears,Soldotna,Soldotna Regional Sports Complex,8,58,59,57,58,4,6
+8014,Lone Star Brahmas,North Richland Hills,NYTEX Sports Centre,8,63,64,62,63,6,6
+8015,Maine Nordiques,Lewiston,The Colisée,8,61,62,60,61,5,6
+8016,Maryland Black Bears,Odenton,Piney Orchard Ice Arena,8,62,63,61,62,6,6
+8017,Minot Minotauros,Minot,Maysa Arena,8,61,62,60,61,4,7
+8018,Minnesota Wilderness,Cloquet,Northwoods Credit Union Arena,8,60,61,59,60,4,6
+8019,New Hampshire Mountain Kings,Hooksett,Tri-Town Ice Arena,8,58,59,57,58,5,5
+8020,New Jersey Titans,Middletown,Middletown Sports Complex,8,60,61,59,60,6,5
+8021,New Mexico Ice Wolves,Albuquerque,Outpost Ice Arenas,8,59,60,58,59,5,5
+8022,North Iowa Bulls,Mason City,Mason City Multipurpose Arena,8,59,60,58,59,4,6
+8023,Northeast Generals,Attleboro,New England Sports Village,8,58,59,57,58,6,5
+8024,Odessa Jackalopes,Odessa,Ector County Coliseum,8,57,58,56,57,5,5
+8025,Oklahoma Warriors,Oklahoma City,Blazers Ice Centre,8,60,61,59,60,6,5
+8026,Philadelphia Rebels,Sewell,Hollydell Ice Arena,8,59,60,58,59,7,5
+8027,Rochester Jr. Americans,Rochester,Rochester Ice Center,8,58,59,57,58,5,6
+8028,Shreveport Mudbugs,Shreveport,George's Pond at Hirsch Memorial Coliseum,8,63,64,62,63,5,7
+8029,Springfield Jr. Blues,Springfield,The Nelson Center,8,59,60,58,59,5,6
+8030,St. Cloud Norsemen,St. Cloud,St. Cloud Municipal Athletic Complex,8,60,61,59,60,5,6
+8031,Watertown Shamrocks,Watertown,Watertown Municipal Arena,8,58,59,57,58,4,5
+8032,Wisconsin Windigo,Eagle River,Eagle River Stadium,8,60,61,59,60,4,6
+9001,Northfield,Northfield,Northfield Ice Arena,9,54,55,54,53,3,5
+9002,Rochester Century/John Marshall,Rochester,Graham Arena Complex,9,51,52,50,51,3,4
+9003,Mankato West,Mankato,All Seasons Arena,9,45,46,44,45,3,4
+9004,Albert Lea,Albert Lea,Albert Lea City Arena,9,49,50,48,49,2,4
+9005,Owatonna,Owatonna,Four Seasons Centre,9,44,45,43,44,3,4
+9006,Mankato East,Mankato,All Seasons Arena,9,41,42,40,41,3,4
+9007,Winona,Winona,Bud King Ice Arena,9,46,47,45,46,2,4
+9008,Austin,Austin,Riverside Arena,9,49,50,48,49,2,4
+9009,Rochester Mayo,Rochester,Graham Arena Complex,9,34,35,33,34,3,3
+9010,Red Wing,Red Wing,Prairie Island Arena,9,32,33,31,32,2,4
+9011,Faribault,Faribault,Faribault Ice Arena,9,35,36,34,35,2,3
+9012,Luverne,Luverne,Blue Mound Ice Arena,9,53,54,52,53,2,5
+9013,Waseca,Waseca,Waseca Community Arena,9,54,55,53,54,2,4
+9014,Marshall,Marshall,Red Baron Arena,9,43,44,42,43,2,3
+9015,New Ulm,New Ulm,New Ulm Civic Center,9,44,45,43,44,2,4
+9016,Minnesota River,Le Sueur,Le Sueur Community Center,9,43,44,42,43,2,3
+9017,Worthington,Worthington,Worthington Arena,9,37,38,36,37,2,3
+9018,Windom Area,Windom,Windom Arena,9,36,37,35,36,1,3
+9019,Redwood Valley,Redwood Falls,Redwood Area Community Center,9,35,36,34,35,1,3
+9020,Fairmont,Fairmont,Martin County Arena,9,32,33,31,32,1,3
+9021,Sartell,Sartell,Bernick's Arena,9,48,49,47,48,3,4
+9022,Alexandria Area,Alexandria,Runestone Community Center,9,45,46,44,45,3,4
+9023,Sauk Rapids-Rice,Sauk Rapids,Sports Arena East,9,49,50,48,49,3,4
+9024,Detroit Lakes,Detroit Lakes,Kent Freeman Arena,9,42,43,41,42,2,4
+9025,River Lakes,Richmond,River Lakes Civic Arena,9,49,50,48,49,2,4
+9026,Brainerd,Brainerd,Brainerd Area Civic Center,9,34,35,33,34,3,4
+9027,St. Cloud,St. Cloud,St. Cloud Municipal Athletic Complex,9,35,36,34,35,3,4
+9028,Fergus Falls,Fergus Falls,Fergus Falls Community Arena,9,43,44,42,43,2,4
+9029,Willmar,Willmar,Willmar Civic Center,9,40,41,39,40,2,3
+9030,Little Falls,Little Falls,Exchange Arena,9,49,50,48,49,2,5
+9031,St. Cloud Cathedral,St. Cloud,St. Cloud Municipal Athletic Complex,9,51,52,50,51,3,5
+9032,Northern Lakes,Breezy Point,Breezy Point Hockey Center,9,51,52,50,51,2,4
+9033,Blake,Minneapolis,Blake Ice Arena,9,51,52,50,51,3,4
+9034,Breck,Golden Valley,Breck Anderson Ice Arena,9,44,45,43,44,3,4
+9035,Providence Academy,Plymouth,Providence Academy Arena,9,45,46,44,45,3,4
+9036,St. Paul Academy,St. Paul,Drake Arena,9,39,40,38,39,3,4
+9037,Gentry Academy,Vadnais Heights,TCO Sports Garden,9,51,52,50,51,3,4
+9038,Rochester Lourdes,Rochester,Graham Arena Complex,9,48,49,47,48,3,4
+9039,Dodge County,Kasson,Dodge County Ice Arena,9,41,42,40,41,2,3
+9040,Hopkins,Minnetonka,Minnetonka Ice Arena,9,41,42,40,41,3,3
+9041,St. Paul Johnson,St. Paul,Phalen Recreation Center,9,41,42,40,41,3,3
+9042,Duluth East,Duluth,Duluth Heritage Sports Center,9,33,34,32,33,3,4
+9043,La Crescent-Hokah,La Crescent,La Crescent Community Arena,9,41,42,40,41,2,3
+9044,International Falls,International Falls,Bronco Arena,9,49,50,48,49,2,5
+9045,Greenway,Coleraine,Hodgins-Berardo Arena,9,39,40,38,39,2,4
+9046,North Shore,Two Harbors,Two Harbors Memorial Arena,9,41,42,40,41,2,3
+9047,Eden Prairie,Eden Prairie,Eden Prairie Community Center,9,51,52,50,51,4,5
+9048,Edina,Edina,Braemar Arena,9,53,54,52,53,4,5
+9049,Wayzata,Plymouth,Plymouth Ice Center,9,49,50,48,49,4,5
+9050,Minnetonka,Minnetonka,Minnetonka Ice Arena,9,47,48,46,47,4,5
+9051,St. Michael-Albertville,Albertville,STMA Ice Arena,9,42,43,41,42,3,4
+9052,Buffalo,Buffalo,Buffalo Civic Center,9,35,36,34,35,3,4
+9053,Rock Ridge,Virginia,Miners Memorial Building,9,54,55,53,54,2,5
+9054,Grand Rapids,Grand Rapids,IRA Civic Center,9,49,50,48,49,3,5
+9055,Cloquet/Esko/Carlton,Cloquet,Cloquet Area Recreation Center,9,51,52,50,51,3,4
+9056,Hibbing/Chisholm,Hibbing,Hibbing Memorial Building,9,45,46,44,45,2,5
+9057,Proctor,Proctor,St. Luke's Sports & Event Center,9,48,49,47,48,2,4
+9058,Duluth Denfeld,Duluth,Duluth Heritage Sports Center,9,44,45,43,44,3,4
+9059,Duluth Marshall,Duluth,Mars Lakeview Arena,9,42,43,41,42,3,4
+9060,Andover,Andover,Andover Community Center,9,52,53,51,52,4,5
+9061,Blaine,Blaine,Fogerty Arena,9,47,48,46,47,4,5
+9062,Centennial,Circle Pines,Centennial Sports Arena,9,46,47,45,46,4,5
+9063,Champlin Park,Champlin,Champlin Ice Forum,9,44,45,43,44,3,4
+9064,Coon Rapids,Coon Rapids,Coon Rapids Ice Center,9,38,39,37,38,3,4
+9065,Elk River/Zimmerman,Elk River,Elk River Ice Arena,9,43,44,42,43,3,4
+9066,Forest Lake,Forest Lake,Forest Lake Sports Center,9,47,48,46,47,3,4
+9067,Maple Grove,Maple Grove,Maple Grove Ice Arena,9,51,52,50,51,4,5
+9068,Mounds View,Arden Hills,Schwab Arena,9,48,49,47,48,3,4
+9069,Park of Cottage Grove,Cottage Grove,Cottage Grove Ice Arena,9,42,43,41,42,3,4
+9070,Rosemount,Rosemount,Rosemount Ice Arena,9,53,54,52,53,4,5
+9071,Roseville,Roseville,Roseville Ice Arena,9,46,47,45,46,3,4
+9072,Stillwater,Stillwater,St. Croix Valley Rec Center,9,53,54,52,53,4,5
+9073,White Bear Lake,White Bear Lake,Vadnais Sports Center,9,52,53,51,52,4,5
+9074,Woodbury,Woodbury,M Health Fairview Sports Center,9,45,46,44,45,4,4
+9075,Benilde-St. Margaret's,St. Louis Park,St. Louis Park Rec Center,9,53,54,52,53,4,5
+9076,Chanhassen,Chanhassen,Chanhassen Recreation Center,9,55,56,54,55,4,5
+9077,Chaska,Chaska,Chaska Community Center,9,41,42,40,41,4,4
+9078,Cretin-Derham Hall,St. Paul,Charles M. Schulz Highland Arena,9,54,55,53,54,4,5
+9079,Eastview,Apple Valley,Apple Valley Sports Arena,9,49,50,48,49,4,4
+9080,Farmington,Farmington,Schmitz-Maki Arena,9,41,42,40,41,3,4
+9081,Hastings,Hastings,Hastings Civic Arena,9,39,40,38,39,3,4
+9082,Hill-Murray,Maplewood,Aldrich Arena,9,55,56,54,55,4,5
+9083,Holy Angels,Richfield,Richfield Ice Arena,9,52,53,51,52,3,4
+9084,Irondale/St. Anthony,New Brighton,Highland Arena,9,38,39,37,38,3,4
+9085,Lakeville North,Lakeville,Ames Arena,9,47,48,46,47,4,5
+9086,Lakeville South,Lakeville,Hasse Arena,9,50,51,49,50,4,5
+9087,Mahtomedi,Mahtomedi,St. Croix Valley Rec Center,9,52,53,51,52,3,5
+9088,Minneapolis,Minneapolis,Parade Ice Garden,9,37,38,36,37,4,3
+9089,Moorhead,Moorhead,Moorhead Sports Center,9,55,56,54,55,3,5
+9090,New Prague,New Prague,New Prague Community Center,9,49,50,48,49,3,4
+9091,Orono,Orono,Orono Ice Arena,9,48,49,47,48,3,4
+9092,Osseo,Osseo,Osseo Ice Arena,9,36,37,35,36,3,4
+9093,Park/Johnson,St. Paul,Phalen Recreation Center,9,35,36,34,35,3,3
+9094,Prior Lake,Prior Lake,Dakotah! Ice Center,9,44,45,43,44,4,4
+9095,Robbinsdale Armstrong/Cooper,New Hope,New Hope Ice Arena,9,35,36,34,35,3,3
+9096,Rogers,Rogers,Rogers Activity Center,9,54,55,53,54,4,5
+9097,Shakopee,Shakopee,Shakopee Ice Arena,9,54,55,53,54,4,5
+9098,Simley,Inver Grove Heights,Veterans Memorial Community Center,9,43,44,42,43,3,4
+9099,South St. Paul,South St. Paul,Doug Woog Arena,9,42,43,41,42,3,5
+9100,Spring Lake Park,Spring Lake Park,Fogerty Arena,9,41,42,40,41,3,4
+9101,St. Louis Park,St. Louis Park,St. Louis Park Rec Center,9,49,50,48,49,3,4
+9102,St. Paul Highland Park,St. Paul,Highland Arena,9,34,35,33,34,3,3
+9103,St. Thomas Academy,Mendota Heights,St. Thomas Ice Arena,9,54,55,53,54,4,5
+9104,Tartan,Oakdale,Tartan Arena,9,41,42,40,41,3,4
+9105,Totino-Grace,Fridley,Brooklyn Park Community Center,9,47,48,46,47,3,4
+9106,Waconia,Waconia,Waconia Ice Arena,9,49,50,48,49,3,4
+9107,Warroad,Warroad,Warroad Gardens Arena,9,55,56,54,55,2,5
+9108,East Grand Forks,East Grand Forks,East Grand Forks Civic Center,9,45,46,44,45,2,5
+9109,Hermantown,Hermantown,Hermantown Arena,9,54,55,53,54,3,5
+9110,Kittson County Central,Hallock,Hallock Ice Arena,9,41,42,40,41,1,3
+9111,Lake of the Woods,Baudette,Lake of the Woods International Arena,9,39,40,38,39,1,3
+9112,Monticello,Monticello,Moose Sherritt Ice Arena,9,53,54,52,53,3,4
+9113,Morris/Benson Area,Morris,Lee Community Center,9,42,43,41,42,1,3
+9114,Park Rapids Area,Park Rapids,Park Rapids Area Century School,9,38,39,37,38,1,3
+9115,Pine City Area,Pine City,Pine City Civic Center,9,47,48,46,47,2,4
+9116,Prairie Centre,Sauk Centre,Sauk Centre Civic Arena,9,41,42,40,41,1,3
+9117,Princeton,Princeton,Princeton Ice Arena,9,43,44,42,43,2,3
+9118,Red Lake Falls,Red Lake Falls,Cardin-Hunt Arena,9,44,45,43,44,1,4
+9119,Southwest Christian/Richfield,Chaska,Chaska Community Center,9,45,46,44,45,3,3
+9120,Thief River Falls,Thief River Falls,Ralph Engelstad Arena,9,46,47,45,46,2,5
+9121,Two Rivers,Mendota Heights,Two Rivers Arena,9,44,45,43,44,3,4
+9122,Wadena-Deer Creek,Wadena,Wadena Community Center,9,37,38,36,37,1,3
+9123,Academy of Holy Angels,Richfield,Richfield Ice Arena,9,52,53,51,52,3,4
+9124,Anoka,Anoka,Anoka Ice Arena,9,40,41,39,40,3,4
+9125,Apple Valley,Apple Valley,Apple Valley Sports Arena,9,38,39,37,38,4,4
+9126,Bagley/Fosston,Bagley,Bagley Ice Arena,9,36,37,35,36,1,3
+9127,Becker/Big Lake,Becker,Becker Furniture World Arena,9,44,45,43,44,2,3
+9128,Bemidji,Bemidji,Sanford Center,9,48,49,47,48,3,5
+9129,Bloomington Jefferson,Bloomington,Bloomington Ice Garden,9,43,44,42,43,4,4
+9130,Breckenridge/Wahpeton,Breckenridge,Breckenridge Community Center,9,35,36,34,35,1,3
+9131,Burnsville,Burnsville,Burnsville Ice Center,9,39,40,38,39,4,4
+9132,Cambridge-Isanti,Cambridge,Isanti County Arena,9,40,41,39,40,2,3
+9133,Chisago Lakes,Lindstrom,Chisago Lakes Arena,9,46,47,45,46,2,4
+9134,Crookston,Crookston,Crookston Sports Center,9,40,41,39,40,2,4
+9135,Delano,Delano,Delano Area Sports Arena,9,47,48,46,47,3,4
+9136,Eagan,Eagan,Eagan Civic Arena,9,35,36,34,35,4,4
+9137,East Ridge,Woodbury,M Health Fairview Sports Center,9,49,50,48,49,4,4
+9138,Ely/Northeast Range,Ely,Ely Ice Arena,9,38,39,37,38,1,3
+9139,Henry Sibley,Mendota Heights,West St. Paul Arena,9,37,38,36,37,3,3
+9140,Hutchinson,Hutchinson,Burich Arena,9,42,43,41,42,2,4
+9141,Litchfield/Dassel-Cokato,Litchfield,Litchfield Civic Arena,9,45,46,44,45,2,3
+9142,Mora/Milaca,Mora,Mora Civic Center,9,44,45,43,44,2,3
+9143,Moose Lake Area,Moose Lake,Riverside Arena,9,40,41,39,40,1,3
+9144,Mound Westonka,Minnetrista,Mound Westonka High School,9,46,47,45,46,3,4
+9.145,"St. Paul Como Park",St. Paul,Phalen Recreation Center,9,33,34,32,33,3,3

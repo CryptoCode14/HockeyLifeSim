@@ -1,0 +1,10 @@
+league_id,league_name,league_abbr,league_level,country,prestige
+1,National Hockey League,NHL,6,USA/CAN,100
+2,American Hockey League,AHL,5,USA/CAN,85
+3,ECHL,ECHL,4,USA/CAN,70
+4,Ontario Hockey League,OHL,3,CAN/USA,78
+5,Western Hockey League,WHL,3,CAN/USA,78
+6,Quebec Maritimes Junior Hockey League,QMJHL,3,CAN,77
+7,United States Hockey League,USHL,3,USA,76
+8,North American Hockey League,NAHL,2,USA,65
+9,Minnesota State High School League,MSHSL,1,USA,50
