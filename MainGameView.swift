@@ -16,20 +16,26 @@ struct MainGameView: View {
         Binding(get: { !gameManager.availablePaths.isEmpty }, set: { _ in })
     }
     
+    // By adding this public initializer, we fix the "inaccessible due to 'private' protection level" error.
+    init() {}
+    
     var body: some View {
         NavigationView {
             VStack {
-                HeaderView(gameManager: gameManager)
+                HeaderView()
                 List {
                     FinanceView(player: gameManager.player)
+                    
                     let currentYear = Calendar.current.component(.year, from: gameManager.currentDate)
                     if gameManager.player.draftEligibilityYear == currentYear && gameManager.player.draftDetails == nil {
                         Section(header: Text("Draft Outlook")) { Text(gameManager.player.scoutingReport).font(.headline) }
                     }
+                    
                     SeasonStatsView(player: gameManager.player)
                     RelationshipsView(relationships: gameManager.player.relationships)
                     PlayerSkillsView(skills: gameManager.player.skills)
                 }
+                
                 HStack {
                     Button("Simulate Week") { gameManager.advanceOneWeek() }
                         .font(.headline).fontWeight(.bold).frame(maxWidth: .infinity).padding().background(Color.blue).foregroundColor(.white).cornerRadius(10)
@@ -58,6 +64,7 @@ struct MainGameView: View {
             .fullScreenCover(isPresented: $gameManager.isShowingLiveGame) {
                 if let log = gameManager.activeGameLog {
                     LiveGameView(gameLog: log)
+                        .environmentObject(gameManager)
                 } else {
                     Text("Error loading game...")
                 }
@@ -66,32 +73,52 @@ struct MainGameView: View {
     }
 }
 
+// --- FIXED: All helper views are now standalone structs to resolve scoping errors. ---
+
 struct HeaderView: View {
-    @ObservedObject var gameManager: GameManager
+    @EnvironmentObject var gameManager: GameManager
+    
     var body: some View {
         VStack {
             Text(gameManager.currentDate.formatted(date: .abbreviated, time: .omitted)).font(.headline).foregroundColor(.secondary)
             Text("\(gameManager.player.firstName) \(gameManager.player.lastName)").font(.largeTitle).fontWeight(.bold)
             let leagueText = gameManager.player.draftDetails?.teamName ?? gameManager.player.teamName
-            let leagueSubtext = gameManager.player.draftDetails != nil ? "Prospect" : gameManager.player.currentLeague.rawValue.description
+            let leagueSubtext = gameManager.player.draftDetails != nil ? "Prospect" : gameManager.player.currentLeague.rawValue
             Text("Age: \(gameManager.player.age) | \(leagueText) (\(leagueSubtext))").font(.subheadline).padding(.bottom)
         }
     }
 }
+
 struct FinanceView: View {
     let player: Player
-    private var currencyFormatter: NumberFormatter { let f = NumberFormatter(); f.numberStyle = .currency; f.maximumFractionDigits = 0; return f }
+    private var currencyFormatter: NumberFormatter {
+        let f = NumberFormatter()
+        f.numberStyle = .currency
+        f.maximumFractionDigits = 0
+        return f
+    }
+    
     var body: some View {
         Section(header: Text("Finances")) {
-            HStack { Text("Bank Balance"); Spacer(); Text(currencyFormatter.string(from: NSNumber(value: player.bankBalance)) ?? "$0").fontWeight(.bold).foregroundColor(.green) }
+            HStack {
+                Text("Bank Balance")
+                Spacer()
+                Text(currencyFormatter.string(from: NSNumber(value: player.bankBalance)) ?? "$0").fontWeight(.bold).foregroundColor(.green)
+            }
             if let contract = player.currentContract {
-                HStack { Text("Salary"); Spacer(); Text("\(currencyFormatter.string(from: NSNumber(value: contract.annualSalary)) ?? "$0") / yr").foregroundColor(.secondary) }
+                HStack {
+                    Text("Salary")
+                    Spacer()
+                    Text("\(currencyFormatter.string(from: NSNumber(value: contract.annualSalary)) ?? "$0") / yr").foregroundColor(.secondary)
+                }
             }
         }
     }
 }
+
 struct SeasonStatsView: View {
     let player: Player
+    
     var body: some View {
         Section(header: Text("Season Stats")) {
             HStack { Text("Games Played").foregroundColor(.secondary); Spacer(); Text("\(player.gamesPlayed)") }
@@ -103,8 +130,10 @@ struct SeasonStatsView: View {
         }
     }
 }
+
 struct RelationshipsView: View {
     let relationships: Player.Relationships
+    
     var body: some View {
         Section(header: Text("Relationships")) {
             HStack { Text("Coach"); Spacer(); Text("\(relationships.coach)").fontWeight(.semibold) }
@@ -114,8 +143,10 @@ struct RelationshipsView: View {
         }
     }
 }
+
 struct PlayerSkillsView: View {
     let skills: [Player.Skill: Int]
+    
     var body: some View {
         Section(header: Text("Player Skills")) {
             ForEach(skills.keys.sorted(by: { $0.rawValue < $1.rawValue }), id: \.self) { skill in

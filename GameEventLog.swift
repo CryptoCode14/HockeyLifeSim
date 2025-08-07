@@ -5,43 +5,46 @@
 //  Created by Westin Kropf on 8/5/25.
 //
 
-//
-//  GameEventLog.swift
-//  HockeyLifeSim
-//
-//  Created by Westin Kropf on 8/5/25.
-//
-
 import Foundation
+import CoreGraphics
 
-/// Represents a single event that occurs during a game simulation.
+// The top-level container for a completed game's data
 struct GameEventLog: Codable, Identifiable {
-    let id = UUID()
-    
-    // Game context
+    var id = UUID()
     let playerTeamName: String
     let opponentTeamName: String
-    
-    // Final score
-    let finalPlayerScore: Int
-    let finalOpponentScore: Int
-    
-    // Detailed play-by-play log
     let entries: [LogEntry]
+    // Final stats can be derived from the last log entry
+}
+
+// Represents a single "tick" or snapshot of the entire game state
+struct LogEntry: Codable, Identifiable {
+    var id = UUID()
+    let time: String
+    let period: Int
+    let description: String
     
-    // Player's personal stats for this game
-    let playerGoals: Int
-    let playerAssists: Int
-    let playerPIM: Int
-    let playerPlusMinus: Int
+    // Scoreboard Data
+    let playerScore: Int
+    let opponentScore: Int
+    let playerSOG: Int
+    let opponentSOG: Int
     
-    /// A single entry in the play-by-play log.
-    struct LogEntry: Codable, Identifiable, Hashable {
-        let id = UUID()
-        let period: Int
-        let time: String // e.g., "12:45"
-        let description: String
-        let isGoal: Bool
-        let isPlayerTeamGoal: Bool
-    }
+    // On-Ice Data
+    let puckState: PuckState
+    let playerStates: [PlayerState]
+}
+
+// Holds the state for an individual player
+struct PlayerState: Codable, Identifiable {
+    var id: String { role + teamId.description } // Stable ID for ForEach
+    let teamId: Int64
+    let role: String // C, LW, RW, LD, RD, G
+    let position: CGPoint
+}
+
+// Holds the state for the puck
+struct PuckState: Codable {
+    let position: CGPoint
+    let carriedByTeamId: Int64?
 }

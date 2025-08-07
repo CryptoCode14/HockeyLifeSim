@@ -10,116 +10,157 @@ import Combine
 
 struct LiveGameView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var gameManager: GameManager
     let gameLog: GameEventLog
     
-    // State to manage the "live" feed
-    @State private var visibleEntries: [GameEventLog.LogEntry] = []
-    @State private var score: (player: Int, opponent: Int) = (0, 0)
+    @State private var session: LiveGameSession?
     @State private var timer: AnyCancellable?
     
+    // FIXED: Game speed is now real-time.
+    private let gameSpeed: TimeInterval = 1.0
+
     var body: some View {
         VStack(spacing: 0) {
-            // MARK: Scoreboard
-            HStack {
-                Text(gameLog.playerTeamName)
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .center)
+            if let currentSession = session {
+                ScoreboardView(
+                    playerTeamName: String(gameLog.playerTeamName.prefix(3)),
+                    opponentTeamName: String(gameLog.opponentTeamName.prefix(3)),
+                    playerScore: currentSession.playerScore,
+                    opponentScore: currentSession.opponentScore,
+                    period: "\(currentSession.period)\(currentSession.period.ordinalSuffix())",
+                    clock: formatTime(seconds: currentSession.gameTime),
+                    playerSOG: currentSession.playerSOG,
+                    opponentSOG: currentSession.opponentSOG,
+                    powerPlayTime: nil, isPlayerTeamOnPP: false
+                )
+                .padding(.horizontal).padding(.vertical, 5).background(Color.black)
                 
-                Text("\(score.player) - \(score.opponent)")
-                    .font(.largeTitle.bold())
-                    .monospacedDigit()
-                
-                Text(gameLog.opponentTeamName)
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .center)
-            }
-            .padding()
-            .background(.thinMaterial)
-            
-            // MARK: Play-by-Play Log
-            ScrollViewReader { proxy in
-                List(visibleEntries) { entry in
-                    HStack {
-                        Text(entry.time)
-                            .font(.caption.monospaced())
-                            .frame(width: 50)
+                GeometryReader { geo in
+                    ZStack {
+                        Image("hockey_rink")
+                            .resizable().scaledToFit()
+                            .frame(width: geo.size.width, height: geo.size.height)
                         
-                        Text(entry.description)
-                            .fontWeight(entry.isGoal ? .bold : .regular)
-                            .foregroundColor(entry.isGoal ? .blue : .primary)
-                    }
-                    .id(entry.id)
-                }
-                .listStyle(.plain)
-                .onChange(of: visibleEntries.count) { _ in
-                    // Automatically scroll to the newest event
-                    if let lastEntry = visibleEntries.last {
-                        withAnimation {
-                            proxy.scrollTo(lastEntry.id, anchor: .bottom)
+                        // DRAW ORDER: Skaters -> Goalies -> Puck (on top)
+                        ForEach(currentSession.skaters) { skater in
+                            PlayerIconView(player: skater, playerTeamId: Int64(gameManager.player.teamId))
+                                .position(scale(eventCoords: skater.position, to: geo.size))
                         }
+                        
+                        ForEach(currentSession.goalies) { goalie in
+                            PlayerIconView(player: goalie, playerTeamId: Int64(gameManager.player.teamId))
+                                .position(scale(eventCoords: goalie.position, to: geo.size))
+                        }
+                        
+                        PuckView()
+                            .position(scale(eventCoords: currentSession.puck.position, to: geo.size))
                     }
                 }
-            }
+                
+                Text(currentSession.description)
+                    .font(.caption.bold()).foregroundColor(.white)
+                    .frame(height: 40).frame(maxWidth: .infinity)
+                    .background(Color.black.opacity(0.7))
+            } else { Text("Loading Simulation...") }
         }
-        .onAppear(perform: startSimulationFeed)
+        .background(Color.black)
+        .edgesIgnoringSafeArea(.bottom)
+        .onAppear(perform: startSimulation)
         .onDisappear(perform: { timer?.cancel() })
-        .overlay(alignment: .bottom) {
-            Button("Close") {
-                dismiss()
-            }
-            .font(.headline)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(.ultraThickMaterial)
-        }
+        .lockOrientation(to: .landscape)
     }
     
-    private func startSimulationFeed() {
-        var entryIndex = 0
+    private func startSimulation() {
+        guard let playerTeamInfo = gameManager.getPlayerTeamInfo(),
+              let gameToPlay = gameManager.seasonSchedule?.games.first(where: { $0.gameResult?.id == gameLog.id }),
+              let opponentInfo = DatabaseManager.shared.getTeamWith(id: gameToPlay.opponent.id)
+        else { return }
         
-        // Use a timer to reveal one log entry at a time
-        self.timer = Timer.publish(every: 0.5, on: .main, in: .common)
+        self.session = SimulationEngine.shared.createGame(playerTeam: playerTeamInfo, opponent: opponentInfo)
+        
+        self.timer = Timer.publish(every: gameSpeed, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
-                if entryIndex < gameLog.entries.count {
-                    let entry = gameLog.entries[entryIndex]
-                    visibleEntries.append(entry)
-                    
-                    // Update score if it was a goal
-                    if entry.isGoal {
-                        if entry.isPlayerTeamGoal {
-                            score.player += 1
-                        } else {
-                            score.opponent += 1
-                        }
-                    }
-                    
-                    entryIndex += 1
-                } else {
-                    // All entries shown, cancel the timer
-                    timer?.cancel()
+                guard var currentSession = self.session else { return }
+                
+                // The timer now runs in real-time, matching the game clock's change.
+                currentSession.gameTime -= Int(gameSpeed)
+                
+                withAnimation(.linear(duration: gameSpeed)) {
+                    self.session = SimulationEngine.shared.advance(session: currentSession)
                 }
+                
+                if currentSession.period > 3 { timer?.cancel() }
             }
+    }
+    
+    private func formatTime(seconds: Int) -> String {
+        let min = max(0, seconds / 60); let sec = max(0, seconds % 60)
+        return String(format: "%02d:%02d", min, sec)
+    }
+
+    private func scale(eventCoords: CGPoint, to screenSize: CGSize) -> CGPoint {
+        let rinkAspectRatio: CGFloat = 1000 / 850
+        let screenAspectRatio = screenSize.width / screenSize.height
+        var rinkSize = screenSize; var origin = CGPoint.zero
+        if screenAspectRatio > rinkAspectRatio {
+            rinkSize.width = screenSize.height * rinkAspectRatio
+            origin.x = (screenSize.width - rinkSize.width) / 2
+        } else {
+            rinkSize.height = screenSize.width / rinkAspectRatio
+            origin.y = (screenSize.height - rinkSize.height) / 2
+        }
+        let scaleX = rinkSize.width / 1000;  let scaleY = rinkSize.height / 850
+        return CGPoint(x: (eventCoords.x * scaleX) + origin.x, y: (eventCoords.y * scaleY) + origin.y)
+    }
+}
+
+struct PlayerIconView: View {
+    let player: LiveGameSession.PlayerState
+    let playerTeamId: Int64
+    
+    var body: some View {
+        ZStack {
+            let isGoalie = player.role == "G"
+            let color = player.teamId == playerTeamId ? Color.blue : Color.red
+            
+            // FIXED: Icons are now slightly smaller circles
+            Circle()
+                .fill(color)
+                .frame(width: isGoalie ? 30 : 22, height: isGoalie ? 30 : 22)
+                .overlay(Circle().stroke(Color.white, lineWidth: 1.5))
+
+            Text(player.role)
+                .font(.system(size: 9, weight: .bold))
+                .foregroundColor(.white)
+        }
+    }
+}
+
+// ... PuckView and LiveGameView_Previews remain the same
+struct PuckView: View {
+    var body: some View {
+        ZStack {
+            Circle().fill(Color.white).frame(width: 15, height: 15)
+            Circle().fill(Color.black).frame(width: 12, height: 12)
+        }
     }
 }
 
 struct LiveGameView_Previews: PreviewProvider {
     static var previews: some View {
-        let sampleLog = GameEventLog(
-            playerTeamName: "Sharks",
-            opponentTeamName: "Penguins",
-            finalPlayerScore: 3,
-            finalOpponentScore: 2,
-            entries: [
-                GameEventLog.LogEntry(period: 1, time: "05:12", description: "Goal by Sharks!", isGoal: true, isPlayerTeamGoal: true),
-                GameEventLog.LogEntry(period: 1, time: "10:45", description: "Penalty on Penguins", isGoal: false, isPlayerTeamGoal: false),
-                GameEventLog.LogEntry(period: 2, time: "03:33", description: "Goal by Penguins!", isGoal: true, isPlayerTeamGoal: false)
-            ],
-            playerGoals: 1,
-            playerAssists: 0,
-            playerPIM: 2,
-            playerPlusMinus: 1
-        )
-        LiveGameView(gameLog: sampleLog)
+        let previewGameManager = GameManager()
+        let playerTeam = TeamInfo(id: 1, name: "BLU", rating: 80)
+        let opponentTeam = TeamInfo(id: 2, name: "RED", rating: 80)
+        
+        let game = ScheduledGame(gameDate: Date(), opponent: opponentTeam, wasPlayed: true)
+        previewGameManager.seasonSchedule = GameSchedule(games: [game])
+        let log = GameEventLog(playerTeamName: playerTeam.name, opponentTeamName: opponentTeam.name, entries: [])
+        previewGameManager.activeGameLog = log
+        
+        previewGameManager.seasonSchedule?.games[0].gameResult = log
+        
+        return LiveGameView(gameLog: log)
+            .environmentObject(previewGameManager)
     }
 }
