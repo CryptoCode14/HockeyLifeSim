@@ -5,6 +5,13 @@
 //  Created by Westin Kropf on 8/4/25.
 //
 
+//
+//  DatabaseManager.swift
+//  HockeyLifeSim
+//
+//  Created by Westin Kropf on 8/4/25.
+//
+
 import Foundation
 import SQLite
 
@@ -36,7 +43,6 @@ class DatabaseManager {
     private let market_size = Expression<Int64>("market_size")
     private let fan_loyalty = Expression<Int64>("fan_loyalty")
 
-
     private init() {
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -45,7 +51,6 @@ class DatabaseManager {
             print("🔍 Database connection successful at: \(fileUrl.path)")
             
             let defaults = UserDefaults.standard
-            // MODIFIED: Changed the key to v7 to ensure a final clean seed.
             if !defaults.bool(forKey: "isDatabaseSeeded_v7") {
                 print("🔍 Database has not been seeded with v7. Seeding now...")
                 createAndPopulateTables()
@@ -75,14 +80,13 @@ class DatabaseManager {
                 table.column(country)
                 table.column(prestige)
             })
-            print("🔍 'leagues' table created successfully.")
             
             try db.run(teamsTable.create { table in
                 table.column(team_id, primaryKey: true)
                 table.column(team_name)
                 table.column(city)
                 table.column(arena_name)
-                table.column(team_league_id) // This is the column we filter on
+                table.column(team_league_id)
                 table.column(overall_rating)
                 table.column(offense_rating)
                 table.column(defense_rating)
@@ -90,7 +94,6 @@ class DatabaseManager {
                 table.column(market_size)
                 table.column(fan_loyalty)
             })
-            print("🔍 'teams' table created successfully.")
             
             populateLeagues()
             populateTeams()
@@ -101,105 +104,88 @@ class DatabaseManager {
     }
 
     private func populateLeagues() {
-        guard let db = db, let path = Bundle.main.path(forResource: "HockeyLeagues", ofType: "csv") else {
-            print("❌ ERROR: HockeyLeagues.csv not found in bundle!")
-            return
-        }
+        guard let db = db, let path = Bundle.main.path(forResource: "HockeyLeagues", ofType: "csv") else { return }
         
         do {
             let csvData = try String(contentsOfFile: path, encoding: .utf8)
             let rows = csvData.components(separatedBy: .newlines).filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-            let leagueRows = Array(rows.dropFirst())
             
-            var insertedCount = 0
-            for row in leagueRows {
+            for row in rows.dropFirst() {
                 let columns = row.components(separatedBy: ",")
                 if columns.count == 6 {
-                    let insert = leaguesTable.insert(
-                        league_id <- Int64(columns[0].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        league_name <- columns[1].trimmingCharacters(in: .whitespaces),
-                        league_abbr <- columns[2].trimmingCharacters(in: .whitespaces),
-                        league_level <- Int64(columns[3].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        country <- columns[4].trimmingCharacters(in: .whitespaces),
-                        prestige <- Int64(columns[5].trimmingCharacters(in: .whitespaces)) ?? 0
-                    )
-                    try db.run(insert)
-                    insertedCount += 1
+                    try db.run(leaguesTable.insert(
+                        league_id <- Int64(columns[0]) ?? 0,
+                        league_name <- columns[1],
+                        league_abbr <- columns[2],
+                        league_level <- Int64(columns[3]) ?? 0,
+                        country <- columns[4],
+                        prestige <- Int64(columns[5]) ?? 0
+                    ))
                 }
             }
-            print("✅ Inserted \(insertedCount) leagues into the database.")
         } catch {
             print("❌ ERROR populating leagues: \(error)")
         }
     }
 
     private func populateTeams() {
-        guard let db = db, let path = Bundle.main.path(forResource: "Hockeyteams", ofType: "csv") else {
-            print("❌ ERROR: Hockeyteams.csv not found in bundle! Please check spelling and case-sensitivity.")
-            return
-        }
+        guard let db = db, let path = Bundle.main.path(forResource: "Hockeyteams", ofType: "csv") else { return }
         
         do {
             let csvData = try String(contentsOfFile: path, encoding: .utf8)
             let rows = csvData.components(separatedBy: .newlines).filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-            let teamRows = Array(rows.dropFirst())
             
-            var insertedCount = 0
-            for row in teamRows {
+            for row in rows.dropFirst() {
                 let columns = row.components(separatedBy: ",")
                 if columns.count == 11 {
-                    let insert = teamsTable.insert(
-                        team_id <- Int64(columns[0].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        team_name <- columns[1].trimmingCharacters(in: .whitespaces),
-                        city <- columns[2].trimmingCharacters(in: .whitespaces),
-                        arena_name <- columns[3].trimmingCharacters(in: .whitespaces),
-                        team_league_id <- Int64(columns[4].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        overall_rating <- Int64(columns[5].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        offense_rating <- Int64(columns[6].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        defense_rating <- Int64(columns[7].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        goaltending_rating <- Int64(columns[8].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        market_size <- Int64(columns[9].trimmingCharacters(in: .whitespaces)) ?? 0,
-                        fan_loyalty <- Int64(columns[10].trimmingCharacters(in: .whitespaces)) ?? 0
-                    )
-                    try db.run(insert)
-                    insertedCount += 1
+                    try db.run(teamsTable.insert(
+                        team_id <- Int64(columns[0]) ?? 0,
+                        team_name <- columns[1],
+                        city <- columns[2],
+                        arena_name <- columns[3],
+                        team_league_id <- Int64(columns[4]) ?? 0,
+                        overall_rating <- Int64(columns[5]) ?? 0,
+                        offense_rating <- Int64(columns[6]) ?? 0,
+                        defense_rating <- Int64(columns[7]) ?? 0,
+                        goaltending_rating <- Int64(columns[8]) ?? 0,
+                        market_size <- Int64(columns[9]) ?? 0,
+                        fan_loyalty <- Int64(columns[10]) ?? 0
+                    ))
                 }
             }
-            print("✅ Inserted \(insertedCount) teams into the database.")
         } catch {
             print("❌ ERROR populating teams: \(error)")
         }
     }
     
-    // MODIFIED: This function now has a more robust query.
     func getTeamsForLeague(id: Int64) -> [TeamInfo] {
         var teams: [TeamInfo] = []
-        guard let db = db else {
-            print("❌ ERROR: Database connection is nil in getTeamsForLeague.")
-            return teams
-        }
+        guard let db = db else { return teams }
         
-        let targetLeagueID = id
-        print("🔍 Querying for teams with specific league_id: \(targetLeagueID)")
-        
-        // This is a more explicit way to write the query which can sometimes help the query planner.
-        let query = teamsTable.filter(self.team_league_id == targetLeagueID)
+        let query = teamsTable.filter(self.team_league_id == id)
                            .select(self.team_id, self.team_name, self.overall_rating)
-
         do {
             for team in try db.prepare(query) {
                 teams.append(TeamInfo(id: team[self.team_id],
                                   name: team[self.team_name],
                                   rating: Int(team[self.overall_rating])))
             }
-            print("🔍 Found \(teams.count) teams for league \(targetLeagueID).")
-            if teams.isEmpty {
-                print("⚠️ Query returned 0 teams. Check if teams for league ID \(targetLeagueID) exist in Hockeyteams.csv.")
+        } catch { print("❌ ERROR fetching teams: \(error)") }
+        return teams
+    }
+    
+    func getTeamWith(id: Int64) -> TeamInfo? {
+        guard let db = db else { return nil }
+        let query = teamsTable.filter(self.team_id == id)
+        do {
+            if let team = try db.pluck(query) {
+                return TeamInfo(id: team[self.team_id],
+                                name: team[self.team_name],
+                                rating: Int(team[self.overall_rating]))
             }
         } catch {
-            print("❌ ERROR fetching teams for league \(targetLeagueID): \(error)")
+            print("❌ ERROR fetching team with id \(id): \(error)")
         }
-        
-        return teams
+        return nil
     }
 }

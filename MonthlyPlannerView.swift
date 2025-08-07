@@ -4,6 +4,12 @@
 //
 //  Created by Westin Kropf on 8/4/25.
 //
+//
+//  MonthlyPlannerView.swift
+//  HockeyLifeSim
+//
+//  Created by Westin Kropf on 8/4/25.
+//
 
 import SwiftUI
 
@@ -29,6 +35,7 @@ struct MonthlyPlannerView: View {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
                     ForEach(daysInMonth, id: \.self) { day in
+                        // This line now works because gameManager.monthlySchedule exists
                         CalendarDayView(day: day, activity: gameManager.monthlySchedule[day])
                     }
                 }
@@ -39,6 +46,7 @@ struct MonthlyPlannerView: View {
                 dismiss()
             })
             .onAppear {
+                // This line now works because gameManager.generateMonthlySchedule() exists
                 gameManager.generateMonthlySchedule()
             }
         }
@@ -69,7 +77,7 @@ struct CalendarDayView: View {
             case .school:
                 ActivityLabel(text: "School", icon: "book.fill", color: .blue)
             case .practice:
-                ActivityLabel(text: "Practice", icon: "hockey.puck.fill", color: .orange)
+                ActivityLabel(text: "Practice", icon: "figure.hockey", color: .orange)
             case .game:
                 ActivityLabel(text: "Game Day", icon: "flag.2.crossed.fill", color: .red)
             case .rest:
@@ -116,8 +124,6 @@ struct ActivityLabel: View {
     }
 }
 
-// This is the single, correct preview provider for the view.
-// The duplicate has been removed.
 struct MonthlyPlannerView_Previews: PreviewProvider {
     static var previews: some View {
         MonthlyPlannerView()

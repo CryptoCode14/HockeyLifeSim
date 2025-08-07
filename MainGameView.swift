@@ -5,7 +5,6 @@
 //  Created by Westin Kropf on 8/4/25.
 //
 
-
 import SwiftUI
 
 struct MainGameView: View {
@@ -32,7 +31,7 @@ struct MainGameView: View {
                     PlayerSkillsView(skills: gameManager.player.skills)
                 }
                 HStack {
-                    Button("Plan Month") { isShowingScheduleView = true }
+                    Button("Simulate Week") { gameManager.advanceOneWeek() }
                         .font(.headline).fontWeight(.bold).frame(maxWidth: .infinity).padding().background(Color.blue).foregroundColor(.white).cornerRadius(10)
                     
                     Button("Lifestyle") { isShowingLifestyleView = true }
@@ -56,16 +55,17 @@ struct MainGameView: View {
                 LifestyleView(player: gameManager.player, items: gameManager.storeItems, onPurchase: { item in gameManager.purchaseItem(item) })
             }
             .fullScreenCover(isPresented: $gameManager.isDraftDay) { DraftDayView() }
-            .fullScreenCover(isPresented: $gameManager.activeMiniGame) {
-                ShootingView(onComplete: { didSucceed in gameManager.resolveMiniGame(didSucceed: didSucceed) },
-                             playerAccuracy: gameManager.player.skills[.shootingAccuracy] ?? 40,
-                             playerPower: gameManager.player.skills[.shootingPower] ?? 40)
+            .fullScreenCover(isPresented: $gameManager.isShowingLiveGame) {
+                if let log = gameManager.activeGameLog {
+                    LiveGameView(gameLog: log)
+                } else {
+                    Text("Error loading game...")
+                }
             }
         }
     }
 }
 
-// All helper views are correct and included for completeness
 struct HeaderView: View {
     @ObservedObject var gameManager: GameManager
     var body: some View {
@@ -98,6 +98,8 @@ struct SeasonStatsView: View {
             HStack { Text("Goals"); Spacer(); Text("\(player.goals)").fontWeight(.bold) }
             HStack { Text("Assists"); Spacer(); Text("\(player.assists)").fontWeight(.bold) }
             HStack { Text("Points"); Spacer(); Text("\(player.points)").fontWeight(.bold) }
+            HStack { Text("PIM"); Spacer(); Text("\(player.pim)").fontWeight(.bold) }
+            HStack { Text("+/-"); Spacer(); Text("\(player.plusMinus)").fontWeight(.bold) }
         }
     }
 }
@@ -122,4 +124,3 @@ struct PlayerSkillsView: View {
         }
     }
 }
-struct MainGameView_Previews: PreviewProvider { static var previews: some View { MainGameView().environmentObject(GameManager()) } }

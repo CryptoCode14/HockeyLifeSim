@@ -9,18 +9,19 @@ import SwiftUI
 
 @main
 struct HockeyLifeSimApp: App {
+    // Create the single source of truth for the game's state here.
+    @StateObject private var gameManager = GameManager()
 
-    // This init() function is called once when the app launches.
-    // By calling DatabaseManager.shared, we trigger the initialization code
-    // in the DatabaseManager's private init(), which sets up the database
-    // and populates it from the CSV files on the first run.
     init() {
+        // This still correctly initializes the database once on app launch.
         _ = DatabaseManager.shared
     }
 
     var body: some Scene {
         WindowGroup {
+            // Pass the gameManager into the environment of our root view.
             ContentView()
+                .environmentObject(gameManager)
         }
     }
 }

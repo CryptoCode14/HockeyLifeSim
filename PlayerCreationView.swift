@@ -5,6 +5,13 @@
 //  Created by Westin Kropf on 8/4/25.
 //
 
+//
+//  PlayerCreationView.swift
+//  HockeyLifeSim
+//
+//  Created by Westin Kropf on 8/4/25.
+//
+
 import SwiftUI
 
 struct PlayerCreationView: View {

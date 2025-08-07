@@ -1,3 +1,4 @@
+
 //
 //  HighSchoolSelectionView.swift
 //  HockeyLifeSim
@@ -6,13 +7,6 @@
 //
 
 import SwiftUI
-
-// MODIFIED: The struct now correctly includes the 'rating' property.
-struct TeamInfo: Identifiable {
-    let id: Int64
-    let name: String
-    let rating: Int
-}
 
 struct HighSchoolSelectionView: View {
     @EnvironmentObject var gameManager: GameManager
@@ -48,16 +42,11 @@ struct HighSchoolSelectionView: View {
     
     private func stars(for rating: Int) -> Int {
         switch rating {
-        case 53...:
-            return 5
-        case 49..<53:
-            return 4
-        case 44..<49:
-            return 3
-        case 38..<44:
-            return 2
-        default:
-            return 1
+        case 53...: return 5
+        case 49..<53: return 4
+        case 44..<49: return 3
+        case 38..<44: return 2
+        default: return 1
         }
     }
     
@@ -72,7 +61,6 @@ struct HighSchoolSelectionView: View {
 
 struct StarRatingView: View {
     let rating: Int
-    
     var body: some View {
         HStack {
             ForEach(1...5, id: \.self) { index in
@@ -85,7 +73,6 @@ struct StarRatingView: View {
 
 struct SearchBar: View {
     @Binding var text: String
-
     var body: some View {
         HStack {
             TextField("Search", text: $text)
