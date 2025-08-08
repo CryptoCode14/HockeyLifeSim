@@ -15,6 +15,7 @@ enum GameFlowState: String, Codable {
 @MainActor
 class GameManager: ObservableObject {
     
+    // --- CORE GAME STATE & PLAYER DATA (UNCHANGED) ---
     struct GameState: Codable {
         var player: Player
         var currentDate: Date
@@ -27,21 +28,22 @@ class GameManager: ObservableObject {
     @Published var currentDate: Date
     @Published var seasonSchedule: GameSchedule?
     @Published var monthlySchedule: [Date: Player.ActivityType] = [:]
-
-    @Published var isShowingLiveGame = false
-    @Published var activeGameLog: GameEventLog?
     
+    // --- SIMULATION PROPERTIES (MODIFIED) ---
+    @Published var isShowingLiveGame = false
+    @Published var activeGameScene: GameScene? // REPLACES activeGameLog
+     
+    // --- CAREER & EVENT DATA (UNCHANGED) ---
     let storeItems: [LifestyleItem]
     @Published var availablePaths: [Player.League] = []
     @Published var activeEvent: GameEvent?
     @Published var isDraftDay: Bool = false
-    
     private var eventLibrary: [GameEvent] = []
     var weeklyTrainingFocus: [Player.Skill] = []
-    
+     
     init() {
         self.storeItems = Self.setupStoreItems()
-        
+       
         if let gameState = Self.loadGame() {
             self.player = gameState.player
             self.currentDate = gameState.currentDate
@@ -58,40 +60,45 @@ class GameManager: ObservableObject {
         }
         setupEvents()
     }
-    
+     
+    // --- SIMULATION LAUNCH LOGIC (MODIFIED) ---
+
     private func simulateGame(atIndex index: Int) {
-        guard var gameToPlay = seasonSchedule?.games[index], // Make it mutable
+        guard let gameToPlay = seasonSchedule?.games[index],
               let playerTeamInfo = getPlayerTeamInfo() else { return }
+
+        // 1. Create a new GameScene with the correct teams.
+        let scene = GameScene(homeTeam: playerTeamInfo, awayTeam: gameToPlay.opponent)
         
-        // The LiveGameView now runs the simulation. This function just sets it up.
-        // We create a placeholder log containing the necessary team info.
-        let placeholderLog = GameEventLog(
-            playerTeamName: playerTeamInfo.name,
-            opponentTeamName: gameToPlay.opponent.name,
-            entries: []
-        )
+        // 2. Start the physics simulation loop.
+        scene.start()
         
-        // FIXED: The crucial missing step. We must assign the created log
-        // back to the game in the schedule so LiveGameView can find it.
-        gameToPlay.wasPlayed = true
-        gameToPlay.gameResult = placeholderLog
-        seasonSchedule?.games[index] = gameToPlay
-        
-        self.activeGameLog = placeholderLog
+        // 3. Set the scene as active and trigger the LiveGameView to appear.
+        self.activeGameScene = scene
         self.isShowingLiveGame = true
+        
+        // We can mark the game as "played" here or after it concludes.
+        seasonSchedule?.games[index].wasPlayed = true
     }
     
+    // NEW: Function to safely end the simulation.
+    func endGame() {
+        activeGameScene?.stop()
+        activeGameScene = nil
+        isShowingLiveGame = false
+    }
+
     func getPlayerTeamInfo() -> TeamInfo? {
         DatabaseManager.shared.getTeamWith(id: Int64(player.teamId))
     }
-    
-    // --- All other functions are unchanged ---
-    
+     
+    // --- ALL OTHER CAREER/PLAYER FUNCTIONS ARE PRESERVED (UNCHANGED) ---
+     
     func generateMonthlySchedule() {
         var schedule: [Date: Player.ActivityType] = [:]
         let calendar = Calendar.current
         guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate) else { return }
-        
+       
         var day = monthInterval.start
         while day < monthInterval.end {
             let weekday = calendar.component(.weekday, from: day)
@@ -117,17 +124,17 @@ class GameManager: ObservableObject {
         guard let url = getSaveURL(), FileManager.default.fileExists(atPath: url.path) else { return nil }
         do { let data = try Data(contentsOf: url); return try JSONDecoder().decode(GameState.self, from: data) } catch { print("Could not load game: \(error)"); return nil }
     }
-    
+     
     func setupNewPlayer(firstName: String, lastName: String) {
         self.player = Player(firstName: firstName, lastName: lastName)
         self.gameFlowState = .selectingSchool
     }
-    
+     
     func selectTeam(teamID: Int, teamName: String) {
         self.player.teamName = teamName; self.player.teamId = teamID; self.player.currentLeague = .highSchool
         self.gameFlowState = .inGame; startNewSeason(); saveGame()
     }
-    
+     
     func advanceOneWeek() {
         guard !isShowingLiveGame else { return }
         let oldDate = currentDate
@@ -148,7 +155,7 @@ class GameManager: ObservableObject {
         if oldMonth == 4 && currentMonth == 5 { endSeason() }
         checkForRandomEvent(); saveGame()
     }
-    
+     
     private func startNewSeason() {
         player.gamesPlayed = 0; player.goals = 0; player.assists = 0; player.pim = 0; player.plusMinus = 0
         guard let playerTeam = getPlayerTeamInfo() else { return }
@@ -163,7 +170,7 @@ class GameManager: ObservableObject {
         }
         self.seasonSchedule = ScheduleGenerator.generate(for: playerTeam, in: leagueId, seasonStartDate: seasonStartDate)
     }
-    
+     
     private func endSeason() {
         let currentYear = Calendar.current.component(.year, from: currentDate)
         if player.draftEligibilityYear == currentYear && player.draftDetails == nil { isDraftDay = true }
@@ -175,7 +182,7 @@ class GameManager: ObservableObject {
             self.availablePaths = potentialOffers
         } else { startNewSeason() }
     }
-    
+     
     func selectCareerPath(league: Player.League) {
         player.currentLeague = league; availablePaths = []
         let leagueId: Int64
@@ -187,7 +194,7 @@ class GameManager: ObservableObject {
         }
         startNewSeason()
     }
-    
+     
     private func applyTrainingAndAtrophy() { applyTraining(); applyAtrophy() }
     private func applyTraining() {
         for skillToTrain in weeklyTrainingFocus {

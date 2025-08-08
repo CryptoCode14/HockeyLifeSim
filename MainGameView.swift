@@ -16,7 +16,6 @@ struct MainGameView: View {
         Binding(get: { !gameManager.availablePaths.isEmpty }, set: { _ in })
     }
     
-    // By adding this public initializer, we fix the "inaccessible due to 'private' protection level" error.
     init() {}
     
     var body: some View {
@@ -47,9 +46,7 @@ struct MainGameView: View {
                 .padding(.bottom)
             }
             .navigationTitle("Hockey Life Sim").navigationBarHidden(true)
-            .sheet(isPresented: $isShowingScheduleView) {
-                WeeklyScheduleView()
-            }
+            .sheet(isPresented: $isShowingScheduleView) { WeeklyScheduleView() }
             .sheet(isPresented: isShowingEndOfSeasonView) { EndOfSeasonView() }
             .sheet(item: $gameManager.activeEvent) { event in
                 EventView(event: event, onComplete: { chosenOption in
@@ -62,18 +59,20 @@ struct MainGameView: View {
             }
             .fullScreenCover(isPresented: $gameManager.isDraftDay) { DraftDayView() }
             .fullScreenCover(isPresented: $gameManager.isShowingLiveGame) {
-                if let log = gameManager.activeGameLog {
-                    LiveGameView(gameLog: log)
-                        .environmentObject(gameManager)
+                if gameManager.activeGameScene != nil {
+                    LiveGameView().environmentObject(gameManager)
                 } else {
-                    Text("Error loading game...")
+                    VStack {
+                        Text("Error loading game...")
+                        Button("Dismiss") { gameManager.endGame() }
+                    }
                 }
             }
         }
     }
 }
 
-// --- FIXED: All helper views are now standalone structs to resolve scoping errors. ---
+// --- Helper views below this are unchanged ---
 
 struct HeaderView: View {
     @EnvironmentObject var gameManager: GameManager

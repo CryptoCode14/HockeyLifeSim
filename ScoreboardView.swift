@@ -75,7 +75,7 @@ struct ScoreboardView: View {
     }
 }
 
-// (TeamScoreView, View+cornerRadius, and RoundedCorner structs remain unchanged)
+// (TeamScoreView and View+cornerRadius structs remain unchanged)
 struct TeamScoreView: View {
     let teamName: String
     let score: Int
@@ -110,7 +110,8 @@ extension View {
     }
 }
 
-struct RoundedCorner: Shape {
+// This struct is used for applying rounded corners to specific corners of a view.
+struct RoundedCorner: SwiftUI.Shape { // FIXED: Explicitly conform to SwiftUI.Shape
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
 
