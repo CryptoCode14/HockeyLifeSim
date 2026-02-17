@@ -1463,8 +1463,21 @@ h2 {
     color: #FF6B6B;
 }
 
+.roster-table .overall-rating.good {
+    color: #51CF66;
+}
+
 .roster-table .contract-value {
     color: #2a5298;
+    font-weight: 600;
+}
+
+.draft-year {
+    background: #4ECDC4;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
     font-weight: 600;
 }
 

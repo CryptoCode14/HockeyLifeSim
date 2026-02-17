@@ -130,6 +130,8 @@ function switchTab(tabName) {
         displayNews();
     } else if (tabName === 'nhl-rosters') {
         setupNHLRostersTab();
+    } else if (tabName === 'junior-rosters') {
+        setupJuniorRostersTab();
     }
 }
 
@@ -449,6 +451,140 @@ function displayNHLRoster(teamId) {
         </tr>`;
     });
     html += '</tbody></table></div>';
+    
+    rosterDisplay.innerHTML = html;
+}
+
+// Setup Junior Rosters Tab
+function setupJuniorRostersTab() {
+    const leagueSelect = document.getElementById('league-select');
+    const teamSelector = document.getElementById('junior-team-selector');
+    const juniorTeamSelect = document.getElementById('junior-team-select');
+    
+    if (!leagueSelect.hasAttribute('data-initialized')) {
+        leagueSelect.addEventListener('change', (e) => {
+            const league = e.target.value;
+            if (league) {
+                populateJuniorTeams(league);
+                teamSelector.style.display = 'block';
+            } else {
+                teamSelector.style.display = 'none';
+                document.getElementById('junior-roster-display').innerHTML = 
+                    '<p class="roster-placeholder">Select a league and team to view their roster</p>';
+            }
+        });
+        leagueSelect.setAttribute('data-initialized', 'true');
+    }
+    
+    if (!juniorTeamSelect.hasAttribute('data-initialized')) {
+        juniorTeamSelect.addEventListener('change', (e) => {
+            const league = leagueSelect.value;
+            const team = e.target.value;
+            if (league && team) {
+                displayJuniorRoster(league, team);
+            }
+        });
+        juniorTeamSelect.setAttribute('data-initialized', 'true');
+    }
+}
+
+// Populate Junior Teams Dropdown
+function populateJuniorTeams(league) {
+    const juniorTeamSelect = document.getElementById('junior-team-select');
+    const rosters = rosterManager.getLeagueRosters(league);
+    
+    let html = '<option value="">-- Choose a Team --</option>';
+    for (let teamName in rosters) {
+        html += `<option value="${teamName}">${teamName}</option>`;
+    }
+    
+    juniorTeamSelect.innerHTML = html;
+}
+
+// Display Junior Team Roster
+function displayJuniorRoster(league, teamName) {
+    const rosterDisplay = document.getElementById('junior-roster-display');
+    
+    if (!league || !teamName) {
+        rosterDisplay.innerHTML = '<p class="roster-placeholder">Select a league and team to view their roster</p>';
+        return;
+    }
+    
+    const roster = rosterManager.getTeamRoster(league, teamName);
+    
+    if (!roster) {
+        rosterDisplay.innerHTML = '<p class="roster-placeholder">Roster data not available for this team</p>';
+        return;
+    }
+    
+    // Create roster display with forwards, defense, and goalies
+    let html = '';
+    
+    // Forwards
+    if (roster.forwards && roster.forwards.length > 0) {
+        html += '<div class="roster-section">';
+        html += '<h3>Forwards</h3>';
+        html += '<table class="roster-table">';
+        html += '<thead><tr><th>Player</th><th>Pos</th><th>Age</th><th>OVR</th><th>POT</th><th>Draft Year</th></tr></thead>';
+        html += '<tbody>';
+        roster.forwards.forEach(player => {
+            const ovrClass = player.overall >= 75 ? 'star' : player.overall >= 70 ? 'good' : '';
+            const draftYear = player.draftYear ? `<span class="draft-year">${player.draftYear}</span>` : '-';
+            html += `<tr>
+                <td class="player-name">${player.firstName} ${player.lastName}</td>
+                <td>${player.position}</td>
+                <td>${player.age}</td>
+                <td class="overall-rating ${ovrClass}">${player.overall}</td>
+                <td>${player.potential}</td>
+                <td>${draftYear}</td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
+    
+    // Defense
+    if (roster.defense && roster.defense.length > 0) {
+        html += '<div class="roster-section">';
+        html += '<h3>Defense</h3>';
+        html += '<table class="roster-table">';
+        html += '<thead><tr><th>Player</th><th>Pos</th><th>Age</th><th>OVR</th><th>POT</th><th>Draft Year</th></tr></thead>';
+        html += '<tbody>';
+        roster.defense.forEach(player => {
+            const ovrClass = player.overall >= 75 ? 'star' : player.overall >= 70 ? 'good' : '';
+            const draftYear = player.draftYear ? `<span class="draft-year">${player.draftYear}</span>` : '-';
+            html += `<tr>
+                <td class="player-name">${player.firstName} ${player.lastName}</td>
+                <td>${player.position}</td>
+                <td>${player.age}</td>
+                <td class="overall-rating ${ovrClass}">${player.overall}</td>
+                <td>${player.potential}</td>
+                <td>${draftYear}</td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
+    
+    // Goalies
+    if (roster.goalies && roster.goalies.length > 0) {
+        html += '<div class="roster-section">';
+        html += '<h3>Goalies</h3>';
+        html += '<table class="roster-table">';
+        html += '<thead><tr><th>Player</th><th>Pos</th><th>Age</th><th>OVR</th><th>POT</th><th>Draft Year</th></tr></thead>';
+        html += '<tbody>';
+        roster.goalies.forEach(player => {
+            const ovrClass = player.overall >= 75 ? 'star' : player.overall >= 70 ? 'good' : '';
+            const draftYear = player.draftYear ? `<span class="draft-year">${player.draftYear}</span>` : '-';
+            html += `<tr>
+                <td class="player-name">${player.firstName} ${player.lastName}</td>
+                <td>${player.position}</td>
+                <td>${player.age}</td>
+                <td class="overall-rating ${ovrClass}">${player.overall}</td>
+                <td>${player.potential}</td>
+                <td>${draftYear}</td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+    }
     
     rosterDisplay.innerHTML = html;
 }

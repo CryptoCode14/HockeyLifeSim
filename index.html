@@ -75,6 +75,7 @@
                         <button class="tab-btn" data-tab="nil">NIL Deals</button>
                         <button class="tab-btn" data-tab="draft">NHL Draft</button>
                         <button class="tab-btn" data-tab="nhl-rosters">NHL Rosters</button>
+                        <button class="tab-btn" data-tab="junior-rosters">Junior Rosters</button>
                         <button class="tab-btn" data-tab="shop">Shop</button>
                         <button class="tab-btn" data-tab="news">News</button>
                     </div>
@@ -331,6 +332,32 @@
                             <p class="roster-placeholder">Select a team to view their roster</p>
                         </div>
                     </div>
+
+                    <!-- Junior Rosters Tab -->
+                    <div id="junior-rosters-tab" class="tab-content">
+                        <h2>Junior Hockey Rosters</h2>
+                        <div class="roster-selector">
+                            <label for="league-select">Select League:</label>
+                            <select id="league-select" class="team-dropdown">
+                                <option value="">-- Choose a League --</option>
+                                <option value="OHL">OHL (Ontario Hockey League)</option>
+                                <option value="WHL">WHL (Western Hockey League)</option>
+                                <option value="QMJHL">QMJHL (Quebec Major Junior Hockey League)</option>
+                                <option value="USHL">USHL (United States Hockey League)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="roster-selector" id="junior-team-selector" style="display: none;">
+                            <label for="junior-team-select">Select Team:</label>
+                            <select id="junior-team-select" class="team-dropdown">
+                                <option value="">-- Choose a Team --</option>
+                            </select>
+                        </div>
+                        
+                        <div id="junior-roster-display" class="roster-display">
+                            <p class="roster-placeholder">Select a league and team to view their roster</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -400,6 +427,7 @@
     <script src="leagues-comprehensive.js"></script>
     <script src="nhl-rosters-real.js"></script>
     <script src="draft-classes-real.js"></script>
+    <script src="roster-manager-comprehensive.js"></script>
     <script src="draft-rankings-view.js"></script>
     <script src="recruiting-nil-system.js"></script>
     <script src="nhl-draft-system.js"></script>
