@@ -186,10 +186,10 @@ class GameManager {
     }
 
     endSeason() {
-        const currentYear = this.currentDate.getFullYear();
+        const seasonYear = this.currentDate.getFullYear();
         
         // Check for draft eligibility
-        if (currentYear === this.player.draftEligibilityYear && this.player.currentLeague === 'High School') {
+        if (seasonYear === this.player.draftEligibilityYear && this.player.currentLeague === 'High School') {
             this.simulateDraft();
         }
         
@@ -212,7 +212,8 @@ class GameManager {
         } else if (scoutScore > 120) {
             this.player.draftRound = Math.floor(Math.random() * 2) + 2;
             this.player.draftPick = Math.floor(Math.random() * 31) + 1;
-            this.player.scoutingReport = `Drafted in the ${this.player.draftRound}${this.getOrdinalSuffix(this.player.draftRound)} Round!`;
+            const suffix = this.getOrdinalSuffix(this.player.draftRound);
+            this.player.scoutingReport = `Drafted in the ${this.player.draftRound}${suffix} Round!`;
         } else {
             this.player.scoutingReport = 'Went undrafted.';
         }

@@ -167,7 +167,6 @@ class PhysicsEngine {
 
             const restitution = 0.4;
             const impulse = -(1 + restitution) * velocityAlongNormal;
-            const impulseDivided = impulse / (bodyA.mass + bodyB.mass);
 
             const impulseVector = normal.multiply(impulse);
             bodyA.velocity = bodyA.velocity.subtract(impulseVector.multiply(1 / bodyA.mass));
