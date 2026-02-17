@@ -6,6 +6,7 @@ class GameManager {
         this.gameFlowState = 'creatingPlayer'; // 'creatingPlayer', 'selectingSchool', 'inGame'
         this.seasonSchedule = [];
         this.activeGameScene = null;
+        this.draftRankingsView = null; // Will be initialized when player is draft eligible
         
         this.loadGame();
     }
@@ -189,7 +190,38 @@ class GameManager {
         this.player.assists += game.result.playerAssists;
         this.player.points = this.player.goals + this.player.assists;
         
+        // Update draft rankings if player is draft eligible
+        if (this.draftRankingsView && this.player.draftEligibilityYear) {
+            this.updateDraftRankings(game.result);
+        }
+        
         this.saveGame();
+    }
+    
+    // Update draft rankings after game performance
+    updateDraftRankings(gameResult) {
+        if (!this.draftRankingsView) return;
+        
+        // Update user's performance in rankings
+        const performanceData = {
+            goals: gameResult.playerGoals,
+            assists: gameResult.playerAssists,
+            wasInjured: this.player.injuryStatus !== null,
+            teamWon: gameResult.playerScore > gameResult.opponentScore
+        };
+        
+        this.draftRankingsView.updateAfterGame(this.player, performanceData);
+    }
+    
+    // Initialize draft rankings when player becomes eligible
+    initializeDraftRankings() {
+        if (!this.draftRankingsView && this.player.draftEligibilityYear) {
+            const draftClass = getDraftClass(this.player.draftEligibilityYear);
+            if (draftClass && draftClass.length > 0) {
+                this.draftRankingsView = new DraftRankingsView(this.player.draftEligibilityYear);
+                this.draftRankingsView.initializeRankings(draftClass, this.player);
+            }
+        }
     }
 
     // Training System

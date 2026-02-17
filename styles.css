@@ -1354,3 +1354,127 @@ h2 {
 .prospect-row.moving-down {
     animation: rankDown 0.5s;
 }
+
+/* NHL Rosters Tab */
+.roster-selector {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.roster-selector label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #1e3c72;
+}
+
+.team-dropdown {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.team-dropdown:hover {
+    border-color: #1e3c72;
+}
+
+.team-dropdown:focus {
+    outline: none;
+    border-color: #2a5298;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+}
+
+.roster-display {
+    min-height: 400px;
+}
+
+.roster-placeholder {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 18px;
+}
+
+.roster-section {
+    margin-bottom: 30px;
+}
+
+.roster-section h3 {
+    color: #1e3c72;
+    padding: 12px;
+    background: #f0f0f0;
+    border-left: 4px solid #1e3c72;
+    margin-bottom: 15px;
+}
+
+.roster-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.roster-table thead {
+    background: #1e3c72;
+    color: white;
+}
+
+.roster-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.roster-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.roster-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.roster-table .player-number {
+    font-weight: 700;
+    color: #1e3c72;
+}
+
+.roster-table .player-name {
+    font-weight: 600;
+}
+
+.roster-table .overall-rating {
+    font-weight: 700;
+    color: #4CAF50;
+}
+
+.roster-table .overall-rating.elite {
+    color: #FFD700;
+}
+
+.roster-table .overall-rating.star {
+    color: #FF6B6B;
+}
+
+.roster-table .contract-value {
+    color: #2a5298;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .roster-table {
+        font-size: 13px;
+    }
+    
+    .roster-table th,
+    .roster-table td {
+        padding: 8px 6px;
+    }
+}

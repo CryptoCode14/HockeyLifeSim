@@ -74,6 +74,7 @@
                         <button class="tab-btn" data-tab="recruiting">Recruiting</button>
                         <button class="tab-btn" data-tab="nil">NIL Deals</button>
                         <button class="tab-btn" data-tab="draft">NHL Draft</button>
+                        <button class="tab-btn" data-tab="nhl-rosters">NHL Rosters</button>
                         <button class="tab-btn" data-tab="shop">Shop</button>
                         <button class="tab-btn" data-tab="news">News</button>
                     </div>
@@ -281,6 +282,53 @@
                                 <p>Combine not yet completed</p>
                             </div>
                             <button id="run-combine-btn" class="btn-primary" style="display:none;">Attend NHL Combine</button>
+                        </div>
+                    </div>
+                    
+                    <!-- NHL Rosters Tab -->
+                    <div id="nhl-rosters-tab" class="tab-content">
+                        <h2>NHL Team Rosters</h2>
+                        <div class="roster-selector">
+                            <label for="team-select">Select Team:</label>
+                            <select id="team-select" class="team-dropdown">
+                                <option value="">-- Choose an NHL Team --</option>
+                                <option value="1">Boston Bruins</option>
+                                <option value="8">Toronto Maple Leafs</option>
+                                <option value="21">Colorado Avalanche</option>
+                                <option value="22">Edmonton Oilers</option>
+                                <option value="2">New Jersey Devils</option>
+                                <option value="3">New York Rangers</option>
+                                <option value="4">New York Islanders</option>
+                                <option value="5">Pittsburgh Penguins</option>
+                                <option value="6">Philadelphia Flyers</option>
+                                <option value="7">Columbus Blue Jackets</option>
+                                <option value="9">Tampa Bay Lightning</option>
+                                <option value="10">Florida Panthers</option>
+                                <option value="11">Montreal Canadiens</option>
+                                <option value="12">Carolina Hurricanes</option>
+                                <option value="13">Ottawa Senators</option>
+                                <option value="14">Buffalo Sabres</option>
+                                <option value="15">Washington Capitals</option>
+                                <option value="16">Nashville Predators</option>
+                                <option value="17">Chicago Blackhawks</option>
+                                <option value="18">St. Louis Blues</option>
+                                <option value="19">Detroit Red Wings</option>
+                                <option value="20">Minnesota Wild</option>
+                                <option value="23">Dallas Stars</option>
+                                <option value="24">Vancouver Canucks</option>
+                                <option value="25">San Jose Sharks</option>
+                                <option value="26">Vegas Golden Knights</option>
+                                <option value="28">Anaheim Ducks</option>
+                                <option value="29">Los Angeles Kings</option>
+                                <option value="30">Arizona Coyotes</option>
+                                <option value="52">Winnipeg Jets</option>
+                                <option value="53">Seattle Kraken</option>
+                                <option value="54">Calgary Flames</option>
+                            </select>
+                        </div>
+                        
+                        <div id="roster-display" class="roster-display">
+                            <p class="roster-placeholder">Select a team to view their roster</p>
                         </div>
                     </div>
                 </div>

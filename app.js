@@ -128,6 +128,8 @@ function switchTab(tabName) {
         displayShop();
     } else if (tabName === 'news') {
         displayNews();
+    } else if (tabName === 'nhl-rosters') {
+        setupNHLRostersTab();
     }
 }
 
@@ -356,4 +358,97 @@ function displayNews() {
             <div class="timestamp">${new Date().toLocaleDateString()}</div>
         </div>
     `).join('');
+}
+
+// Setup NHL Rosters Tab
+function setupNHLRostersTab() {
+    const teamSelect = document.getElementById('team-select');
+    if (!teamSelect.hasAttribute('data-initialized')) {
+        teamSelect.addEventListener('change', (e) => {
+            displayNHLRoster(parseInt(e.target.value));
+        });
+        teamSelect.setAttribute('data-initialized', 'true');
+    }
+}
+
+// Display NHL Team Roster
+function displayNHLRoster(teamId) {
+    const rosterDisplay = document.getElementById('roster-display');
+    
+    if (!teamId) {
+        rosterDisplay.innerHTML = '<p class="roster-placeholder">Select a team to view their roster</p>';
+        return;
+    }
+    
+    const roster = getNHLTeamRoster(teamId);
+    
+    if (!roster) {
+        rosterDisplay.innerHTML = '<p class="roster-placeholder">Roster data not available for this team</p>';
+        return;
+    }
+    
+    // Create roster display with forwards, defense, and goalies
+    let html = '';
+    
+    // Forwards
+    html += '<div class="roster-section">';
+    html += '<h3>Forwards</h3>';
+    html += '<table class="roster-table">';
+    html += '<thead><tr><th>#</th><th>Player</th><th>Pos</th><th>Age</th><th>OVR</th><th>POT</th><th>Contract</th></tr></thead>';
+    html += '<tbody>';
+    roster.forwards.forEach(player => {
+        const ovrClass = player.overall >= 90 ? 'elite' : player.overall >= 85 ? 'star' : '';
+        html += `<tr>
+            <td class="player-number">${player.number}</td>
+            <td class="player-name">${player.firstName} ${player.lastName}</td>
+            <td>${player.position}</td>
+            <td>${player.age}</td>
+            <td class="overall-rating ${ovrClass}">${player.overall}</td>
+            <td>${player.potential}</td>
+            <td class="contract-value">$${(player.contract.aav / 1000000).toFixed(2)}M x ${player.contract.years}</td>
+        </tr>`;
+    });
+    html += '</tbody></table></div>';
+    
+    // Defense
+    html += '<div class="roster-section">';
+    html += '<h3>Defense</h3>';
+    html += '<table class="roster-table">';
+    html += '<thead><tr><th>#</th><th>Player</th><th>Pos</th><th>Age</th><th>OVR</th><th>POT</th><th>Contract</th></tr></thead>';
+    html += '<tbody>';
+    roster.defense.forEach(player => {
+        const ovrClass = player.overall >= 90 ? 'elite' : player.overall >= 85 ? 'star' : '';
+        html += `<tr>
+            <td class="player-number">${player.number}</td>
+            <td class="player-name">${player.firstName} ${player.lastName}</td>
+            <td>${player.position}</td>
+            <td>${player.age}</td>
+            <td class="overall-rating ${ovrClass}">${player.overall}</td>
+            <td>${player.potential}</td>
+            <td class="contract-value">$${(player.contract.aav / 1000000).toFixed(2)}M x ${player.contract.years}</td>
+        </tr>`;
+    });
+    html += '</tbody></table></div>';
+    
+    // Goalies
+    html += '<div class="roster-section">';
+    html += '<h3>Goalies</h3>';
+    html += '<table class="roster-table">';
+    html += '<thead><tr><th>#</th><th>Player</th><th>Pos</th><th>Age</th><th>OVR</th><th>POT</th><th>Contract</th></tr></thead>';
+    html += '<tbody>';
+    roster.goalies.forEach(player => {
+        const ovrClass = player.overall >= 90 ? 'elite' : player.overall >= 85 ? 'star' : '';
+        html += `<tr>
+            <td class="player-number">${player.number}</td>
+            <td class="player-name">${player.firstName} ${player.lastName}</td>
+            <td>${player.position}</td>
+            <td>${player.age}</td>
+            <td class="overall-rating ${ovrClass}">${player.overall}</td>
+            <td>${player.potential}</td>
+            <td class="contract-value">$${(player.contract.aav / 1000000).toFixed(2)}M x ${player.contract.years}</td>
+        </tr>`;
+    });
+    html += '</tbody></table></div>';
+    
+    rosterDisplay.innerHTML = html;
 }
