@@ -54,6 +54,27 @@ struct Player: Codable {
         var year: Int, teamName: String, round: Int, overallPick: Int
     }
     
+    enum InjuryType: String, Codable {
+        case minor = "Minor Injury"
+        case moderate = "Moderate Injury"
+        case major = "Major Injury"
+        case seasonEnding = "Season-Ending Injury"
+    }
+    
+    struct Injury: Codable {
+        var type: InjuryType
+        var description: String
+        var weeksRemaining: Int
+        var skillImpact: [Skill: Int] // Temporary skill reduction while injured
+    }
+    
+    struct Award: Codable, Identifiable {
+        let id: String
+        let name: String
+        let year: Int
+        let description: String
+    }
+    
     // --- Main Player Properties ---
     var firstName: String, lastName: String
     var name: String { "\(firstName) \(lastName)" }
@@ -73,6 +94,19 @@ struct Player: Codable {
     var points: Int { goals + assists }
     var pim: Int = 0
     var plusMinus: Int = 0
+    var shotsOnGoal: Int = 0
+    var hits: Int = 0
+    var blockedShots: Int = 0
+    
+    // --- Health & Status ---
+    var currentInjury: Injury?
+    var injuryHistory: [Injury] = []
+    var morale: Int = 75 // 0-100 scale
+    var energy: Int = 100 // 0-100 scale
+    
+    // --- Achievements ---
+    var awards: [Award] = []
+    var isAllStar: Bool = false
     
     var bankBalance: Double = 1000.0
     var ownedItemIDs: [String] = []
@@ -94,6 +128,7 @@ struct Player: Codable {
     // --- Codable Conformance ---
     enum CodingKeys: String, CodingKey {
         case firstName, lastName, age, teamName, teamId, skills, relationships, currentContract, draftDetails, currentLeague, draftEligibilityYear, scoutingReport, gamesPlayed, goals, assists, pim, plusMinus, bankBalance, ownedItemIDs, maintainedSkills
+        case shotsOnGoal, hits, blockedShots, currentInjury, injuryHistory, morale, energy, awards, isAllStar
     }
 
     // This custom initializer handles loading data from older save files that might be missing new properties.
@@ -119,6 +154,17 @@ struct Player: Codable {
         bankBalance = try container.decodeIfPresent(Double.self, forKey: .bankBalance) ?? 1000.0
         ownedItemIDs = try container.decodeIfPresent([String].self, forKey: .ownedItemIDs) ?? []
         maintainedSkills = try container.decodeIfPresent([Skill].self, forKey: .maintainedSkills) ?? []
+        
+        // New properties with defaults for backward compatibility
+        shotsOnGoal = try container.decodeIfPresent(Int.self, forKey: .shotsOnGoal) ?? 0
+        hits = try container.decodeIfPresent(Int.self, forKey: .hits) ?? 0
+        blockedShots = try container.decodeIfPresent(Int.self, forKey: .blockedShots) ?? 0
+        currentInjury = try container.decodeIfPresent(Injury.self, forKey: .currentInjury)
+        injuryHistory = try container.decodeIfPresent([Injury].self, forKey: .injuryHistory) ?? []
+        morale = try container.decodeIfPresent(Int.self, forKey: .morale) ?? 75
+        energy = try container.decodeIfPresent(Int.self, forKey: .energy) ?? 100
+        awards = try container.decodeIfPresent([Award].self, forKey: .awards) ?? []
+        isAllStar = try container.decodeIfPresent(Bool.self, forKey: .isAllStar) ?? false
     }
 }
 
@@ -132,5 +178,41 @@ extension Player {
         components.month = 8
         components.day = 1
         return Calendar.current.date(from: components) ?? Date()
+    }
+    
+    var isInjured: Bool {
+        return currentInjury != nil
+    }
+    
+    var effectiveSkills: [Skill: Int] {
+        guard let injury = currentInjury else { return skills }
+        
+        var adjustedSkills = skills
+        for (skill, reduction) in injury.skillImpact {
+            adjustedSkills[skill] = max(0, (skills[skill] ?? 0) - reduction)
+        }
+        return adjustedSkills
+    }
+    
+    mutating func applyInjury(_ injury: Injury) {
+        if let existing = currentInjury {
+            injuryHistory.append(existing)
+        }
+        currentInjury = injury
+        morale = max(0, morale - 15)
+    }
+    
+    mutating func recoverFromInjury(weeks: Int) {
+        guard var injury = currentInjury else { return }
+        
+        injury.weeksRemaining -= weeks
+        
+        if injury.weeksRemaining <= 0 {
+            injuryHistory.append(injury)
+            currentInjury = nil
+            morale = min(100, morale + 10)
+        } else {
+            currentInjury = injury
+        }
     }
 }

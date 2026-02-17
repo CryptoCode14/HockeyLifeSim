@@ -11,6 +11,7 @@ struct MainGameView: View {
     @EnvironmentObject var gameManager: GameManager
     @State private var isShowingScheduleView = false
     @State private var isShowingLifestyleView = false
+    @State private var isShowingPlayerDetails = false
     
     private var isShowingEndOfSeasonView: Binding<Bool> {
         Binding(get: { !gameManager.availablePaths.isEmpty }, set: { _ in })
@@ -25,9 +26,55 @@ struct MainGameView: View {
                 List {
                     FinanceView(player: gameManager.player)
                     
+                    // Show injury status if injured
+                    if let injury = gameManager.player.currentInjury {
+                        Section(header: Text("⚕️ Injury Status").foregroundColor(.red)) {
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(injury.description)
+                                    .font(.headline)
+                                    .foregroundColor(.red)
+                                Text("\(injury.weeksRemaining) weeks until recovery")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    
+                    // Show morale and energy
+                    Section(header: Text("Player Status")) {
+                        HStack {
+                            Text("Morale")
+                            Spacer()
+                            Text("\(gameManager.player.morale)")
+                                .fontWeight(.semibold)
+                                .foregroundColor(moraleColor(gameManager.player.morale))
+                        }
+                        HStack {
+                            Text("Energy")
+                            Spacer()
+                            Text("\(gameManager.player.energy)")
+                                .fontWeight(.semibold)
+                                .foregroundColor(energyColor(gameManager.player.energy))
+                        }
+                    }
+                    
                     let currentYear = Calendar.current.component(.year, from: gameManager.currentDate)
                     if gameManager.player.draftEligibilityYear == currentYear && gameManager.player.draftDetails == nil {
                         Section(header: Text("Draft Outlook")) { Text(gameManager.player.scoutingReport).font(.headline) }
+                    }
+                    
+                    // Show awards if any
+                    if !gameManager.player.awards.isEmpty {
+                        Section(header: Text("🏆 Career Awards")) {
+                            ForEach(gameManager.player.awards.suffix(3)) { award in
+                                VStack(alignment: .leading) {
+                                    Text(award.name).font(.headline)
+                                    Text("\(award.year) - \(award.description)")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
                     }
                     
                     SeasonStatsView(player: gameManager.player)
@@ -35,12 +82,18 @@ struct MainGameView: View {
                     PlayerSkillsView(skills: gameManager.player.skills)
                 }
                 
-                HStack {
-                    Button("Simulate Week") { gameManager.advanceOneWeek() }
-                        .font(.headline).fontWeight(.bold).frame(maxWidth: .infinity).padding().background(Color.blue).foregroundColor(.white).cornerRadius(10)
+                VStack(spacing: 10) {
+                    HStack {
+                        Button("Simulate Week") { gameManager.advanceOneWeek() }
+                            .font(.headline).fontWeight(.bold).frame(maxWidth: .infinity).padding().background(gameManager.player.isInjured ? Color.gray : Color.blue).foregroundColor(.white).cornerRadius(10)
+                            .disabled(gameManager.player.isInjured)
+                        
+                        Button("Lifestyle") { isShowingLifestyleView = true }
+                            .font(.headline).fontWeight(.bold).frame(maxWidth: .infinity).padding().background(Color.green).foregroundColor(.white).cornerRadius(10)
+                    }
                     
-                    Button("Lifestyle") { isShowingLifestyleView = true }
-                        .font(.headline).fontWeight(.bold).frame(maxWidth: .infinity).padding().background(Color.green).foregroundColor(.white).cornerRadius(10)
+                    Button("View Career Details") { isShowingPlayerDetails = true }
+                        .font(.subheadline).fontWeight(.semibold).frame(maxWidth: .infinity).padding(.vertical, 8).background(Color.purple.opacity(0.2)).foregroundColor(.purple).cornerRadius(8)
                 }
                 .padding(.horizontal)
                 .padding(.bottom)
@@ -57,6 +110,9 @@ struct MainGameView: View {
             .sheet(isPresented: $isShowingLifestyleView) {
                 LifestyleView(player: gameManager.player, items: gameManager.storeItems, onPurchase: { item in gameManager.purchaseItem(item) })
             }
+            .sheet(isPresented: $isShowingPlayerDetails) {
+                PlayerDetailsView(player: gameManager.player)
+            }
             .fullScreenCover(isPresented: $gameManager.isDraftDay) { DraftDayView() }
             .fullScreenCover(isPresented: $gameManager.isShowingLiveGame) {
                 if gameManager.activeGameScene != nil {
@@ -68,6 +124,26 @@ struct MainGameView: View {
                     }
                 }
             }
+        }
+    }
+}
+
+extension MainGameView {
+    private func moraleColor(_ morale: Int) -> Color {
+        switch morale {
+        case 0..<25: return .red
+        case 25..<50: return .orange
+        case 50..<75: return .yellow
+        default: return .green
+        }
+    }
+    
+    private func energyColor(_ energy: Int) -> Color {
+        switch energy {
+        case 0..<25: return .red
+        case 25..<50: return .orange
+        case 50..<75: return .yellow
+        default: return .green
         }
     }
 }
@@ -126,6 +202,9 @@ struct SeasonStatsView: View {
             HStack { Text("Points"); Spacer(); Text("\(player.points)").fontWeight(.bold) }
             HStack { Text("PIM"); Spacer(); Text("\(player.pim)").fontWeight(.bold) }
             HStack { Text("+/-"); Spacer(); Text("\(player.plusMinus)").fontWeight(.bold) }
+            HStack { Text("Shots"); Spacer(); Text("\(player.shotsOnGoal)").foregroundColor(.secondary) }
+            HStack { Text("Hits"); Spacer(); Text("\(player.hits)").foregroundColor(.secondary) }
+            HStack { Text("Blocks"); Spacer(); Text("\(player.blockedShots)").foregroundColor(.secondary) }
         }
     }
 }
