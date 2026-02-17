@@ -4,6 +4,19 @@ A **ultra-realistic** NHL career simulation game playable in your web browser. B
 
 ## 🎮 Major Features
 
+### Comprehensive Roster System 🏒
+- **1,091+ Real & Realistic Players** across all major leagues
+- **Real NHL Rosters**: Connor McDavid (99), Nathan MacKinnon (96), Auston Matthews (95)
+- **Real Draft Prospects**: James Hagens, Gavin McKenna, Matthew Schaefer, Porter Martone
+- **Prospects Mapped to Real Teams**: 
+  - James Hagens → Chicago Steel (USHL)
+  - Matthew Schaefer → Erie Otters (OHL)
+  - Porter Martone → Brampton Steelheads (OHL)
+  - Michael Misa → Saginaw Spirit (OHL)
+  - Gavin McKenna → Medicine Hat Tigers (WHL)
+- **RosterManager System**: Search players across all leagues, view team rosters, track prospect locations
+- **Browseable Rosters**: View NHL, CHL (OHL/WHL/QMJHL), USHL, NCAA, and European team rosters in-game
+
 ### Realistic Player Generation
 - **500+ Authentic Names** from 5 hockey regions (Canadian, American, Scandinavian, Russian, Czech)
 - **Regional Authenticity** with weighted name combinations
@@ -17,7 +30,12 @@ A **ultra-realistic** NHL career simulation game playable in your web browser. B
   - NCHC (8 teams)
   - Hockey East (11 teams)
   - ECAC (12 teams)
-- **Junior Hockey Leagues** (OHL, WHL, QMJHL, USHL)
+- **Junior Hockey Leagues** with real rosters:
+  - OHL (20 teams - 4 complete)
+  - WHL (22 teams - 2 complete)
+  - QMJHL (18 teams - 2 complete)
+  - USHL (16 teams - 2 complete)
+- **European Leagues**: SHL (Sweden), Liiga (Finland), KHL (Russia)
 - **High School Hockey** (Minnesota + expansion states)
 
 ### College Recruiting System 🎓
