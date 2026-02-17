@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey Life Sim - NHL Career Mode</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Player Creation Screen -->
+        <div id="player-creation-screen" class="screen active">
+            <div class="container">
+                <h1>Create Your Player</h1>
+                <div class="form-group">
+                    <label for="first-name">First Name:</label>
+                    <input type="text" id="first-name" placeholder="Enter first name">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name:</label>
+                    <input type="text" id="last-name" placeholder="Enter last name">
+                </div>
+                <button id="create-player-btn" class="btn-primary">Create Player</button>
+            </div>
+        </div>
+
+        <!-- School Selection Screen -->
+        <div id="school-selection-screen" class="screen">
+            <div class="container">
+                <h1>Select Your High School Team</h1>
+                <div id="teams-list" class="teams-grid"></div>
+            </div>
+        </div>
+
+        <!-- Main Game Screen -->
+        <div id="main-game-screen" class="screen">
+            <div class="game-layout">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <div class="player-card">
+                        <h2 id="player-name">Player Name</h2>
+                        <div class="player-stats">
+                            <p><strong>Age:</strong> <span id="player-age">14</span></p>
+                            <p><strong>Team:</strong> <span id="player-team">Unassigned</span></p>
+                            <p><strong>League:</strong> <span id="player-league">High School</span></p>
+                            <p><strong>Season Stats:</strong></p>
+                            <ul>
+                                <li>GP: <span id="stat-gp">0</span></li>
+                                <li>G: <span id="stat-goals">0</span></li>
+                                <li>A: <span id="stat-assists">0</span></li>
+                                <li>PTS: <span id="stat-points">0</span></li>
+                            </ul>
+                        </div>
+                        <div class="player-money">
+                            <p><strong>Bank:</strong> $<span id="player-bank">1000</span></p>
+                        </div>
+                    </div>
+
+                    <div class="date-card">
+                        <h3>Current Date</h3>
+                        <p id="current-date">August 15, 2025</p>
+                    </div>
+
+                    <button id="advance-week-btn" class="btn-primary btn-block">Advance 1 Week</button>
+                </div>
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="schedule">Schedule</button>
+                        <button class="tab-btn" data-tab="skills">Skills</button>
+                        <button class="tab-btn" data-tab="training">Training</button>
+                    </div>
+
+                    <!-- Schedule Tab -->
+                    <div id="schedule-tab" class="tab-content active">
+                        <h2>Season Schedule</h2>
+                        <div id="schedule-list" class="schedule-list"></div>
+                    </div>
+
+                    <!-- Skills Tab -->
+                    <div id="skills-tab" class="tab-content">
+                        <h2>Player Skills</h2>
+                        <div id="skills-list" class="skills-grid"></div>
+                    </div>
+
+                    <!-- Training Tab -->
+                    <div id="training-tab" class="tab-content">
+                        <h2>Weekly Training Plan</h2>
+                        <p>Select up to 3 skills to focus on this week:</p>
+                        <div id="training-list" class="training-grid"></div>
+                        <button id="save-training-btn" class="btn-primary">Save Training Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Game Screen -->
+        <div id="live-game-screen" class="screen">
+            <div class="game-container">
+                <!-- Scoreboard -->
+                <div class="scoreboard">
+                    <div class="team home-team">
+                        <span class="team-name" id="home-team-name">HOME</span>
+                        <span class="team-score" id="home-score">0</span>
+                    </div>
+                    <div class="game-info">
+                        <div class="period" id="period-display">1st</div>
+                        <div class="clock" id="game-clock">20:00</div>
+                    </div>
+                    <div class="team away-team">
+                        <span class="team-name" id="away-team-name">AWAY</span>
+                        <span class="team-score" id="away-score">0</span>
+                    </div>
+                </div>
+
+                <!-- Game Canvas -->
+                <div class="rink-container">
+                    <canvas id="game-canvas" width="1000" height="850"></canvas>
+                </div>
+
+                <!-- Game Controls -->
+                <div class="game-controls">
+                    <button id="end-game-btn" class="btn-secondary">End Game</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Modal -->
+        <div id="event-modal" class="modal">
+            <div class="modal-content">
+                <h2 id="event-title">Event</h2>
+                <p id="event-description">Event description</p>
+                <div id="event-options" class="event-options"></div>
+            </div>
+        </div>
+
+        <!-- Draft Day Modal -->
+        <div id="draft-modal" class="modal">
+            <div class="modal-content">
+                <h2>NHL Draft Day</h2>
+                <p id="draft-description">The NHL Draft is today!</p>
+                <div id="draft-result"></div>
+                <button id="draft-continue-btn" class="btn-primary">Continue</button>
+            </div>
+        </div>
+
+        <!-- Career Path Modal -->
+        <div id="career-path-modal" class="modal">
+            <div class="modal-content">
+                <h2>Choose Your Path</h2>
+                <p>You have received offers from the following leagues:</p>
+                <div id="career-paths" class="career-paths"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="physics-engine.js"></script>
+    <script src="ai-controller.js"></script>
+    <script src="game-scene.js"></script>
+    <script src="game-manager.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
