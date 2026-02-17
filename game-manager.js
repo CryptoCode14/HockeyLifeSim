@@ -22,19 +22,51 @@ class GameManager {
             currentLeague: 'High School',
             leagueId: 9,
             skills: this.generateInitialSkills(),
+            
+            // Stats
             gamesPlayed: 0,
             goals: 0,
             assists: 0,
             points: 0,
             pim: 0,
             plusMinus: 0,
+            shots: 0,
+            hits: 0,
+            blockedShots: 0,
+            
+            // New attributes
+            morale: 75, // 0-100
+            energy: 100, // 0-100, decreases during games
+            confidence: 50, // 0-100, affects performance
+            personality: this.selectRandomTrait(),
+            injuryStatus: null, // null or {type, gamesRemaining}
+            equipment: {
+                stick: 'basic_stick',
+                skates: 'basic_skates',
+                extras: []
+            },
+            awards: [],
+            achievements: {
+                hatTricks: 0,
+                gameWinningGoals: 0,
+                shutouts: 0,
+                milestones: []
+            },
+            reputation: 50, // 0-100, affects contract offers
+            
             bankBalance: 1000,
             draftEligibilityYear: 2027,
-            scoutingReport: 'Not on draft radar.'
+            scoutingReport: 'Not on draft radar.',
+            contractOffer: null,
+            agentAdvice: []
         };
         
         this.gameFlowState = 'selectingSchool';
         this.saveGame();
+    }
+
+    selectRandomTrait() {
+        return PERSONALITY_TRAITS[Math.floor(Math.random() * PERSONALITY_TRAITS.length)];
     }
 
     generateInitialSkills() {
@@ -306,5 +338,185 @@ class GameManager {
         if (j === 2 && k !== 12) return 'nd';
         if (j === 3 && k !== 13) return 'rd';
         return 'th';
+    }
+
+    // New Features: Injury System
+    checkForInjury() {
+        // 5% chance of injury per game
+        if (Math.random() < 0.05 && !this.player.injuryStatus) {
+            const injury = INJURY_TYPES[Math.floor(Math.random() * INJURY_TYPES.length)];
+            const gamesOut = Math.floor(Math.random() * (injury.maxGames - injury.minGames + 1)) + injury.minGames;
+            
+            this.player.injuryStatus = {
+                type: injury.name,
+                gamesRemaining: gamesOut,
+                severity: injury.severity
+            };
+            
+            this.player.morale -= 15;
+            return true;
+        }
+        return false;
+    }
+
+    updateInjuryStatus() {
+        if (this.player.injuryStatus) {
+            this.player.injuryStatus.gamesRemaining--;
+            if (this.player.injuryStatus.gamesRemaining <= 0) {
+                this.player.injuryStatus = null;
+                this.player.morale += 10;
+            }
+        }
+    }
+
+    // Morale and Energy System
+    updateMorale(change) {
+        this.player.morale = Math.max(0, Math.min(100, this.player.morale + change));
+    }
+
+    updateEnergy(change) {
+        this.player.energy = Math.max(0, Math.min(100, this.player.energy + change));
+    }
+
+    updateConfidence(change) {
+        this.player.confidence = Math.max(0, Math.min(100, this.player.confidence + change));
+    }
+
+    // Equipment System
+    purchaseEquipment(equipmentId) {
+        const equipment = EQUIPMENT.find(e => e.id === equipmentId);
+        if (!equipment) return { success: false, message: 'Equipment not found' };
+        
+        if (this.player.bankBalance < equipment.price) {
+            return { success: false, message: 'Insufficient funds' };
+        }
+
+        this.player.bankBalance -= equipment.price;
+        
+        // Apply equipment bonuses
+        if (equipment.shooting) {
+            this.player.skills['Shooting Accuracy'] = Math.min(99, this.player.skills['Shooting Accuracy'] + equipment.shooting);
+            this.player.skills['Shooting Power'] = Math.min(99, this.player.skills['Shooting Power'] + equipment.shooting);
+        }
+        if (equipment.puckControl) {
+            this.player.skills['Puck Control'] = Math.min(99, this.player.skills['Puck Control'] + equipment.puckControl);
+        }
+        if (equipment.skating) {
+            this.player.skills['Skating'] = Math.min(99, this.player.skills['Skating'] + equipment.skating);
+        }
+        if (equipment.allSkills) {
+            SKILLS.forEach(skill => {
+                this.player.skills[skill] = Math.min(99, this.player.skills[skill] + equipment.allSkills);
+            });
+        }
+
+        // Update equipment inventory
+        if (equipmentId.includes('stick')) {
+            this.player.equipment.stick = equipmentId;
+        } else if (equipmentId.includes('skates')) {
+            this.player.equipment.skates = equipmentId;
+        } else {
+            this.player.equipment.extras.push(equipmentId);
+        }
+
+        this.saveGame();
+        return { success: true, message: `Purchased ${equipment.name}!` };
+    }
+
+    // Award System
+    checkForAwards() {
+        const ppg = this.player.points / (this.player.gamesPlayed || 1);
+        const gpg = this.player.goals / (this.player.gamesPlayed || 1);
+        
+        // Check for scoring champion
+        if (ppg >= 2.0 && this.player.gamesPlayed >= 15) {
+            this.addAward('SCORING_LEADER');
+        }
+        
+        // Check for rookie of the year (age 14-15)
+        if (this.player.age <= 15 && ppg >= 1.5) {
+            this.addAward('ROOKIE_OF_YEAR');
+        }
+        
+        // Check for hat tricks
+        if (this.player.goals >= 3 && this.lastGameGoals >= 3) {
+            this.player.achievements.hatTricks++;
+            this.updateConfidence(10);
+            this.updateMorale(10);
+        }
+    }
+
+    addAward(awardKey) {
+        const award = AWARDS[awardKey];
+        if (award && !this.player.awards.find(a => a.name === award.name)) {
+            this.player.awards.push({
+                name: award.name,
+                description: award.description,
+                season: this.currentDate.getFullYear()
+            });
+            this.player.reputation += 10;
+            this.player.bankBalance += 5000; // Award bonus
+            this.updateMorale(20);
+        }
+    }
+
+    // News and Media System
+    generateNews() {
+        const news = [];
+        const ppg = this.player.points / (this.player.gamesPlayed || 1);
+        
+        if (ppg >= 2.0) {
+            news.push({
+                title: `${this.player.fullName} Dominating the League!`,
+                content: `With an impressive ${ppg.toFixed(2)} points per game, ${this.player.fullName} is making scouts take notice.`,
+                type: 'positive'
+            });
+        }
+        
+        if (this.player.injuryStatus) {
+            news.push({
+                title: `Injury Update: ${this.player.fullName}`,
+                content: `${this.player.injuryStatus.type} will keep ${this.player.fullName} out for approximately ${this.player.injuryStatus.gamesRemaining} more games.`,
+                type: 'negative'
+            });
+        }
+        
+        if (this.player.awards.length > 0) {
+            const latestAward = this.player.awards[this.player.awards.length - 1];
+            news.push({
+                title: `Award Winner!`,
+                content: `Congratulations to ${this.player.fullName} for winning ${latestAward.name}!`,
+                type: 'achievement'
+            });
+        }
+        
+        return news;
+    }
+
+    // Contract and Agent System
+    receiveContractOffer(team, salary, years) {
+        this.player.contractOffer = {
+            team: team,
+            salary: salary,
+            years: years,
+            expires: new Date(this.currentDate.getTime() + 7 * 24 * 60 * 60 * 1000) // 7 days to decide
+        };
+        
+        // Generate agent advice
+        const marketValue = this.calculateMarketValue();
+        if (salary >= marketValue * 0.9) {
+            this.player.agentAdvice.push("This is a strong offer - I recommend accepting.");
+        } else {
+            this.player.agentAdvice.push("We can probably negotiate for more. Let's hold out.");
+        }
+    }
+
+    calculateMarketValue() {
+        const ppg = this.player.points / (this.player.gamesPlayed || 1);
+        const baseValue = 50000;
+        const performanceMultiplier = 1 + (ppg * 0.5);
+        const reputationMultiplier = 1 + (this.player.reputation / 100);
+        
+        return baseValue * performanceMultiplier * reputationMultiplier;
     }
 }

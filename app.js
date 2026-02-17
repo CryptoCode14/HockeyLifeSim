@@ -122,6 +122,12 @@ function switchTab(tabName) {
         displaySkills();
     } else if (tabName === 'training') {
         displayTraining();
+    } else if (tabName === 'profile') {
+        displayProfile();
+    } else if (tabName === 'shop') {
+        displayShop();
+    } else if (tabName === 'news') {
+        displayNews();
     }
 }
 
@@ -254,4 +260,100 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initApp);
 } else {
     initApp();
+}
+
+// Display Profile
+function displayProfile() {
+    if (!gameManager.player) return;
+    
+    document.getElementById('profile-personality').textContent = gameManager.player.personality.name;
+    document.getElementById('profile-morale').textContent = gameManager.player.morale;
+    document.getElementById('profile-energy').textContent = gameManager.player.energy;
+    document.getElementById('profile-confidence').textContent = gameManager.player.confidence;
+    document.getElementById('profile-reputation').textContent = gameManager.player.reputation;
+    
+    // Injury status
+    const injuryEl = document.getElementById('injury-status');
+    if (gameManager.player.injuryStatus) {
+        injuryEl.textContent = `${gameManager.player.injuryStatus.type} - ${gameManager.player.injuryStatus.gamesRemaining} games remaining`;
+        injuryEl.className = 'injured';
+    } else {
+        injuryEl.textContent = 'Healthy';
+        injuryEl.className = '';
+    }
+    
+    // Awards
+    const awardsList = document.getElementById('awards-list');
+    if (gameManager.player.awards && gameManager.player.awards.length > 0) {
+        awardsList.innerHTML = gameManager.player.awards.map(award => `
+            <div class="award-item">
+                <strong>${award.name}</strong><br>
+                <small>${award.description} (${award.season})</small>
+            </div>
+        `).join('');
+    } else {
+        awardsList.innerHTML = '<p>No awards yet. Keep playing to earn awards!</p>';
+    }
+}
+
+// Display Shop
+function displayShop() {
+    const shopItems = document.getElementById('shop-items');
+    shopItems.innerHTML = '';
+    
+    EQUIPMENT.forEach(item => {
+        const owned = gameManager.player.equipment.stick === item.id ||
+                     gameManager.player.equipment.skates === item.id ||
+                     gameManager.player.equipment.extras.includes(item.id);
+        
+        const shopItem = document.createElement('div');
+        shopItem.className = `shop-item ${owned ? 'owned' : ''}`;
+        
+        let bonuses = [];
+        if (item.shooting) bonuses.push(`+${item.shooting} Shooting`);
+        if (item.puckControl) bonuses.push(`+${item.puckControl} Puck Control`);
+        if (item.skating) bonuses.push(`+${item.skating} Skating`);
+        if (item.allSkills) bonuses.push(`+${item.allSkills} All Skills`);
+        if (item.conditioning) bonuses.push(`+${item.conditioning} Conditioning`);
+        if (item.strength) bonuses.push(`+${item.strength} Strength`);
+        
+        shopItem.innerHTML = `
+            <h3>${item.name}</h3>
+            <div class="price">$${item.price}</div>
+            <div class="stats">${bonuses.join(', ')}</div>
+            <button onclick="buyEquipment('${item.id}')" ${owned ? 'disabled' : ''}>
+                ${owned ? 'Owned' : 'Purchase'}
+            </button>
+        `;
+        
+        shopItems.appendChild(shopItem);
+    });
+}
+
+function buyEquipment(itemId) {
+    const result = gameManager.purchaseEquipment(itemId);
+    alert(result.message);
+    if (result.success) {
+        updateMainGameUI();
+        displayShop();
+    }
+}
+
+// Display News
+function displayNews() {
+    const newsFeed = document.getElementById('news-feed');
+    const news = gameManager.generateNews();
+    
+    if (news.length === 0) {
+        newsFeed.innerHTML = '<p>No news at this time. Keep playing to generate headlines!</p>';
+        return;
+    }
+    
+    newsFeed.innerHTML = news.map(item => `
+        <div class="news-item ${item.type}">
+            <h3>${item.title}</h3>
+            <p>${item.content}</p>
+            <div class="timestamp">${new Date().toLocaleDateString()}</div>
+        </div>
+    `).join('');
 }

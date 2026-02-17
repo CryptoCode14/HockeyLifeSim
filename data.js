@@ -64,6 +64,72 @@ const SKILLS = [
     'Conditioning'
 ];
 
+// Player Personality Traits
+const PERSONALITY_TRAITS = [
+    { id: 'leader', name: 'Leader', description: 'Boosts team morale' },
+    { id: 'clutch', name: 'Clutch Performer', description: 'Better in pressure situations' },
+    { id: 'sniper', name: 'Natural Sniper', description: 'Better shooting accuracy' },
+    { id: 'playmaker', name: 'Playmaker', description: 'Better passing and assists' },
+    { id: 'grinder', name: 'Grinder', description: 'Never gives up, high conditioning' },
+    { id: 'enforcer', name: 'Enforcer', description: 'Physical player, intimidates opponents' },
+    { id: 'speedster', name: 'Speedster', description: 'Exceptional skating ability' },
+    { id: 'defensive', name: 'Defensive Specialist', description: 'Excellent defensive positioning' }
+];
+
+// Shot Types
+const SHOT_TYPES = {
+    WRIST_SHOT: { name: 'Wrist Shot', power: 1.0, accuracy: 1.2, speed: 1.0 },
+    SLAP_SHOT: { name: 'Slap Shot', power: 1.5, accuracy: 0.8, speed: 1.5 },
+    BACKHAND: { name: 'Backhand', power: 0.8, accuracy: 0.9, speed: 0.9 },
+    SNAP_SHOT: { name: 'Snap Shot', power: 1.1, accuracy: 1.1, speed: 1.2 },
+    ONE_TIMER: { name: 'One Timer', power: 1.4, accuracy: 0.7, speed: 1.6 }
+};
+
+// Injury Types
+const INJURY_TYPES = [
+    { name: 'Upper Body Injury', minGames: 1, maxGames: 5, severity: 'minor' },
+    { name: 'Lower Body Injury', minGames: 2, maxGames: 7, severity: 'moderate' },
+    { name: 'Concussion', minGames: 5, maxGames: 15, severity: 'serious' },
+    { name: 'Broken Bone', minGames: 10, maxGames: 30, severity: 'major' },
+    { name: 'Bruised', minGames: 0, maxGames: 1, severity: 'day-to-day' }
+];
+
+// Awards and Achievements
+const AWARDS = {
+    MVP: { name: 'Most Valuable Player', description: 'Best overall player in the league' },
+    SCORING_LEADER: { name: 'Scoring Champion', description: 'Most points in the season' },
+    ROOKIE_OF_YEAR: { name: 'Rookie of the Year', description: 'Best first-year player' },
+    BEST_DEFENSEMAN: { name: 'Best Defenseman', description: 'Top defensive player' },
+    ALL_STAR: { name: 'All-Star Selection', description: 'Selected to all-star team' },
+    STANLEY_CUP: { name: 'Stanley Cup Champion', description: 'Won the championship' }
+};
+
+// Play Strategies
+const STRATEGIES = {
+    OFFENSIVE: {
+        AGGRESSIVE: { name: 'Aggressive Forecheck', offense: 1.2, defense: 0.8 },
+        BALANCED: { name: 'Balanced Attack', offense: 1.0, defense: 1.0 },
+        CYCLE: { name: 'Cycle Game', offense: 1.1, defense: 0.9 }
+    },
+    DEFENSIVE: {
+        TRAP: { name: 'Neutral Zone Trap', offense: 0.7, defense: 1.3 },
+        DUMP_CHASE: { name: 'Dump and Chase', offense: 0.9, defense: 1.1 },
+        PROTECT_LEAD: { name: 'Protect the Lead', offense: 0.6, defense: 1.4 }
+    }
+};
+
+// Equipment and Gear
+const EQUIPMENT = [
+    { id: 'basic_stick', name: 'Basic Stick', price: 150, shooting: 0, puckControl: 0 },
+    { id: 'pro_stick', name: 'Pro Stick', price: 300, shooting: 3, puckControl: 2 },
+    { id: 'elite_stick', name: 'Elite Carbon Stick', price: 500, shooting: 5, puckControl: 4 },
+    { id: 'basic_skates', name: 'Basic Skates', price: 200, skating: 0 },
+    { id: 'pro_skates', name: 'Pro Skates', price: 400, skating: 3 },
+    { id: 'elite_skates', name: 'Elite Speed Skates', price: 700, skating: 6 },
+    { id: 'training_program', name: 'Personal Training', price: 1000, allSkills: 2 },
+    { id: 'nutrition_plan', name: 'Nutrition Plan', price: 500, conditioning: 3, strength: 2 }
+];
+
 // Helper functions
 function getTeamsForLeague(leagueId) {
     return TEAMS.filter(team => team.leagueId === leagueId);

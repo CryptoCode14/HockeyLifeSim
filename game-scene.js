@@ -18,6 +18,18 @@ class GameScene {
         this.awayScore = 0;
         this.homeSOG = 0;
         this.awaySOG = 0;
+        this.homePenalties = 0;
+        this.awayPenalties = 0;
+        
+        // New game features
+        this.isPowerPlay = false;
+        this.powerPlayTeam = null;
+        this.powerPlayTime = 0;
+        this.momentum = 0; // -100 (away) to +100 (home)
+        this.lastGoalScorer = null;
+        this.celebrationTimer = 0;
+        this.replayMode = false;
+        this.gameEvents = [];
         
         // Goal areas
         this.homeGoalArea = { x: 60, y: 385, width: 40, height: 80 };
@@ -116,6 +128,20 @@ class GameScene {
             this.faceoff();
         }
 
+        // Update power play timer
+        if (this.isPowerPlay && this.powerPlayTime > 0) {
+            this.powerPlayTime -= deltaTime;
+            if (this.powerPlayTime <= 0) {
+                this.isPowerPlay = false;
+                this.powerPlayTeam = null;
+            }
+        }
+
+        // Update celebration timer
+        if (this.celebrationTimer > 0) {
+            this.celebrationTimer -= deltaTime;
+        }
+
         // Update AI
         const allPlayers = [...this.players, ...this.goalies];
         this.aiControllers.forEach(controller => {
@@ -128,14 +154,79 @@ class GameScene {
         // Check for goals
         const goalScored = this.physics.checkGoal(this.puck, this.homeGoalArea, this.awayGoalArea);
         if (goalScored) {
-            if (goalScored === 'home') {
-                this.homeScore++;
-                this.homeSOG++;
-            } else {
-                this.awayScore++;
-                this.awaySOG++;
-            }
+            this.handleGoal(goalScored);
             this.faceoff();
+        }
+
+        // Check for penalties (random chance)
+        if (Math.random() < 0.0005 && !this.isPowerPlay) { // 0.05% chance per frame
+            this.callPenalty();
+        }
+
+        // Update momentum
+        this.updateMomentum(deltaTime);
+
+        // Update UI
+        this.updateUI();
+    }
+
+    handleGoal(scoringTeam) {
+        if (scoringTeam === 'home') {
+            this.homeScore++;
+            this.homeSOG++;
+            this.momentum += 20;
+            this.lastGoalScorer = 'home';
+        } else {
+            this.awayScore++;
+            this.awaySOG++;
+            this.momentum -= 20;
+            this.lastGoalScorer = 'away';
+        }
+        
+        // Start celebration
+        this.celebrationTimer = 3;
+        
+        // Log event
+        this.gameEvents.push({
+            type: 'goal',
+            team: scoringTeam,
+            time: this.gameTime,
+            period: this.period
+        });
+    }
+
+    callPenalty() {
+        const penaltyTeam = Math.random() < 0.5 ? 'home' : 'away';
+        if (penaltyTeam === 'home') {
+            this.homePenalties++;
+            this.powerPlayTeam = 'away';
+        } else {
+            this.awayPenalties++;
+            this.powerPlayTeam = 'home';
+        }
+        
+        this.isPowerPlay = true;
+        this.powerPlayTime = 120; // 2 minute penalty
+        
+        this.gameEvents.push({
+            type: 'penalty',
+            team: penaltyTeam,
+            time: this.gameTime,
+            period: this.period
+        });
+    }
+
+    updateMomentum(deltaTime) {
+        // Momentum naturally decays toward neutral
+        if (this.momentum > 0) {
+            this.momentum = Math.max(0, this.momentum - deltaTime * 2);
+        } else if (this.momentum < 0) {
+            this.momentum = Math.min(0, this.momentum + deltaTime * 2);
+        }
+        
+        // Clamp momentum
+        this.momentum = Math.max(-100, Math.min(100, this.momentum));
+    }
         }
 
         // Update UI
@@ -169,12 +260,89 @@ class GameScene {
         this.drawGoal(this.homeGoalArea, '#ff0000');
         this.drawGoal(this.awayGoalArea, '#ff0000');
 
+        // Draw celebration effect if active
+        if (this.celebrationTimer > 0) {
+            this.drawCelebration();
+        }
+
+        // Draw momentum indicator
+        this.drawMomentum();
+
         // Draw players
         this.players.forEach(player => this.drawPlayer(player));
         this.goalies.forEach(goalie => this.drawPlayer(goalie));
 
         // Draw puck
         this.drawPuck();
+
+        // Draw power play indicator
+        if (this.isPowerPlay) {
+            this.drawPowerPlayIndicator();
+        }
+    }
+
+    drawCelebration() {
+        // Flash effect
+        const alpha = Math.sin(this.celebrationTimer * 5) * 0.3 + 0.3;
+        this.ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`;
+        this.ctx.fillRect(0, 0, this.width, this.height);
+        
+        // Goal text
+        if (this.celebrationTimer > 2) {
+            this.ctx.save();
+            this.ctx.font = 'bold 80px Arial';
+            this.ctx.fillStyle = '#FFD700';
+            this.ctx.strokeStyle = '#000000';
+            this.ctx.lineWidth = 4;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            const text = 'GOAL!';
+            this.ctx.strokeText(text, this.width / 2, this.height / 2);
+            this.ctx.fillText(text, this.width / 2, this.height / 2);
+            this.ctx.restore();
+        }
+    }
+
+    drawMomentum() {
+        const barWidth = 200;
+        const barHeight = 20;
+        const x = this.width / 2 - barWidth / 2;
+        const y = 10;
+        
+        // Background
+        this.ctx.fillStyle = '#333';
+        this.ctx.fillRect(x, y, barWidth, barHeight);
+        
+        // Momentum bar
+        const momentumWidth = Math.abs(this.momentum) / 100 * (barWidth / 2);
+        if (this.momentum > 0) {
+            this.ctx.fillStyle = '#0066cc';
+            this.ctx.fillRect(x + barWidth / 2, y, momentumWidth, barHeight);
+        } else {
+            this.ctx.fillStyle = '#cc0000';
+            this.ctx.fillRect(x + barWidth / 2 - momentumWidth, y, momentumWidth, barHeight);
+        }
+        
+        // Center line
+        this.ctx.strokeStyle = '#fff';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + barWidth / 2, y);
+        this.ctx.lineTo(x + barWidth / 2, y + barHeight);
+        this.ctx.stroke();
+    }
+
+    drawPowerPlayIndicator() {
+        this.ctx.save();
+        this.ctx.font = 'bold 24px Arial';
+        this.ctx.fillStyle = '#FFD700';
+        this.ctx.strokeStyle = '#000000';
+        this.ctx.lineWidth = 2;
+        this.ctx.textAlign = 'center';
+        const ppText = `POWER PLAY - ${Math.ceil(this.powerPlayTime)}s`;
+        this.ctx.strokeText(ppText, this.width / 2, 45);
+        this.ctx.fillText(ppText, this.width / 2, 45);
+        this.ctx.restore();
     }
 
     drawRink() {

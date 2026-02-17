@@ -70,6 +70,9 @@
                         <button class="tab-btn active" data-tab="schedule">Schedule</button>
                         <button class="tab-btn" data-tab="skills">Skills</button>
                         <button class="tab-btn" data-tab="training">Training</button>
+                        <button class="tab-btn" data-tab="profile">Profile</button>
+                        <button class="tab-btn" data-tab="shop">Shop</button>
+                        <button class="tab-btn" data-tab="news">News</button>
                     </div>
 
                     <!-- Schedule Tab -->
@@ -90,6 +93,42 @@
                         <p>Select up to 3 skills to focus on this week:</p>
                         <div id="training-list" class="training-grid"></div>
                         <button id="save-training-btn" class="btn-primary">Save Training Plan</button>
+                    </div>
+
+                    <!-- Profile Tab -->
+                    <div id="profile-tab" class="tab-content">
+                        <h2>Player Profile</h2>
+                        <div class="profile-details">
+                            <div class="profile-section">
+                                <h3>Attributes</h3>
+                                <p><strong>Personality:</strong> <span id="profile-personality">-</span></p>
+                                <p><strong>Morale:</strong> <span id="profile-morale">75</span>/100</p>
+                                <p><strong>Energy:</strong> <span id="profile-energy">100</span>/100</p>
+                                <p><strong>Confidence:</strong> <span id="profile-confidence">50</span>/100</p>
+                                <p><strong>Reputation:</strong> <span id="profile-reputation">50</span>/100</p>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Status</h3>
+                                <p id="injury-status">Healthy</p>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Awards & Achievements</h3>
+                                <div id="awards-list">No awards yet</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shop Tab -->
+                    <div id="shop-tab" class="tab-content">
+                        <h2>Equipment Shop</h2>
+                        <p>Purchase equipment to improve your skills!</p>
+                        <div id="shop-items" class="shop-grid"></div>
+                    </div>
+
+                    <!-- News Tab -->
+                    <div id="news-tab" class="tab-content">
+                        <h2>Latest News</h2>
+                        <div id="news-feed" class="news-feed"></div>
                     </div>
                 </div>
             </div>
