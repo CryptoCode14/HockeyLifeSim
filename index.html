@@ -191,35 +191,97 @@
                     <!-- Draft Tab -->
                     <div id="draft-tab" class="tab-content">
                         <h2>NHL Draft</h2>
-                        <div class="draft-overview">
-                            <div class="draft-stat">
-                                <h3>Draft Year</h3>
-                                <p id="draft-year">2027</p>
+                        
+                        <!-- Draft Sub-tabs -->
+                        <div class="draft-subtabs">
+                            <button class="draft-subtab-btn active" data-subtab="overview">Overview</button>
+                            <button class="draft-subtab-btn" data-subtab="rankings">Top 50 Rankings</button>
+                            <button class="draft-subtab-btn" data-subtab="scouting">Scouting Report</button>
+                            <button class="draft-subtab-btn" data-subtab="combine">Combine</button>
+                        </div>
+
+                        <!-- Overview Subtab -->
+                        <div id="draft-overview-subtab" class="draft-subtab-content active">
+                            <div class="draft-overview">
+                                <div class="draft-stat">
+                                    <h3>Draft Year</h3>
+                                    <p id="draft-year">2027</p>
+                                </div>
+                                <div class="draft-stat">
+                                    <h3>Your Ranking</h3>
+                                    <p id="draft-your-rank">Unranked</p>
+                                </div>
+                                <div class="draft-stat">
+                                    <h3>Projected Round</h3>
+                                    <p id="draft-projection">TBD</p>
+                                </div>
+                                <div class="draft-stat">
+                                    <h3>Scouting Grade</h3>
+                                    <p id="draft-grade">C</p>
+                                </div>
                             </div>
-                            <div class="draft-stat">
-                                <h3>Projected Round</h3>
-                                <p id="draft-projection">TBD</p>
+                            <h3>Central Scouting Ranking</h3>
+                            <div id="central-scouting" class="central-scouting">
+                                <p>Not yet ranked</p>
                             </div>
-                            <div class="draft-stat">
-                                <h3>Scouting Grade</h3>
-                                <p id="draft-grade">C</p>
+                            <h3>Mock Draft</h3>
+                            <div id="mock-draft" class="mock-draft"></div>
+                        </div>
+
+                        <!-- Rankings Subtab -->
+                        <div id="draft-rankings-subtab" class="draft-subtab-content">
+                            <h3>Top 50 Draft Prospects - <span id="rankings-year">2026</span></h3>
+                            <div class="rankings-filters">
+                                <select id="position-filter">
+                                    <option value="all">All Positions</option>
+                                    <option value="C">Centers</option>
+                                    <option value="LW">Left Wings</option>
+                                    <option value="RW">Right Wings</option>
+                                    <option value="LD">Left Defense</option>
+                                    <option value="RD">Right Defense</option>
+                                    <option value="G">Goalies</option>
+                                </select>
+                                <select id="league-filter">
+                                    <option value="all">All Leagues</option>
+                                    <option value="OHL">OHL</option>
+                                    <option value="WHL">WHL</option>
+                                    <option value="QMJHL">QMJHL</option>
+                                    <option value="USHL">USHL</option>
+                                    <option value="NCAA">NCAA</option>
+                                    <option value="SHL">SHL</option>
+                                </select>
+                                <button id="export-rankings-btn" class="btn-secondary">Export Rankings</button>
+                            </div>
+                            <div id="draft-rankings-list" class="rankings-list">
+                                <div class="rankings-header">
+                                    <span class="rank-col">Rank</span>
+                                    <span class="change-col">Change</span>
+                                    <span class="name-col">Name</span>
+                                    <span class="pos-col">Pos</span>
+                                    <span class="team-col">Team</span>
+                                    <span class="stats-col">Stats</span>
+                                    <span class="grade-col">Grade</span>
+                                </div>
+                                <div id="rankings-prospects"></div>
                             </div>
                         </div>
-                        <h3>Scouting Report</h3>
-                        <div id="scouting-report" class="scouting-report">
-                            <p>Complete more seasons to receive a scouting report.</p>
+
+                        <!-- Scouting Report Subtab -->
+                        <div id="draft-scouting-subtab" class="draft-subtab-content">
+                            <h3>Your Scouting Report</h3>
+                            <div id="scouting-report" class="scouting-report">
+                                <p>Complete more seasons to receive a scouting report.</p>
+                            </div>
                         </div>
-                        <h3>Central Scouting Ranking</h3>
-                        <div id="central-scouting" class="central-scouting">
-                            <p>Not yet ranked</p>
+
+                        <!-- Combine Subtab -->
+                        <div id="draft-combine-subtab" class="draft-subtab-content">
+                            <h3>NHL Combine Results</h3>
+                            <div id="combine-results" class="combine-results">
+                                <p>Combine not yet completed</p>
+                            </div>
+                            <button id="run-combine-btn" class="btn-primary" style="display:none;">Attend NHL Combine</button>
                         </div>
-                        <h3>NHL Combine Results</h3>
-                        <div id="combine-results" class="combine-results">
-                            <p>Combine not yet completed</p>
-                        </div>
-                        <button id="run-combine-btn" class="btn-primary" style="display:none;">Attend NHL Combine</button>
-                        <h3>Mock Draft</h3>
-                        <div id="mock-draft" class="mock-draft"></div>
                     </div>
                 </div>
             </div>
@@ -288,6 +350,9 @@
     <script src="data.js"></script>
     <script src="player-generator.js"></script>
     <script src="leagues-comprehensive.js"></script>
+    <script src="nhl-rosters-real.js"></script>
+    <script src="draft-classes-real.js"></script>
+    <script src="draft-rankings-view.js"></script>
     <script src="recruiting-nil-system.js"></script>
     <script src="nhl-draft-system.js"></script>
     <script src="physics-engine.js"></script>
