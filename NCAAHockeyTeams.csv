@@ -1,0 +1,59 @@
+team_id,team_name,city,arena_name,league_id,conference,overall_rating,offense_rating,defense_rating,goaltending_rating,market_size,fan_loyalty
+10001,Boston College Eagles,Chestnut Hill,Conte Forum,10,Hockey East,88,89,87,88,9,9
+10002,Boston University Terriers,Boston,Agganis Arena,10,Hockey East,87,88,86,87,9,9
+10003,University of Denver Pioneers,Denver,Magness Arena,10,NCHC,89,90,88,89,8,8
+10004,University of Michigan Wolverines,Ann Arbor,Yost Ice Arena,10,Big Ten,90,91,89,90,9,10
+10005,University of Minnesota Golden Gophers,Minneapolis,3M Arena at Mariucci,10,Big Ten,88,89,87,88,8,10
+10006,University of North Dakota Fighting Hawks,Grand Forks,Ralph Engelstad Arena,10,NCHC,87,88,86,87,5,9
+10007,Quinnipiac University Bobcats,Hamden,M&T Bank Arena,10,ECAC,86,87,85,86,7,7
+10008,University of Massachusetts Minutemen,Amherst,Mullins Center,10,Hockey East,85,86,84,85,6,7
+10009,Minnesota State Mavericks,Mankato,Mayo Clinic Health System Event Center,10,CCHA,84,85,83,84,5,8
+10010,St. Cloud State Huskies,St. Cloud,Herb Brooks National Hockey Center,10,NCHC,83,84,82,83,5,8
+10011,Western Michigan Broncos,Kalamazoo,Lawson Ice Arena,10,NCHC,82,83,81,82,5,7
+10012,University of Wisconsin Badgers,Madison,Kohl Center,10,Big Ten,86,87,85,86,8,9
+10013,Cornell University Big Red,Ithaca,Lynah Rink,10,ECAC,85,86,84,85,6,8
+10014,Harvard University Crimson,Cambridge,Bright-Landry Hockey Center,10,ECAC,84,85,83,84,8,8
+10015,Yale University Bulldogs,New Haven,Ingalls Rink,10,ECAC,83,84,82,83,7,7
+10016,University of Minnesota Duluth Bulldogs,Duluth,Amsoil Arena,10,NCHC,87,88,86,87,6,9
+10017,Providence College Friars,Providence,Schneider Arena,10,Hockey East,84,85,83,84,6,8
+10018,Northeastern University Huskies,Boston,Matthews Arena,10,Hockey East,85,86,84,85,9,7
+10019,University of Maine Black Bears,Orono,Alfond Arena,10,Hockey East,82,83,81,82,5,8
+10020,University of New Hampshire Wildcats,Durham,Whittemore Center Arena,10,Hockey East,81,82,80,81,5,7
+10021,Michigan State Spartans,East Lansing,Munn Ice Arena,10,Big Ten,84,85,83,84,8,9
+10022,Ohio State Buckeyes,Columbus,Value City Arena,10,Big Ten,83,84,82,83,9,9
+10023,Penn State Nittany Lions,State College,Pegula Ice Arena,10,Big Ten,82,83,81,82,8,8
+10024,University of Notre Dame Fighting Irish,South Bend,Compton Family Ice Arena,10,Big Ten,85,86,84,85,7,9
+10025,Arizona State Sun Devils,Tempe,Mullett Arena,10,Independent,78,79,77,78,7,6
+10026,Omaha Mavericks,Omaha,Baxter Arena,10,NCHC,80,81,79,80,6,7
+10027,Miami RedHawks,Oxford,Goggin Ice Center,10,NCHC,81,82,80,81,5,7
+10028,Colorado College Tigers,Colorado Springs,Ed Robson Arena,10,NCHC,80,81,79,80,6,7
+10029,University of Vermont Catamounts,Burlington,Gutterson Fieldhouse,10,Hockey East,80,81,79,80,5,7
+10030,Merrimack College Warriors,North Andover,Lawler Rink,10,Hockey East,79,80,78,79,7,6
+10031,Clarkson University Golden Knights,Potsdam,Cheel Arena,10,ECAC,82,83,81,82,4,8
+10032,Rensselaer Polytechnic Institute Engineers,Troy,Houston Field House,10,ECAC,80,81,79,80,6,7
+10033,Union College Dutchmen,Schenectady,Messa Rink,10,ECAC,81,82,80,81,6,7
+10034,Dartmouth College Big Green,Hanover,Thompson Arena,10,ECAC,79,80,78,79,5,7
+10035,Brown University Bears,Providence,Meehan Auditorium,10,ECAC,78,79,77,78,7,6
+10036,Princeton University Tigers,Princeton,Hobey Baker Memorial Rink,10,ECAC,80,81,79,80,7,7
+10037,Colgate University Raiders,Hamilton,Class of 1965 Arena,10,ECAC,82,83,81,82,4,8
+10038,Sacred Heart Pioneers,Fairfield,Webster Bank Arena,10,Atlantic Hockey,75,76,74,75,6,6
+10039,Robert Morris Colonials,Moon Township,Colonials Arena,10,Atlantic Hockey,74,75,73,74,5,6
+10040,Canisius Golden Griffins,Buffalo,LECOM Harborcenter,10,Atlantic Hockey,73,74,72,73,6,6
+10041,Mercyhurst Lakers,Erie,Mercyhurst Ice Center,10,Atlantic Hockey,75,76,74,75,5,7
+10042,Niagara Purple Eagles,Lewiston,Dwyer Arena,10,Atlantic Hockey,72,73,71,72,5,6
+10043,Army Black Knights,West Point,Tate Rink,10,Atlantic Hockey,76,77,75,76,6,8
+10044,Air Force Falcons,Colorado Springs,Cadet Ice Arena,10,Atlantic Hockey,75,76,74,75,5,7
+10045,Holy Cross Crusaders,Worcester,Hart Center Rink,10,Atlantic Hockey,74,75,73,74,6,6
+10046,RIT Tigers,Rochester,Gene Polisseni Center,10,Atlantic Hockey,76,77,75,76,6,7
+10047,Bentley Falcons,Waltham,Bentley Arena,10,Atlantic Hockey,73,74,72,73,7,6
+10048,American International Yellow Jackets,Springfield,MassMutual Center,10,Atlantic Hockey,72,73,71,72,5,5
+10049,Ferris State Bulldogs,Big Rapids,Ewigleben Sports Complex,10,CCHA,81,82,80,81,4,7
+10050,Bemidji State Beavers,Bemidji,Sanford Center,10,CCHA,79,80,78,79,3,7
+10051,Northern Michigan Wildcats,Marquette,Berry Events Center,10,CCHA,78,79,77,78,4,8
+10052,Michigan Tech Huskies,Houghton,MacInnes Student Ice Arena,10,CCHA,80,81,79,80,4,8
+10053,Lake Superior State Lakers,Sault Ste. Marie,Taffy Abel Arena,10,CCHA,77,78,76,77,4,7
+10054,Bowling Green Falcons,Bowling Green,Slater Family Ice Arena,10,CCHA,79,80,78,79,5,7
+10055,Minnesota State-Mankato Mavericks,Mankato,Mayo Clinic Health System Event Center,10,CCHA,84,85,83,84,5,8
+10056,Augustana Vikings,Sioux Falls,Midco Arena,10,CCHA,75,76,74,75,4,6
+10057,St. Thomas Tommies,St. Paul,Schoenecker Arena,10,CCHA,76,77,75,76,8,6
+10058,Alaska Anchorage Seawolves,Anchorage,Wells Fargo Sports Complex,10,Independent,70,71,69,70,3,6
