@@ -1,55 +1,114 @@
 # Hockey Life Sim - Web Edition
 
-A realistic NHL career simulation game playable in your web browser. Build your hockey player from high school to the professional leagues with deep RPG-style progression!
+A **ultra-realistic** NHL career simulation game playable in your web browser. Build your hockey player from high school through college recruiting, NIL deals, and the NHL Draft on your journey to the pros!
 
-## Features
+## 🎮 Major Features
+
+### Realistic Player Generation
+- **500+ Authentic Names** from 5 hockey regions (Canadian, American, Scandinavian, Russian, Czech)
+- **Regional Authenticity** with weighted name combinations
+- **Position-Specific Attributes** (C, LW, RW, LD, RD, G)
+- **Realistic Physical Stats** (height, weight, handedness)
+
+### Complete League Structure
+- **All 32 NHL Teams** with accurate divisions, arenas, and colors
+- **60 NCAA Division I Programs** across all major conferences:
+  - Big Ten (7 teams)
+  - NCHC (8 teams)
+  - Hockey East (11 teams)
+  - ECAC (12 teams)
+- **Junior Hockey Leagues** (OHL, WHL, QMJHL, USHL)
+- **High School Hockey** (Minnesota + expansion states)
+
+### College Recruiting System 🎓
+- **Star Ratings** (1-5 stars based on performance)
+- **Recruiting Rankings** (National and position-specific, 1-500+)
+- **School Interest** (2-60 schools based on talent level)
+- **Official Visits** (NCAA maximum of 5 visits)
+- **Visit Impressions** calculated from:
+  - Hockey program quality
+  - Academic fit
+  - Location preference
+  - Coaching staff personality
+  - Facilities rating
+  - Playing time projection
+- **Scholarship Offers** with deadlines
+- **Commitment System** with signing periods:
+  - Early signing: November 10
+  - Regular signing: April 15
+
+### NIL (Name, Image, Likeness) System 💰
+- **5 Types of NIL Deals**:
+  - Local Business ($2k-$7k)
+  - National Brand ($15k-$40k with bonuses)
+  - Social Media Partnership ($3k-$11k)
+  - Autograph Sessions ($1k-$3k)
+  - Camp Instruction ($2k-$6k)
+- **School NIL Budgets** ($240k-$500k per program)
+- **Social Media Tracking** (Instagram, Twitter, TikTok)
+- **Follower Growth** based on performance
+- **Performance Bonuses** (playoffs: +$5k, championship: +$10k)
+- **Market Value Calculation** (performance × reputation × followers)
+
+### NHL Draft System 📋
+- **7-Round Draft** (224 total picks)
+- **500+ Generated Prospects** with:
+  - Realistic league distributions (OHL, WHL, QMJHL, NCAA, European)
+  - Season statistics
+  - Draft projections (±20 pick variance)
+  - Risk assessments
+- **Central Scouting Rankings** (4 lists):
+  - North American Skaters
+  - North American Goalies
+  - European Skaters  
+  - European Goalies
+- **NHL Draft Combine**:
+  - Skating test (time and percentile)
+  - Shooting accuracy test
+  - Strength test (bench press)
+  - Endurance test (VO2 max)
+  - Interview evaluation
+- **Detailed Scouting Reports**:
+  - 8 rated attributes (skating, shooting, hands, passing, defense, IQ, physicality, compete)
+  - NHL player comparisons
+  - Strengths list (2-4 items)
+  - Weaknesses list (1-3 items)
+  - Projection and risk level
 
 ### Career Mode
-- **Create Your Player**: Customize your player's name and receive a unique personality trait
-- **Team Selection**: Choose from authentic high school teams in Minnesota
-- **Season Schedule**: Play through a full season of games with realistic scheduling
-- **Skill Development**: Train and improve 10 different hockey skills including skating, shooting, passing, and more
-- **Career Progression**: Advance from high school through junior leagues to college and eventually the NHL
-- **Stats Tracking**: Comprehensive statistics including goals, assists, points, shots, hits, and plus/minus
+- **Create Your Player**: Customize name and receive unique personality trait
+- **Team Selection**: Choose from authentic high school teams
+- **Season Schedule**: Play through full seasons with realistic scheduling
+- **Skill Development**: Train 10 different hockey skills
+- **Career Progression**: Advance from high school → junior/college → NHL
+- **Stats Tracking**: Comprehensive statistics (GP, G, A, PTS, shots, hits, +/-)
 
 ### Player Attributes
-- **Personality Traits**: 8 unique personalities (Leader, Clutch, Sniper, Playmaker, Grinder, Enforcer, Speedster, Defensive Specialist)
-- **Mental Stats**: Morale, Energy, Confidence, and Reputation (all 0-100)
-- **Physical Stats**: 10 skill ratings from 20-99
-- **Injury System**: 5 types of injuries with realistic recovery times (day-to-day to major)
-- **Equipment System**: Purchase upgrades to permanently boost your skills
+- **8 Personality Traits**: Leader, Clutch, Sniper, Playmaker, Grinder, Enforcer, Speedster, Defensive
+- **Mental Stats**: Morale, Energy, Confidence, Reputation (0-100)
+- **Physical Stats**: 10 skill ratings (20-99)
+- **Injury System**: 5 types with realistic recovery (0-30 games)
+- **Equipment System**: Purchase upgrades for permanent skill boosts
 
-### Live Game Simulation
-- **Real-Time Physics**: Advanced 2D physics engine with realistic puck and player movement
-- **AI Players**: Intelligent computer-controlled players with offensive and defensive strategies
-- **Dynamic Gameplay**: Watch your team compete in real-time with accurate hockey mechanics
-- **Power Plays**: Penalty system creates 5-on-4 advantages for 2 minutes
-- **Momentum**: Visual momentum bar shows which team is dominating (-100 to +100)
-- **Celebrations**: Goal scored animations with flashy "GOAL!" effects
-- **Shot Types**: 5 different shot types (Wrist, Slap, Backhand, Snap, One-Timer) with unique characteristics
+### Live Game Simulation 🏒
+- **Real-Time Physics**: Advanced 2D engine with realistic movement
+- **AI Players**: Intelligent positioning and decision-making
+- **Power Plays**: 2-minute penalties with visual countdown
+- **Momentum System**: Visual bar showing dominance (-100 to +100)
+- **Goal Celebrations**: 3-second "GOAL!" animation
+- **5 Shot Types**: Wrist, Slap, Backhand, Snap, One-Timer with unique stats
 
-### Training System
-- **Weekly Training**: Select up to 3 skills to focus on each week
-- **Skill Progression**: Improve your ratings through dedicated training
-- **Skill Atrophy**: Untrained skills may decline over time, requiring strategic planning
-- **Equipment Bonuses**: Purchase gear to permanently boost specific skills
+### Equipment Shop 🛒
+Purchase upgrades with earnings:
+- **Sticks**: Basic ($150), Pro ($300), Elite ($500)
+- **Skates**: Basic ($200), Pro ($400), Elite ($700)
+- **Training Programs**: Personal Training ($1k), Nutrition ($500)
 
-### Equipment Shop
-Purchase upgrades with your earnings:
-- **Sticks**: Basic ($150), Pro ($300), Elite Carbon ($500)
-- **Skates**: Basic ($200), Pro ($400), Elite Speed ($700)
-- **Training**: Personal Training ($1,000) - boosts all skills
-- **Nutrition**: Nutrition Plan ($500) - improves conditioning and strength
-
-### Awards & Achievements
-Track your accomplishments:
-- **MVP** - Most Valuable Player award
-- **Scoring Champion** - Lead the league in points
-- **Rookie of the Year** - Best first-year player
-- **Best Defenseman** - Top defensive player
-- **All-Star Selection** - Make the all-star team
-- **Stanley Cup** - Win the championship
-- **Milestones**: Hat tricks, game-winning goals, shutouts
+### Awards & Achievements 🏆
+- MVP, Scoring Champion, Rookie of the Year
+- Best Defenseman, All-Star, Stanley Cup
+- Achievement tracking (hat tricks, GWG, shutouts)
+- $5,000 bonus + reputation boost per award
 
 ### News & Media
 - **Dynamic Headlines**: Performance-based news stories
@@ -61,16 +120,64 @@ Track your accomplishments:
 
 ### Getting Started
 1. Open `index.html` in a modern web browser
-2. Enter your player's first and last name
+2. Enter your player's first and last name (or get inspiration from our 500+ name database!)
 3. Select a high school team to start your career
 4. Review your randomly assigned personality trait and initial skills
+
+### Career Progression Path
+
+**High School (Ages 14-18)**
+- Play for your high school team
+- Build your stats and reputation
+- Get discovered by college recruiters
+
+**College Recruiting (Ages 16-18)**
+- Receive interest from NCAA programs (2-60 schools based on performance)
+- Schedule official visits (maximum 5 per NCAA rules)
+- Evaluate offers based on:
+  - Hockey program quality
+  - Academic reputation
+  - NIL package value
+  - Location and facilities
+  - Playing time opportunities
+- Commit to a school and sign in November or April
+
+**College Hockey (Ages 18-22)**
+- Play NCAA Division I hockey
+- Sign NIL deals to earn money:
+  - Local businesses
+  - National brands
+  - Social media partnerships
+  - Autograph sessions
+  - Camp instruction
+- Build your draft stock
+- Grow your social media following
+
+**NHL Draft (Age 18+)**
+- Enter the NHL Draft (7 rounds, 224 picks)
+- Attend the NHL Combine:
+  - Skating speed test
+  - Shooting accuracy
+  - Strength (bench press)
+  - Endurance (VO2 max)
+  - Team interviews
+- Receive detailed scouting reports
+- Get ranked by Central Scouting
+- Draft day simulation with ±20 pick variance
+
+**Professional Hockey**
+- Sign your first NHL contract
+- Progress through AHL, NHL
+- Win awards and championships
+- Build a Hall of Fame career
 
 ### Playing Games
 1. Navigate to the **Schedule** tab to see your season games
 2. Click **Play Game** to watch your team compete in real-time
 3. Watch the momentum bar to see who's dominating
 4. Celebrate when you score with the golden "GOAL!" animation
-5. Click **End Game** when finished to return to career mode
+5. Power plays activated when penalties occur (2-minute countdown)
+6. Click **End Game** when finished to return to career mode
 
 ### Developing Your Player
 1. Go to the **Skills** tab to view your current ratings
@@ -79,85 +186,99 @@ Track your accomplishments:
 4. Visit the **Shop** tab to purchase permanent upgrades
 5. Click **Advance 1 Week** to progress and apply training
 
-### Managing Your Career
-1. Check the **Profile** tab to monitor morale, energy, and confidence
-2. Watch for injury status and recovery timelines
-3. Track your awards and achievements
-4. Visit the **News** tab for performance updates
-5. Manage your bank balance to afford equipment upgrades
+### Managing Recruiting
+1. Check the **Recruiting** tab to see interested schools
+2. Review your star rating (1-5) and national ranking
+3. Schedule official visits to top schools (max 5)
+4. Complete visits to learn about programs
+5. Compare scholarship + NIL offers
+6. Commit to your chosen school
 
-### Career Progression
-- Play through your high school season (20 games)
-- Earn stats to increase your draft stock and reputation
-- Receive scholarship offers based on performance
-- Progress through junior leagues, college, and professional hockey
-- Win awards and build your reputation
-- Eventually reach the NHL!
+### NIL Management
+1. Visit the **NIL Deals** tab to see opportunities
+2. Review available deals (value, duration, requirements)
+3. Accept deals to receive signing bonus (25% upfront)
+4. Track your social media followers
+5. Watch followers grow with good performances
+6. Higher follower count = better deal opportunities
+7. Monthly payments deposited automatically
+
+### NHL Draft Preparation
+1. Check the **NHL Draft** tab for your projection
+2. Review your detailed scouting report
+3. Attend the NHL Combine when eligible
+4. Compare your results to other prospects
+5. See where Central Scouting ranks you
+6. View mock draft predictions
+7. Experience draft day when your year arrives
+
+### Tips for Success
+1. **Performance Matters**: Stats drive recruiting, NIL value, and draft stock
+2. **Balance Training**: Don't neglect any skills - atrophy is real
+3. **Choose Wisely**: Best school = hockey + academics + NIL + fit
+4. **Build Your Brand**: Social media followers unlock bigger NIL deals
+5. **Stay Healthy**: Injuries hurt momentum and development
+6. **Combine Strong**: Good combine results can boost draft position
+7. **Think Long-Term**: College development path vs immediate junior route
 
 ## Technology Stack
 
-- **HTML5**: Modern semantic markup with enhanced UI
+- **HTML5**: Modern semantic markup with 9-tab interface
 - **CSS3**: Responsive design with animations and visual effects
-- **JavaScript (ES6+)**: Modular architecture with advanced game logic
+- **JavaScript (ES6+)**: Modular architecture with advanced systems:
+  - Player generation engine
+  - Recruiting algorithm
+  - NIL deal manager
+  - Draft simulation
+  - Physics engine
+  - AI behavior
 - **Canvas API**: Real-time 2D game rendering at 60 FPS
 - **LocalStorage**: Automatic save game persistence
 
 ## File Structure
 
 ```
-├── index.html          # Main HTML with 6 tabs
-├── styles.css          # Enhanced styling with animations
-├── data.js            # Teams, leagues, equipment, awards
-├── physics-engine.js  # 2D physics simulation
-├── ai-controller.js   # AI player behavior
-├── game-scene.js      # Live game with celebrations & momentum
-├── game-manager.js    # Career mode with injuries & equipment
-├── app.js             # UI controller with new tabs
-└── README.md          # This file
+├── index.html                  # Main HTML with 9 tabs
+├── styles.css                  # Comprehensive styling
+├── data.js                     # Original teams & leagues
+├── player-generator.js         # Name generation & player creation
+├── leagues-comprehensive.js    # All NHL & NCAA teams
+├── recruiting-nil-system.js    # Recruiting & NIL mechanics
+├── nhl-draft-system.js         # Complete draft simulation
+├── physics-engine.js           # 2D physics
+├── ai-controller.js            # AI behavior
+├── game-scene.js               # Live game rendering
+├── game-manager.js             # Career progression
+├── app.js                      # UI controller
+└── README.md                   # This file
 ```
 
-## Game Mechanics
+## Game Systems in Detail
 
-### Physics System
-- Collision detection between players and puck
-- Realistic friction and momentum
-- Boundary constraints to keep entities on the rink
-- Elastic collisions with proper impulse calculations
-- Power/accuracy/speed variations by shot type
+### Recruiting Algorithm
+```javascript
+// Star rating based on performance score (0-100)
+if (score >= 90) return 5 stars  // Elite (top 20 nationally)
+if (score >= 75) return 4 stars  // High major (top 100)
+if (score >= 60) return 3 stars  // Mid major (top 250)
+if (score >= 45) return 2 stars  // Low major (top 500)
+else return 1 star               // Developmental
+```
 
-### AI System
-- **Goalies**: Track puck position and defend the net
-- **Forwards**: Aggressive offensive play when in possession
-- **Defensemen**: Pressure the puck and defensive positioning
-- **Shooting**: AI players take shots when in scoring position
-- **Strategies**: Context-aware decision making based on game state
+### NIL Market Value
+```javascript
+value = 10,000  // Base
+value *= (1 + pointsPerGame * 0.5)  // Performance multiplier
+value *= (reputation / 50)           // Reputation multiplier  
+if (followers >= 100k) value *= 2    // Social media multiplier
+```
 
-### Skill System
-Each player has 10 rated skills (20-99 scale):
-- Skating
-- Shooting Accuracy
-- Shooting Power
-- Puck Control
-- Passing
-- Checking
-- Defensive Positioning
-- Hockey IQ
-- Strength
-- Conditioning
-
-### Mental Attributes (0-100 scale)
-- **Morale**: Affects overall performance, modified by wins/losses/injuries
-- **Energy**: Decreases during games, recovers with rest
-- **Confidence**: Affects shooting accuracy, increases with success
-- **Reputation**: Influences contract offers and scout attention
-
-### Injury System
-Five severity levels with realistic recovery:
-1. **Day-to-Day**: Bruised (0-1 games)
-2. **Minor**: Upper body injury (1-5 games)
-3. **Moderate**: Lower body injury (2-7 games)
-4. **Serious**: Concussion (5-15 games)
-5. **Major**: Broken bone (10-30 games)
+### Draft Ranking
+```javascript
+score = performance(40pts) + skills(30pts) + potential(15pts) + intangibles(15pts)
+overallPick = 224 - (score/100 * 223)  // Convert to draft position
+variance = ±20 picks on draft day       // Realistic unpredictability
+```
 
 ## Browser Compatibility
 
