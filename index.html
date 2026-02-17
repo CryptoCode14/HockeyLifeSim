@@ -71,6 +71,9 @@
                         <button class="tab-btn" data-tab="skills">Skills</button>
                         <button class="tab-btn" data-tab="training">Training</button>
                         <button class="tab-btn" data-tab="profile">Profile</button>
+                        <button class="tab-btn" data-tab="recruiting">Recruiting</button>
+                        <button class="tab-btn" data-tab="nil">NIL Deals</button>
+                        <button class="tab-btn" data-tab="draft">NHL Draft</button>
                         <button class="tab-btn" data-tab="shop">Shop</button>
                         <button class="tab-btn" data-tab="news">News</button>
                     </div>
@@ -129,6 +132,94 @@
                     <div id="news-tab" class="tab-content">
                         <h2>Latest News</h2>
                         <div id="news-feed" class="news-feed"></div>
+                    </div>
+
+                    <!-- Recruiting Tab -->
+                    <div id="recruiting-tab" class="tab-content">
+                        <h2>College Recruiting</h2>
+                        <div class="recruiting-overview">
+                            <div class="recruiting-stat">
+                                <h3>Recruiting Rank</h3>
+                                <p id="recruit-rank">Unranked</p>
+                            </div>
+                            <div class="recruiting-stat">
+                                <h3>Star Rating</h3>
+                                <p id="recruit-stars">⭐</p>
+                            </div>
+                            <div class="recruiting-stat">
+                                <h3>Schools Interested</h3>
+                                <p id="recruit-interest">0</p>
+                            </div>
+                        </div>
+                        <h3>Interested Schools</h3>
+                        <div id="recruiting-list" class="recruiting-list"></div>
+                        <h3>Official Visits (<span id="visit-count">0</span>/5)</h3>
+                        <div id="visit-list" class="visit-list"></div>
+                        <h3>Scholarship Offers</h3>
+                        <div id="offers-list" class="offers-list"></div>
+                    </div>
+
+                    <!-- NIL Tab -->
+                    <div id="nil-tab" class="tab-content">
+                        <h2>NIL Deals</h2>
+                        <div class="nil-overview">
+                            <div class="nil-stat">
+                                <h3>Total Earnings</h3>
+                                <p id="nil-total">$0</p>
+                            </div>
+                            <div class="nil-stat">
+                                <h3>Active Deals</h3>
+                                <p id="nil-active">0</p>
+                            </div>
+                            <div class="nil-stat">
+                                <h3>Market Value</h3>
+                                <p id="nil-value">$10,000</p>
+                            </div>
+                        </div>
+                        <div class="social-media">
+                            <h3>Social Media Following</h3>
+                            <p>Instagram: <span id="followers-ig">1,000</span></p>
+                            <p>Twitter: <span id="followers-tw">500</span></p>
+                            <p>TikTok: <span id="followers-tt">2,000</span></p>
+                        </div>
+                        <h3>Available Opportunities</h3>
+                        <div id="nil-opportunities" class="nil-grid"></div>
+                        <h3>Active NIL Deals</h3>
+                        <div id="nil-active-deals" class="nil-list"></div>
+                    </div>
+
+                    <!-- Draft Tab -->
+                    <div id="draft-tab" class="tab-content">
+                        <h2>NHL Draft</h2>
+                        <div class="draft-overview">
+                            <div class="draft-stat">
+                                <h3>Draft Year</h3>
+                                <p id="draft-year">2027</p>
+                            </div>
+                            <div class="draft-stat">
+                                <h3>Projected Round</h3>
+                                <p id="draft-projection">TBD</p>
+                            </div>
+                            <div class="draft-stat">
+                                <h3>Scouting Grade</h3>
+                                <p id="draft-grade">C</p>
+                            </div>
+                        </div>
+                        <h3>Scouting Report</h3>
+                        <div id="scouting-report" class="scouting-report">
+                            <p>Complete more seasons to receive a scouting report.</p>
+                        </div>
+                        <h3>Central Scouting Ranking</h3>
+                        <div id="central-scouting" class="central-scouting">
+                            <p>Not yet ranked</p>
+                        </div>
+                        <h3>NHL Combine Results</h3>
+                        <div id="combine-results" class="combine-results">
+                            <p>Combine not yet completed</p>
+                        </div>
+                        <button id="run-combine-btn" class="btn-primary" style="display:none;">Attend NHL Combine</button>
+                        <h3>Mock Draft</h3>
+                        <div id="mock-draft" class="mock-draft"></div>
                     </div>
                 </div>
             </div>
@@ -195,6 +286,10 @@
     </div>
 
     <script src="data.js"></script>
+    <script src="player-generator.js"></script>
+    <script src="leagues-comprehensive.js"></script>
+    <script src="recruiting-nil-system.js"></script>
+    <script src="nhl-draft-system.js"></script>
     <script src="physics-engine.js"></script>
     <script src="ai-controller.js"></script>
     <script src="game-scene.js"></script>
