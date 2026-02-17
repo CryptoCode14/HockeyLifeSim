@@ -227,11 +227,6 @@ class GameScene {
         // Clamp momentum
         this.momentum = Math.max(-100, Math.min(100, this.momentum));
     }
-        }
-
-        // Update UI
-        this.updateUI();
-    }
 
     faceoff() {
         // Reset positions for faceoff
