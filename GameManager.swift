@@ -86,6 +86,12 @@ class GameManager: ObservableObject {
         activeGameScene?.stop()
         activeGameScene = nil
         isShowingLiveGame = false
+        
+        // Check for injury after game
+        checkForInjury()
+        
+        // Reduce energy after game
+        player.energy = max(0, player.energy - 15)
     }
 
     func getPlayerTeamInfo() -> TeamInfo? {
@@ -140,13 +146,23 @@ class GameManager: ObservableObject {
         let oldDate = currentDate
         var simulatedGameThisWeek = false
         if let newDate = Calendar.current.date(byAdding: .day, value: 7, to: currentDate) {
-            if let nextGameIndex = seasonSchedule?.games.firstIndex(where: { !$0.wasPlayed && ($0.gameDate >= oldDate && $0.gameDate < newDate) }) {
+            // Handle injury recovery
+            if player.currentInjury != nil {
+                player.recoverFromInjury(weeks: 1)
+            }
+            
+            // Only play game if not injured
+            if !player.isInjured, let nextGameIndex = seasonSchedule?.games.firstIndex(where: { !$0.wasPlayed && ($0.gameDate >= oldDate && $0.gameDate < newDate) }) {
                 simulateGame(atIndex: nextGameIndex)
                 simulatedGameThisWeek = true
             }
             currentDate = newDate
         }
         if !simulatedGameThisWeek { applyTrainingAndAtrophy() }
+        
+        // Restore energy gradually
+        player.energy = min(100, player.energy + 10)
+        
         let currentYear = Calendar.current.component(.year, from: currentDate)
         if player.draftEligibilityYear == currentYear && player.draftDetails == nil { updateScoutingReport() }
         if Calendar.current.component(.day, from: currentDate) <= 7 { processPayday() }
@@ -158,6 +174,7 @@ class GameManager: ObservableObject {
      
     private func startNewSeason() {
         player.gamesPlayed = 0; player.goals = 0; player.assists = 0; player.pim = 0; player.plusMinus = 0
+        player.shotsOnGoal = 0; player.hits = 0; player.blockedShots = 0
         guard let playerTeam = getPlayerTeamInfo() else { return }
         let seasonStartDate: Date = {
             var c = DateComponents(); c.year = Calendar.current.component(.year, from: currentDate); c.month = 9; c.day = 5
@@ -172,6 +189,7 @@ class GameManager: ObservableObject {
     }
      
     private func endSeason() {
+        checkForAwards()
         let currentYear = Calendar.current.component(.year, from: currentDate)
         if player.draftEligibilityYear == currentYear && player.draftDetails == nil { isDraftDay = true }
         else if player.currentLeague == .highSchool && player.age >= 18 {
@@ -222,9 +240,126 @@ class GameManager: ObservableObject {
     private func checkForRandomEvent() {
         if Int.random(in: 1...4) == 1 && !eventLibrary.isEmpty { self.activeEvent = eventLibrary.randomElement() }
     }
+    
+    private func checkForInjury() {
+        // Injury risk based on conditioning and existing injury history
+        let conditioning = player.skills[.conditioning] ?? 50
+        let baseRisk = 5 // 5% base risk per game
+        let conditioningBonus = (conditioning - 50) / 10 // Better conditioning reduces risk
+        let injuryHistoryPenalty = min(player.injuryHistory.count * 2, 10)
+        
+        let totalRisk = max(1, baseRisk - conditioningBonus + injuryHistoryPenalty)
+        
+        if Int.random(in: 1...100) <= totalRisk {
+            // Determine injury severity
+            let roll = Int.random(in: 1...100)
+            let injury: Player.Injury
+            
+            if roll <= 60 {
+                // Minor injury (60% of injuries)
+                let descriptions = ["Bruised shoulder", "Twisted ankle", "Minor cut", "Muscle strain"]
+                injury = Player.Injury(
+                    type: .minor,
+                    description: descriptions.randomElement()!,
+                    weeksRemaining: Int.random(in: 1...2),
+                    skillImpact: [.skating: 5, .strength: 3]
+                )
+            } else if roll <= 85 {
+                // Moderate injury (25% of injuries)
+                let descriptions = ["Sprained wrist", "Pulled groin", "Concussion (mild)", "Bruised ribs"]
+                injury = Player.Injury(
+                    type: .moderate,
+                    description: descriptions.randomElement()!,
+                    weeksRemaining: Int.random(in: 3...6),
+                    skillImpact: [.skating: 10, .shootingPower: 8, .strength: 10]
+                )
+            } else if roll <= 95 {
+                // Major injury (10% of injuries)
+                let descriptions = ["Broken finger", "Separated shoulder", "Knee sprain", "Concussion"]
+                injury = Player.Injury(
+                    type: .major,
+                    description: descriptions.randomElement()!,
+                    weeksRemaining: Int.random(in: 8...12),
+                    skillImpact: [.skating: 15, .shootingPower: 12, .strength: 15, .checking: 10]
+                )
+            } else {
+                // Season-ending injury (5% of injuries)
+                let descriptions = ["Torn ACL", "Broken leg", "Severe concussion", "Torn labrum"]
+                injury = Player.Injury(
+                    type: .seasonEnding,
+                    description: descriptions.randomElement()!,
+                    weeksRemaining: Int.random(in: 20...30),
+                    skillImpact: [.skating: 25, .shootingPower: 20, .strength: 20, .checking: 15, .conditioning: 20]
+                )
+            }
+            
+            player.applyInjury(injury)
+        }
+    }
+    
+    private func checkForAwards() {
+        guard player.gamesPlayed >= 20 else { return }
+        
+        let ppg = Double(player.points) / Double(player.gamesPlayed)
+        let currentYear = Calendar.current.component(.year, from: currentDate)
+        
+        // Check for scoring leader award
+        if ppg >= 1.5 && player.currentLeague != .highSchool {
+            let award = Player.Award(
+                id: UUID().uuidString,
+                name: "Scoring Leader",
+                year: currentYear,
+                description: "Led the league in points per game (\(String(format: "%.2f", ppg)) PPG)"
+            )
+            player.awards.append(award)
+            player.morale = min(100, player.morale + 20)
+        }
+        
+        // Check for All-Star selection
+        if ppg >= 1.2 && !player.isAllStar && [.collegeD1, .proAHL, .proNHL].contains(player.currentLeague) {
+            player.isAllStar = true
+            let award = Player.Award(
+                id: UUID().uuidString,
+                name: "All-Star Selection",
+                year: currentYear,
+                description: "Selected to the All-Star team"
+            )
+            player.awards.append(award)
+            player.morale = min(100, player.morale + 15)
+        }
+    }
     private func setupEvents() {
-        let event1 = GameEvent(title: "Team Hangout", description: "...", options: [EventOption(text: "Go", consequence: { $0.player.relationships.teammates += 5 }), EventOption(text: "Rest", consequence: { $0.player.relationships.teammates -= 2 })])
-        self.eventLibrary = [event1]
+        let event1 = GameEvent(title: "Team Hangout", description: "Your teammates invite you to hang out after practice. This could help build chemistry.", options: [
+            EventOption(text: "Go", consequence: { $0.player.relationships.teammates += 5; $0.player.morale += 5 }),
+            EventOption(text: "Rest", consequence: { $0.player.relationships.teammates -= 2; $0.player.energy += 5 })
+        ])
+        
+        let event2 = GameEvent(title: "Media Interview", description: "A local sports reporter wants to interview you about your performance.", options: [
+            EventOption(text: "Accept", consequence: { $0.player.morale += 3; $0.player.relationships.management += 3 }),
+            EventOption(text: "Decline", consequence: { $0.player.relationships.management -= 2 })
+        ])
+        
+        let event3 = GameEvent(title: "Extra Practice", description: "The coach offers you extra ice time to work on your skills.", options: [
+            EventOption(text: "Accept", consequence: { $0.weeklyTrainingFocus.append(.skating); $0.player.relationships.coach += 5; $0.player.energy -= 10 }),
+            EventOption(text: "Decline", consequence: { $0.player.energy += 5; $0.player.relationships.coach -= 3 })
+        ])
+        
+        let event4 = GameEvent(title: "Team Conflict", description: "There's tension in the locker room after a tough loss.", options: [
+            EventOption(text: "Mediate", consequence: { $0.player.relationships.teammates += 8; $0.player.morale -= 5 }),
+            EventOption(text: "Stay out of it", consequence: { $0.player.relationships.teammates -= 5 })
+        ])
+        
+        let event5 = GameEvent(title: "Off-Ice Training", description: "You have a chance to do specialized off-ice conditioning.", options: [
+            EventOption(text: "Attend", consequence: { $0.weeklyTrainingFocus.append(.strength); $0.weeklyTrainingFocus.append(.conditioning); $0.player.energy -= 15 }),
+            EventOption(text: "Skip", consequence: { $0.player.energy += 10 })
+        ])
+        
+        let event6 = GameEvent(title: "Family Visit", description: "Your family wants to visit and watch you play.", options: [
+            EventOption(text: "Invite them", consequence: { $0.player.relationships.family += 10; $0.player.morale += 10 }),
+            EventOption(text: "Not now", consequence: { $0.player.relationships.family -= 5; $0.player.morale -= 3 })
+        ])
+        
+        self.eventLibrary = [event1, event2, event3, event4, event5, event6]
     }
     func processPayday() {
         guard let contract = player.currentContract else { return }; player.bankBalance += contract.annualSalary / 12.0
