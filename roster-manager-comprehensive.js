@@ -616,6 +616,3 @@ const EUROPEAN_ROSTERS = {
         // Add more KHL teams...
     }
 };
-
-// Initialize the roster manager
-const rosterManager = new RosterManager();
