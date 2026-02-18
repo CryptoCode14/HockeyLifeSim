@@ -11,6 +11,227 @@ function showScreen(screenId) {
 }
 
 // Initialize App
+
+// ===== PHASE 2: CALENDAR VIEW FUNCTIONS =====
+
+let currentCalendarMonth = null;
+let currentCalendarYear = null;
+
+// Setup calendar view toggle
+function setupCalendarView() {
+    const calendarViewBtn = document.getElementById('calendar-view-btn');
+    const listViewBtn = document.getElementById('list-view-btn');
+    const calendarView = document.getElementById('calendar-view');
+    const listView = document.getElementById('list-view');
+    
+    calendarViewBtn.addEventListener('click', () => {
+        calendarViewBtn.classList.add('active');
+        listViewBtn.classList.remove('active');
+        calendarView.style.display = 'block';
+        listView.style.display = 'none';
+        renderCalendar();
+    });
+    
+    listViewBtn.addEventListener('click', () => {
+        listViewBtn.classList.add('active');
+        calendarViewBtn.classList.remove('active');
+        listView.style.display = 'block';
+        calendarView.style.display = 'none';
+    });
+    
+    // Setup month navigation
+    document.getElementById('prev-month-btn').addEventListener('click', () => {
+        changeMonth(-1);
+    });
+    
+    document.getElementById('next-month-btn').addEventListener('click', () => {
+        changeMonth(1);
+    });
+    
+    // Initialize with current date or December (start of season)
+    if (gameManager && gameManager.currentDate) {
+        const firstGame = gameManager.seasonSchedule.find(g => !g.wasPlayed);
+        if (firstGame) {
+            currentCalendarMonth = firstGame.gameDate.getMonth();
+            currentCalendarYear = firstGame.gameDate.getFullYear();
+        } else {
+            currentCalendarMonth = gameManager.currentDate.getMonth();
+            currentCalendarYear = gameManager.currentDate.getFullYear();
+        }
+    } else {
+        currentCalendarMonth = 11; // December
+        currentCalendarYear = 2025;
+    }
+    
+    renderCalendar();
+}
+
+// Change displayed month
+function changeMonth(delta) {
+    currentCalendarMonth += delta;
+    
+    if (currentCalendarMonth > 11) {
+        currentCalendarMonth = 0;
+        currentCalendarYear++;
+    } else if (currentCalendarMonth < 0) {
+        currentCalendarMonth = 11;
+        currentCalendarYear--;
+    }
+    
+    renderCalendar();
+}
+
+// Render calendar for current month
+function renderCalendar() {
+    if (!gameManager || !gameManager.seasonSchedule) return;
+    
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    // Update month display
+    document.getElementById('current-month-display').textContent = 
+        `${monthNames[currentCalendarMonth]} ${currentCalendarYear}`;
+    
+    // Get calendar grid
+    const calendarGrid = document.getElementById('calendar-grid');
+    calendarGrid.innerHTML = '';
+    
+    // Get first day of month and number of days
+    const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1);
+    const lastDay = new Date(currentCalendarYear, currentCalendarMonth + 1, 0);
+    const numDays = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay(); // 0 = Sunday
+    
+    // Get games for this month
+    const monthGames = gameManager.seasonSchedule.filter(game => {
+        const gameDate = game.gameDate;
+        return gameDate.getMonth() === currentCalendarMonth && 
+               gameDate.getFullYear() === currentCalendarYear;
+    });
+    
+    // Group games by day
+    const gamesByDay = {};
+    monthGames.forEach(game => {
+        const day = game.gameDate.getDate();
+        if (!gamesByDay[day]) {
+            gamesByDay[day] = [];
+        }
+        gamesByDay[day].push(game);
+    });
+    
+    // Get today's date for highlighting
+    const today = gameManager.currentDate;
+    const isCurrentMonth = today.getMonth() === currentCalendarMonth && 
+                          today.getFullYear() === currentCalendarYear;
+    const todayDate = today.getDate();
+    
+    // Add empty cells for days before month starts
+    for (let i = 0; i < startingDayOfWeek; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'calendar-day empty';
+        calendarGrid.appendChild(emptyDay);
+    }
+    
+    // Add cells for each day of month
+    for (let day = 1; day <= numDays; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day';
+        
+        // Check if this is today
+        if (isCurrentMonth && day === todayDate) {
+            dayCell.classList.add('today');
+        }
+        
+        // Add day number
+        const dayNumber = document.createElement('div');
+        dayNumber.className = 'day-number';
+        dayNumber.textContent = day;
+        dayCell.appendChild(dayNumber);
+        
+        // Add games for this day
+        if (gamesByDay[day]) {
+            const gamesContainer = document.createElement('div');
+            gamesContainer.className = 'day-games';
+            
+            gamesByDay[day].forEach((game, idx) => {
+                const gameEl = document.createElement('div');
+                let gameClasses = 'calendar-game';
+                
+                // Add location class
+                if (game.isPlayoff) {
+                    gameClasses += ' playoff-game';
+                } else if (game.isHome) {
+                    gameClasses += ' home-game';
+                } else {
+                    gameClasses += ' away-game';
+                }
+                
+                // Add played status
+                if (game.wasPlayed) {
+                    gameClasses += ' played';
+                    if (game.result) {
+                        const won = game.result.playerScore > game.result.opponentScore;
+                        gameClasses += won ? ' won' : ' lost';
+                    }
+                }
+                
+                gameEl.className = gameClasses;
+                
+                // Build game HTML
+                let gameHTML = `<span class="game-opponent">`;
+                if (game.isHome) {
+                    gameHTML += `vs ${game.opponent.name}`;
+                } else {
+                    gameHTML += `@ ${game.opponent.name}`;
+                }
+                gameHTML += `</span>`;
+                
+                if (game.gameTime) {
+                    gameHTML += `<span class="game-time">${game.gameTime}</span>`;
+                }
+                
+                if (game.isPlayoff && game.gameType) {
+                    gameHTML += `<div style="font-size:0.7rem;color:#d97706;margin-top:2px;">${game.gameType}</div>`;
+                }
+                
+                // Show result if played
+                if (game.wasPlayed && game.result) {
+                    const won = game.result.playerScore > game.result.opponentScore;
+                    gameHTML += `<div class="game-result ${won ? 'win' : 'loss'}">
+                        ${won ? 'W' : 'L'} ${game.result.playerScore}-${game.result.opponentScore}
+                    </div>`;
+                }
+                
+                gameEl.innerHTML = gameHTML;
+                
+                // Make game clickable if not played
+                if (!game.wasPlayed) {
+                    gameEl.style.cursor = 'pointer';
+                    gameEl.onclick = () => {
+                        const gameIndex = gameManager.seasonSchedule.indexOf(game);
+                        if (gameIndex !== -1) {
+                            playGame(gameIndex);
+                        }
+                    };
+                }
+                
+                gamesContainer.appendChild(gameEl);
+            });
+            
+            dayCell.appendChild(gamesContainer);
+        }
+        
+        calendarGrid.appendChild(dayCell);
+    }
+}
+
+// Update calendar when schedule changes
+function updateCalendarView() {
+    if (document.getElementById('calendar-view').style.display !== 'none') {
+        renderCalendar();
+    }
+}
+
 function initApp() {
     setupEventListeners();
     
@@ -160,7 +381,9 @@ function switchTab(tabName) {
 
 // Display Schedule
 function displaySchedule() {
-    const scheduleList = document.getElementById('schedule-list');
+    const scheduleList = document.getElementById('list-view');
+    if (!scheduleList) return;
+    
     scheduleList.innerHTML = '';
     
     // Add simulation controls at the top
@@ -182,6 +405,13 @@ function displaySchedule() {
             weekday: 'short'
         });
         
+        // Show home/away and playoff status
+        let locationStr = game.isHome ? 'vs' : '@';
+        let gameTypeStr = '';
+        if (game.isPlayoff && game.gameType) {
+            gameTypeStr = `<div style="font-size:0.85rem;color:#f59e0b;font-weight:600;">${game.gameType}</div>`;
+        }
+        
         let resultHTML = '';
         if (game.wasPlayed && game.result) {
             const won = game.result.playerScore > game.result.opponentScore;
@@ -194,8 +424,9 @@ function displaySchedule() {
         
         gameItem.innerHTML = `
             <div class="game-info">
-                <div class="game-date">${dateStr}</div>
-                <div class="game-opponent">vs ${game.opponent.name}</div>
+                <div class="game-date">${dateStr} - ${game.gameTime || '7:00 PM'}</div>
+                <div class="game-opponent">${locationStr} ${game.opponent.name}</div>
+                ${gameTypeStr}
             </div>
             <div class="game-action">${resultHTML}</div>
         `;
@@ -205,15 +436,18 @@ function displaySchedule() {
 }
 
 // Sim next game
+// Sim next game
 function simNextGame() {
     gameManager.simNextGame();
     updateMainGameUI();
+    updateCalendarView();
 }
 
 // Sim week
 function simWeek() {
     gameManager.advanceOneWeek();
     updateMainGameUI();
+    updateCalendarView();
 }
 
 // Play a specific game
@@ -301,6 +535,13 @@ function updateMainGameUI() {
     const scheduleTab = document.getElementById('schedule-tab');
     if (scheduleTab.classList.contains('active')) {
         displaySchedule();
+        updateCalendarView();
+    }
+    
+    // Setup calendar view if not already done
+    if (!window.calendarViewSetup) {
+        setupCalendarView();
+        window.calendarViewSetup = true;
     }
 }
 

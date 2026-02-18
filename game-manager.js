@@ -107,23 +107,141 @@ class GameManager {
         const opponents = teams.filter(t => t.id !== this.player.teamId);
         
         this.seasonSchedule = [];
-        let gameDate = new Date(this.currentDate);
-        gameDate.setMonth(8); // Start in September
-        gameDate.setDate(5);
         
-        // Generate 20 games
-        for (let i = 0; i < 20; i++) {
-            const opponent = opponents[i % opponents.length];
-            this.seasonSchedule.push({
-                gameDate: new Date(gameDate),
-                opponent: opponent,
-                wasPlayed: false,
-                result: null
-            });
+        // Minnesota HS Hockey Season: December through February (20 games)
+        let gameDate = new Date(this.currentDate.getFullYear(), 11, 1); // December 1st
+        
+        // Day of week preferences for realistic MN HS hockey scheduling
+        // 0=Sunday, 1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday, 6=Saturday
+        const preferredDays = [
+            { day: 5, weight: 0.70, time: '7:00 PM' }, // Friday - 70%
+            { day: 2, weight: 0.10, time: '7:00 PM' }, // Tuesday - 10%
+            { day: 4, weight: 0.10, time: '7:00 PM' }, // Thursday - 10%
+            { day: 6, weight: 0.10, time: '2:00 PM' }  // Saturday - 10%
+        ];
+        
+        let gamesScheduled = 0;
+        let homeAwayToggle = Math.random() > 0.5; // Randomize first game location
+        
+        // Generate 20 regular season games
+        while (gamesScheduled < 20 && gameDate.getMonth() <= 1) { // Through February
+            const dayOfWeek = gameDate.getDay();
             
-            // Add 3-4 days between games
-            gameDate.setDate(gameDate.getDate() + (Math.random() > 0.5 ? 3 : 4));
+            // Check if this day is a preferred game day
+            const dayPref = preferredDays.find(p => p.day === dayOfWeek);
+            
+            if (dayPref && Math.random() < 0.85) { // High probability on preferred days
+                const opponent = opponents[gamesScheduled % opponents.length];
+                
+                this.seasonSchedule.push({
+                    gameDate: new Date(gameDate),
+                    gameTime: dayPref.time,
+                    opponent: opponent,
+                    isHome: homeAwayToggle,
+                    isPlayoff: false,
+                    wasPlayed: false,
+                    result: null,
+                    gameType: 'Regular Season'
+                });
+                
+                homeAwayToggle = !homeAwayToggle; // Alternate home/away
+                gamesScheduled++;
+                
+                // Skip ahead 2-4 days to avoid back-to-back games
+                gameDate.setDate(gameDate.getDate() + (2 + Math.floor(Math.random() * 3)));
+            } else {
+                // Move to next day
+                gameDate.setDate(gameDate.getDate() + 1);
+            }
         }
+        
+        // Add Section Playoffs (late February)
+        // Quarter-final
+        gameDate = new Date(this.currentDate.getFullYear(), 1, 20); // Feb 20
+        this.seasonSchedule.push({
+            gameDate: new Date(gameDate),
+            gameTime: '7:00 PM',
+            opponent: opponents[Math.floor(Math.random() * opponents.length)],
+            isHome: true,
+            isPlayoff: true,
+            wasPlayed: false,
+            result: null,
+            gameType: 'Section Quarter-Final',
+            playoffRound: 'Quarter-Finals'
+        });
+        
+        // Semi-final
+        gameDate.setDate(gameDate.getDate() + 3);
+        this.seasonSchedule.push({
+            gameDate: new Date(gameDate),
+            gameTime: '7:00 PM',
+            opponent: opponents[Math.floor(Math.random() * opponents.length)],
+            isHome: false,
+            isPlayoff: true,
+            wasPlayed: false,
+            result: null,
+            gameType: 'Section Semi-Final',
+            playoffRound: 'Semi-Finals'
+        });
+        
+        // Section Final
+        gameDate.setDate(gameDate.getDate() + 3);
+        this.seasonSchedule.push({
+            gameDate: new Date(gameDate),
+            gameTime: '7:00 PM',
+            opponent: opponents[Math.floor(Math.random() * opponents.length)],
+            isHome: true,
+            isPlayoff: true,
+            wasPlayed: false,
+            result: null,
+            gameType: 'Section Championship',
+            playoffRound: 'Section Finals'
+        });
+        
+        // State Tournament (early March at Xcel Energy Center)
+        gameDate = new Date(this.currentDate.getFullYear(), 2, 5); // March 5
+        this.seasonSchedule.push({
+            gameDate: new Date(gameDate),
+            gameTime: '11:00 AM',
+            opponent: opponents[Math.floor(Math.random() * opponents.length)],
+            isHome: false, // Neutral site
+            isPlayoff: true,
+            wasPlayed: false,
+            result: null,
+            gameType: 'State Quarter-Final',
+            playoffRound: 'State Tournament',
+            venue: 'Xcel Energy Center'
+        });
+        
+        // State Semi-Final
+        gameDate.setDate(gameDate.getDate() + 1);
+        this.seasonSchedule.push({
+            gameDate: new Date(gameDate),
+            gameTime: '6:00 PM',
+            opponent: opponents[Math.floor(Math.random() * opponents.length)],
+            isHome: false,
+            isPlayoff: true,
+            wasPlayed: false,
+            result: null,
+            gameType: 'State Semi-Final',
+            playoffRound: 'State Tournament',
+            venue: 'Xcel Energy Center'
+        });
+        
+        // State Championship
+        gameDate.setDate(gameDate.getDate() + 1);
+        this.seasonSchedule.push({
+            gameDate: new Date(gameDate),
+            gameTime: '8:00 PM',
+            opponent: opponents[Math.floor(Math.random() * opponents.length)],
+            isHome: false,
+            isPlayoff: true,
+            wasPlayed: false,
+            result: null,
+            gameType: 'State Championship',
+            playoffRound: 'State Tournament',
+            venue: 'Xcel Energy Center'
+        });
     }
 
     // Time Progression - Day-based

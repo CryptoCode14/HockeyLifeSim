@@ -87,7 +87,44 @@
                     <!-- Schedule Tab -->
                     <div id="schedule-tab" class="tab-content active">
                         <h2>Season Schedule</h2>
-                        <div id="schedule-list" class="schedule-list"></div>
+                        
+                        <!-- View Toggle -->
+                        <div class="schedule-view-toggle">
+                            <button id="calendar-view-btn" class="view-btn active">Calendar View</button>
+                            <button id="list-view-btn" class="view-btn">List View</button>
+                        </div>
+                        
+                        <!-- Calendar View -->
+                        <div id="calendar-view" class="calendar-view">
+                            <div class="calendar-header">
+                                <button id="prev-month-btn" class="month-nav-btn">‹ Previous</button>
+                                <h3 id="current-month-display">December 2025</h3>
+                                <button id="next-month-btn" class="month-nav-btn">Next ›</button>
+                            </div>
+                            
+                            <div class="calendar-legend">
+                                <span class="legend-item"><span class="legend-dot home-dot"></span> Home Game</span>
+                                <span class="legend-item"><span class="legend-dot away-dot"></span> Away Game</span>
+                                <span class="legend-item"><span class="legend-dot playoff-dot"></span> Playoff Game</span>
+                                <span class="legend-item"><span class="legend-dot today-dot"></span> Today</span>
+                            </div>
+                            
+                            <div class="calendar-grid-wrapper">
+                                <div class="calendar-weekdays">
+                                    <div class="weekday">Sun</div>
+                                    <div class="weekday">Mon</div>
+                                    <div class="weekday">Tue</div>
+                                    <div class="weekday">Wed</div>
+                                    <div class="weekday">Thu</div>
+                                    <div class="weekday">Fri</div>
+                                    <div class="weekday">Sat</div>
+                                </div>
+                                <div id="calendar-grid" class="calendar-grid"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- List View -->
+                        <div id="list-view" class="schedule-list" style="display: none;"></div>
                     </div>
 
                     <!-- Skills Tab -->
