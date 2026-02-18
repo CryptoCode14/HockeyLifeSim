@@ -172,7 +172,7 @@ const CHL_ROSTERS = {
                 { firstName: 'Connor', lastName: 'Lockhart', position: 'C', age: 19, overall: 70, potential: 76 },
                 { firstName: 'Brett', lastName: 'Bressette', position: 'LW', age: 19, overall: 67, potential: 73 },
                 { firstName: 'Kaleb', lastName: 'Smith', position: 'RW', age: 18, overall: 66, potential: 74 },
-                { firstName: 'Daniel', lastName: 'D'Amato', position: 'C', age: 17, overall: 64, potential: 72 },
+                { firstName: 'Daniel', lastName: 'D\'Amato', position: 'C', age: 17, overall: 64, potential: 72 },
                 { firstName: 'Noah', lastName: 'Van Vliet', position: 'LW', age: 17, overall: 63, potential: 71 }
             ],
             defense: [

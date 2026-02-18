@@ -157,7 +157,7 @@ function getAllNHLPlayers() {
                 });
             });
         });
-    },
+    }
     
     // Additional NHL teams will be loaded dynamically
     // This demonstrates the structure for all 32 teams
