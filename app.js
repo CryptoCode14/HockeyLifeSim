@@ -1,5 +1,6 @@
 // Main Application Entry Point
 const gameManager = new GameManager();
+const rosterManager = new RosterManager();
 
 // Screen Management
 function showScreen(screenId) {
@@ -140,13 +141,23 @@ function displaySchedule() {
     const scheduleList = document.getElementById('schedule-list');
     scheduleList.innerHTML = '';
     
+    // Add simulation controls at the top
+    const controls = document.createElement('div');
+    controls.className = 'schedule-controls';
+    controls.innerHTML = `
+        <button onclick="simNextGame()" class="btn-secondary">Sim Next Game</button>
+        <button onclick="simWeek()" class="btn-secondary">Sim Week</button>
+    `;
+    scheduleList.appendChild(controls);
+    
     gameManager.seasonSchedule.forEach((game, index) => {
         const gameItem = document.createElement('div');
         gameItem.className = `game-item ${game.wasPlayed ? 'played' : ''}`;
         
         const dateStr = game.gameDate.toLocaleDateString('en-US', { 
             month: 'short', 
-            day: 'numeric' 
+            day: 'numeric',
+            weekday: 'short'
         });
         
         let resultHTML = '';
@@ -156,19 +167,31 @@ function displaySchedule() {
                 ${won ? 'W' : 'L'} ${game.result.playerScore}-${game.result.opponentScore}
             </span>`;
         } else if (!game.wasPlayed) {
-            resultHTML = `<button class="btn-primary" onclick="playGame(${index})">Play Game</button>`;
+            resultHTML = `<button class="btn-play" onclick="playGame(${index})">Play</button>`;
         }
         
         gameItem.innerHTML = `
-            <div>
+            <div class="game-info">
                 <div class="game-date">${dateStr}</div>
                 <div class="game-opponent">vs ${game.opponent.name}</div>
             </div>
-            ${resultHTML}
+            <div class="game-action">${resultHTML}</div>
         `;
         
         scheduleList.appendChild(gameItem);
     });
+}
+
+// Sim next game
+function simNextGame() {
+    gameManager.simNextGame();
+    updateMainGameUI();
+}
+
+// Sim week
+function simWeek() {
+    gameManager.advanceOneWeek();
+    updateMainGameUI();
 }
 
 // Play a specific game

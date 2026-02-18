@@ -131,16 +131,18 @@ class GameManager {
         const oldDate = new Date(this.currentDate);
         this.currentDate.setDate(this.currentDate.getDate() + 7);
         
-        // Check if there's a game this week
-        const gameThisWeek = this.seasonSchedule.find(game => 
+        // Find ALL games in this week and simulate them
+        const gamesThisWeek = this.seasonSchedule.filter(game => 
             !game.wasPlayed && 
             game.gameDate >= oldDate && 
             game.gameDate < this.currentDate
         );
         
-        if (gameThisWeek) {
-            this.playGame(gameThisWeek);
-            return;
+        // Simulate all games in this week
+        if (gamesThisWeek.length > 0) {
+            gamesThisWeek.forEach(game => {
+                this.playGame(game);
+            });
         }
         
         // Apply training and atrophy
@@ -157,6 +159,15 @@ class GameManager {
         }
         
         this.saveGame();
+    }
+    
+    // Simulate a single game (for "Sim Game" button)
+    simNextGame() {
+        const nextGame = this.seasonSchedule.find(game => !game.wasPlayed);
+        if (nextGame) {
+            this.playGame(nextGame);
+            this.saveGame();
+        }
     }
 
     playGame(game) {
