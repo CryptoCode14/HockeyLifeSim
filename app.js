@@ -223,6 +223,11 @@ function playGame(gameIndex) {
     }
 }
 
+// Make functions available globally for onclick handlers
+window.simNextGame = simNextGame;
+window.simWeek = simWeek;
+window.playGame = playGame;
+
 // Display Skills
 function displaySkills() {
     const skillsList = document.getElementById('skills-list');
@@ -385,6 +390,9 @@ function buyEquipment(itemId) {
         displayShop();
     }
 }
+
+// Make buyEquipment available globally for onclick handlers
+window.buyEquipment = buyEquipment;
 
 // Display News
 function displayNews() {
