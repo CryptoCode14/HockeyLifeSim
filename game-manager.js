@@ -126,37 +126,54 @@ class GameManager {
         }
     }
 
-    // Time Progression
-    advanceOneWeek() {
-        const oldDate = new Date(this.currentDate);
-        this.currentDate.setDate(this.currentDate.getDate() + 7);
+    // Time Progression - Day-based
+    advanceOneDay() {
+        this.currentDate.setDate(this.currentDate.getDate() + 1);
         
-        // Find ALL games in this week and simulate them
-        const gamesThisWeek = this.seasonSchedule.filter(game => 
+        // Check if there's a game today
+        const gamesToday = this.seasonSchedule.filter(game => 
             !game.wasPlayed && 
-            game.gameDate >= oldDate && 
-            game.gameDate < this.currentDate
+            game.gameDate.toDateString() === this.currentDate.toDateString()
         );
         
-        // Simulate all games in this week
-        if (gamesThisWeek.length > 0) {
-            gamesThisWeek.forEach(game => {
-                this.playGame(game);
-            });
+        // Don't auto-play games, let user choose to play or sim
+        
+        // Apply daily effects
+        if (this.player.energy < 100) {
+            this.player.energy = Math.min(100, this.player.energy + 5); // Recover 5 energy per day
         }
         
-        // Apply training and atrophy
-        this.applyTraining();
-        
         // Check for birthday
-        if (this.currentDate.getMonth() === 7 && this.currentDate.getDate() >= 1 && this.currentDate.getDate() <= 7) {
+        if (this.currentDate.getMonth() === 7 && this.currentDate.getDate() === 1) {
             this.player.age++;
         }
         
-        // Check for season end (May)
-        if (oldDate.getMonth() === 3 && this.currentDate.getMonth() === 4) {
-            this.endSeason();
+        this.saveGame();
+        return gamesToday.length > 0;
+    }
+    
+    // Simulate to next game
+    simToNextGame() {
+        const nextGame = this.seasonSchedule.find(game => !game.wasPlayed);
+        if (!nextGame) return false;
+        
+        // Advance days until we reach the game
+        while (this.currentDate < nextGame.gameDate) {
+            this.advanceOneDay();
         }
+        
+        this.saveGame();
+        return true;
+    }
+    
+    // Advance one week (for compatibility)
+    advanceOneWeek() {
+        for (let i = 0; i < 7; i++) {
+            this.advanceOneDay();
+        }
+        
+        // Apply weekly training
+        this.applyTraining();
         
         this.saveGame();
     }
@@ -165,6 +182,10 @@ class GameManager {
     simNextGame() {
         const nextGame = this.seasonSchedule.find(game => !game.wasPlayed);
         if (nextGame) {
+            // Make sure we're on the right date
+            if (this.currentDate < nextGame.gameDate) {
+                this.currentDate = new Date(nextGame.gameDate);
+            }
             this.playGame(nextGame);
             this.saveGame();
         }

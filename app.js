@@ -52,6 +52,26 @@ function setupEventListeners() {
         updateMainGameUI();
     });
     
+    // Sim to Next Day
+    document.getElementById('sim-next-day-btn').addEventListener('click', () => {
+        const hasGame = gameManager.advanceOneDay();
+        updateMainGameUI();
+        if (hasGame) {
+            alert('There is a game today! Check the schedule.');
+        }
+    });
+    
+    // Sim to Next Game
+    document.getElementById('sim-next-game-btn').addEventListener('click', () => {
+        const found = gameManager.simToNextGame();
+        if (found) {
+            updateMainGameUI();
+            alert('Advanced to next game day! You can now watch or sim the game.');
+        } else {
+            alert('No more games this season!');
+        }
+    });
+    
     // Tab Navigation
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {

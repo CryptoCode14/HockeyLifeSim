@@ -26,6 +26,8 @@ class GameScene {
         this.momentum = 0; // -100 (away) to +100 (home)
         this.celebrationTimer = 0;
         this.saveFlashTimer = 0;
+        this.postHitFlash = 0; // Visual feedback for post hits
+        this.crossbarHitFlash = 0; // Visual feedback for crossbar hits
         this.gameEvents = [];
         this.shotTrails = []; // Visual shot trails
         this.passLines = []; // Visual pass lines
@@ -56,6 +58,8 @@ class GameScene {
         const centerY = this.height / 2;
         
         // Get player ratings (use user's ratings for their team, random for others)
+        // NHL TV broadcast shows players skating at about 20-25 mph (32-40 km/h)
+        // On our rink (1400px wide), players should cross in ~3-4 seconds for realism
         const getPlayerRating = (team, role) => {
             const baseRating = 65 + Math.random() * 15; // 65-80
             return {
@@ -64,7 +68,7 @@ class GameScene {
                 shooting: baseRating + (Math.random() - 0.5) * 10,
                 passing: baseRating + (Math.random() - 0.5) * 10,
                 defense: baseRating + (Math.random() - 0.5) * 10,
-                speed: 600 + baseRating * 5 // 925-1000 speed
+                speed: 350 + baseRating * 2 // 480-510 pixels/sec (NHL TV broadcast feel)
             };
         };
         
@@ -498,56 +502,173 @@ class GameScene {
         const awayGoalX = this.width - 80;
         const goalY = this.height / 2;
         const goalHeight = 100;
+        const postRadius = 3; // Round posts
         
         // Check home goal (away scores)
-        if (this.puck.x < homeGoalX + 20 && 
-            this.puck.y > goalY - goalHeight / 2 && 
-            this.puck.y < goalY + goalHeight / 2 &&
-            this.puck.inAir) {
+        if (this.puck.x < homeGoalX + 40 && this.puck.inAir) {
+            // Check post collisions (round posts)
+            const topPostY = goalY - goalHeight / 2;
+            const bottomPostY = goalY + goalHeight / 2;
             
-            const goalie = this.goalies.find(g => g.team === 'home');
-            const saveChance = (goalie.saveRating || 75) / 100;
+            // Top post collision
+            const distToTopPost = this.distance(this.puck.x, this.puck.y, homeGoalX, topPostY);
+            if (distToTopPost < postRadius + 3) {
+                this.handlePostHit(homeGoalX, topPostY);
+                return;
+            }
             
-            if (Math.random() > saveChance) {
-                // GOAL!
-                this.awayScore++;
-                this.momentum -= 20;
-                this.celebrationTimer = 3;
-                this.gameEvents.push({ type: 'goal', team: 'away', time: this.gameTime });
-                this.faceoff();
-            } else {
-                // SAVE!
-                this.saveFlashTimer = 0.5;
-                this.puck.vx = 200;
-                this.puck.vy = (Math.random() - 0.5) * 400;
-                this.puck.inAir = false;
+            // Bottom post collision
+            const distToBottomPost = this.distance(this.puck.x, this.puck.y, homeGoalX, bottomPostY);
+            if (distToBottomPost < postRadius + 3) {
+                this.handlePostHit(homeGoalX, bottomPostY);
+                return;
+            }
+            
+            // Crossbar collision (top of net)
+            if (Math.abs(this.puck.x - homeGoalX) < 40 && 
+                Math.abs(this.puck.y - topPostY) < 5) {
+                this.handleCrossbarHit();
+                return;
+            }
+            
+            // Check if puck is in goal area
+            if (this.puck.x < homeGoalX + 20 && 
+                this.puck.y > goalY - goalHeight / 2 && 
+                this.puck.y < goalY + goalHeight / 2) {
+                
+                const goalie = this.goalies.find(g => g.team === 'home');
+                const saveChance = (goalie.saveRating || 75) / 100;
+                
+                if (Math.random() > saveChance) {
+                    // GOAL! Hit the net and stopped
+                    this.handleGoalScored('away', homeGoalX, this.puck.y);
+                } else {
+                    // SAVE!
+                    this.handleSave('home');
+                }
             }
         }
         
         // Check away goal (home scores)
-        if (this.puck.x > awayGoalX - 20 && 
-            this.puck.y > goalY - goalHeight / 2 && 
-            this.puck.y < goalY + goalHeight / 2 &&
-            this.puck.inAir) {
+        if (this.puck.x > awayGoalX - 40 && this.puck.inAir) {
+            // Check post collisions (round posts)
+            const topPostY = goalY - goalHeight / 2;
+            const bottomPostY = goalY + goalHeight / 2;
             
-            const goalie = this.goalies.find(g => g.team === 'away');
-            const saveChance = (goalie.saveRating || 75) / 100;
+            // Top post collision
+            const distToTopPost = this.distance(this.puck.x, this.puck.y, awayGoalX, topPostY);
+            if (distToTopPost < postRadius + 3) {
+                this.handlePostHit(awayGoalX, topPostY);
+                return;
+            }
             
-            if (Math.random() > saveChance) {
-                // GOAL!
-                this.homeScore++;
-                this.momentum += 20;
-                this.celebrationTimer = 3;
-                this.gameEvents.push({ type: 'goal', team: 'home', time: this.gameTime });
-                this.faceoff();
-            } else {
-                // SAVE!
-                this.saveFlashTimer = 0.5;
-                this.puck.vx = -200;
-                this.puck.vy = (Math.random() - 0.5) * 400;
-                this.puck.inAir = false;
+            // Bottom post collision
+            const distToBottomPost = this.distance(this.puck.x, this.puck.y, awayGoalX, bottomPostY);
+            if (distToBottomPost < postRadius + 3) {
+                this.handlePostHit(awayGoalX, bottomPostY);
+                return;
+            }
+            
+            // Crossbar collision
+            if (Math.abs(this.puck.x - awayGoalX) < 40 && 
+                Math.abs(this.puck.y - topPostY) < 5) {
+                this.handleCrossbarHit();
+                return;
+            }
+            
+            // Check if puck is in goal area
+            if (this.puck.x > awayGoalX - 20 && 
+                this.puck.y > goalY - goalHeight / 2 && 
+                this.puck.y < goalY + goalHeight / 2) {
+                
+                const goalie = this.goalies.find(g => g.team === 'away');
+                const saveChance = (goalie.saveRating || 75) / 100;
+                
+                if (Math.random() > saveChance) {
+                    // GOAL! Hit the net and stopped
+                    this.handleGoalScored('home', awayGoalX, this.puck.y);
+                } else {
+                    // SAVE!
+                    this.handleSave('away');
+                }
             }
         }
+    }
+    
+    handlePostHit(postX, postY) {
+        // Realistic post physics - angle of incidence = angle of reflection
+        const dx = this.puck.x - postX;
+        const dy = this.puck.y - postY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        // Normalize
+        const nx = dx / dist;
+        const ny = dy / dist;
+        
+        // Reflect velocity (elastic collision with round post)
+        const dot = this.puck.vx * nx + this.puck.vy * ny;
+        this.puck.vx = this.puck.vx - 2 * dot * nx;
+        this.puck.vy = this.puck.vy - 2 * dot * ny;
+        
+        // Reduce speed slightly (energy loss)
+        this.puck.vx *= 0.8;
+        this.puck.vy *= 0.8;
+        
+        // Visual/audio feedback
+        this.postHitFlash = 0.3;
+        this.gameEvents.push({ type: 'post', time: this.gameTime });
+    }
+    
+    handleCrossbarHit() {
+        // Crossbar hit - puck bounces down
+        this.puck.vy = Math.abs(this.puck.vy) * 0.7; // Bounce down with energy loss
+        this.puck.vx *= 0.8;
+        
+        this.crossbarHitFlash = 0.3;
+        this.gameEvents.push({ type: 'crossbar', time: this.gameTime });
+    }
+    
+    handleGoalScored(team, netX, netY) {
+        // Puck hits net mesh and stops (realistic net physics)
+        // Net mesh catches the puck 90% of the time
+        const netCatches = Math.random() < 0.9;
+        
+        if (netCatches) {
+            // Puck caught in net - comes to rest
+            this.puck.vx = 0;
+            this.puck.vy = 0;
+            this.puck.x = netX + (team === 'home' ? -15 : 15);
+            this.puck.y = netY;
+        } else {
+            // Rare: puck bounces back out of net (soft mesh)
+            this.puck.vx = team === 'home' ? 150 : -150;
+            this.puck.vy = (Math.random() - 0.5) * 100;
+        }
+        
+        // Score the goal
+        if (team === 'home') {
+            this.homeScore++;
+            this.momentum += 20;
+        } else {
+            this.awayScore++;
+            this.momentum -= 20;
+        }
+        
+        this.celebrationTimer = 3;
+        this.gameEvents.push({ type: 'goal', team, time: this.gameTime });
+        
+        // Delay faceoff slightly for goal celebration
+        setTimeout(() => this.faceoff(), 100);
+    }
+    
+    handleSave(team) {
+        this.saveFlashTimer = 0.5;
+        
+        // Rebound direction based on which team's goalie made save
+        const reboundDirection = team === 'home' ? 1 : -1;
+        this.puck.vx = 200 * reboundDirection;
+        this.puck.vy = (Math.random() - 0.5) * 400;
+        this.puck.inAir = false;
     }
     
     callPenalty() {
