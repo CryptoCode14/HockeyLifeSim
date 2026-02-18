@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey Life Sim - NHL Career Mode</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Player Creation Screen -->
+        <div id="player-creation-screen" class="screen active">
+            <div class="container">
+                <h1>Create Your Player</h1>
+                <div class="form-group">
+                    <label for="first-name">First Name:</label>
+                    <input type="text" id="first-name" placeholder="Enter first name">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name:</label>
+                    <input type="text" id="last-name" placeholder="Enter last name">
+                </div>
+                <button id="create-player-btn" class="btn-primary">Create Player</button>
+            </div>
+        </div>
+
+        <!-- School Selection Screen -->
+        <div id="school-selection-screen" class="screen">
+            <div class="container">
+                <h1>Select Your High School Team</h1>
+                <div id="teams-list" class="teams-grid"></div>
+            </div>
+        </div>
+
+        <!-- Main Game Screen -->
+        <div id="main-game-screen" class="screen">
+            <div class="game-layout">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <div class="player-card">
+                        <h2 id="player-name">Player Name</h2>
+                        <div class="player-stats">
+                            <p><strong>Age:</strong> <span id="player-age">14</span></p>
+                            <p><strong>Team:</strong> <span id="player-team">Unassigned</span></p>
+                            <p><strong>League:</strong> <span id="player-league">High School</span></p>
+                            <p><strong>Season Stats:</strong></p>
+                            <ul>
+                                <li>GP: <span id="stat-gp">0</span></li>
+                                <li>G: <span id="stat-goals">0</span></li>
+                                <li>A: <span id="stat-assists">0</span></li>
+                                <li>PTS: <span id="stat-points">0</span></li>
+                            </ul>
+                        </div>
+                        <div class="player-money">
+                            <p><strong>Bank:</strong> $<span id="player-bank">1000</span></p>
+                        </div>
+                    </div>
+
+                    <div class="date-card">
+                        <h3>Current Date</h3>
+                        <p id="current-date" class="date-display">August 15, 2025</p>
+                    </div>
+
+                    <div class="sim-controls">
+                        <button id="sim-next-day-btn" class="btn-secondary btn-block">Sim to Next Day</button>
+                        <button id="sim-next-game-btn" class="btn-primary btn-block">Sim to Next Game</button>
+                        <button id="advance-week-btn" class="btn-secondary btn-block">Advance 1 Week</button>
+                    </div>
+                </div>
+
+                <div class="main-content">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="schedule">Schedule</button>
+                        <button class="tab-btn" data-tab="skills">Skills</button>
+                        <button class="tab-btn" data-tab="training">Training</button>
+                        <button class="tab-btn" data-tab="profile">Profile</button>
+                        <button class="tab-btn" data-tab="recruiting">Recruiting</button>
+                        <button class="tab-btn" data-tab="nil">NIL Deals</button>
+                        <button class="tab-btn" data-tab="draft">NHL Draft</button>
+                        <button class="tab-btn" data-tab="nhl-rosters">NHL Rosters</button>
+                        <button class="tab-btn" data-tab="junior-rosters">Junior Rosters</button>
+                        <button class="tab-btn" data-tab="shop">Shop</button>
+                        <button class="tab-btn" data-tab="news">News</button>
+                        <button class="tab-btn" data-tab="settings">Settings</button>
+                    </div>
+
+                    <!-- Schedule Tab -->
+                    <div id="schedule-tab" class="tab-content active">
+                        <h2>Season Schedule</h2>
+                        
+                        <!-- View Toggle -->
+                        <div class="schedule-view-toggle">
+                            <button id="calendar-view-btn" class="view-btn active">Calendar View</button>
+                            <button id="list-view-btn" class="view-btn">List View</button>
+                        </div>
+                        
+                        <!-- Calendar View -->
+                        <div id="calendar-view" class="calendar-view">
+                            <div class="calendar-header">
+                                <button id="prev-month-btn" class="month-nav-btn">‹ Previous</button>
+                                <h3 id="current-month-display">December 2025</h3>
+                                <button id="next-month-btn" class="month-nav-btn">Next ›</button>
+                            </div>
+                            
+                            <div class="calendar-legend">
+                                <span class="legend-item"><span class="legend-dot home-dot"></span> Home Game</span>
+                                <span class="legend-item"><span class="legend-dot away-dot"></span> Away Game</span>
+                                <span class="legend-item"><span class="legend-dot playoff-dot"></span> Playoff Game</span>
+                                <span class="legend-item"><span class="legend-dot today-dot"></span> Today</span>
+                            </div>
+                            
+                            <div class="calendar-grid-wrapper">
+                                <div class="calendar-weekdays">
+                                    <div class="weekday">Sun</div>
+                                    <div class="weekday">Mon</div>
+                                    <div class="weekday">Tue</div>
+                                    <div class="weekday">Wed</div>
+                                    <div class="weekday">Thu</div>
+                                    <div class="weekday">Fri</div>
+                                    <div class="weekday">Sat</div>
+                                </div>
+                                <div id="calendar-grid" class="calendar-grid"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- List View -->
+                        <div id="list-view" class="schedule-list" style="display: none;"></div>
+                    </div>
+
+                    <!-- Skills Tab -->
+                    <div id="skills-tab" class="tab-content">
+                        <h2>Player Skills</h2>
+                        <div id="skills-list" class="skills-grid"></div>
+                    </div>
+
+                    <!-- Training Tab -->
+                    <div id="training-tab" class="tab-content">
+                        <h2>Weekly Training Plan</h2>
+                        <p>Select up to 3 skills to focus on this week:</p>
+                        <div id="training-list" class="training-grid"></div>
+                        <button id="save-training-btn" class="btn-primary">Save Training Plan</button>
+                    </div>
+
+                    <!-- Profile Tab -->
+                    <div id="profile-tab" class="tab-content">
+                        <h2>Player Profile</h2>
+                        <div class="profile-details">
+                            <div class="profile-section">
+                                <h3>Attributes</h3>
+                                <p><strong>Personality:</strong> <span id="profile-personality">-</span></p>
+                                <p><strong>Morale:</strong> <span id="profile-morale">75</span>/100</p>
+                                <p><strong>Energy:</strong> <span id="profile-energy">100</span>/100</p>
+                                <p><strong>Confidence:</strong> <span id="profile-confidence">50</span>/100</p>
+                                <p><strong>Reputation:</strong> <span id="profile-reputation">50</span>/100</p>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Status</h3>
+                                <p id="injury-status">Healthy</p>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Awards & Achievements</h3>
+                                <div id="awards-list">No awards yet</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shop Tab -->
+                    <div id="shop-tab" class="tab-content">
+                        <h2>Equipment Shop</h2>
+                        <p>Purchase equipment to improve your skills!</p>
+                        <div id="shop-items" class="shop-grid"></div>
+                    </div>
+
+                    <!-- News Tab -->
+                    <div id="news-tab" class="tab-content">
+                        <h2>Latest News</h2>
+                        <div id="news-feed" class="news-feed"></div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settings-tab" class="tab-content">
+                        <h2>Settings</h2>
+                        <div class="settings-section">
+                            <h3>Career Management</h3>
+                            <p class="settings-description">Manage your career save data and progress.</p>
+                            <button id="restart-career-btn" class="btn-danger">Restart Career</button>
+                            <p class="settings-warning">⚠️ This will delete all progress and start a new career</p>
+                        </div>
+                        <div class="settings-section">
+                            <h3>Data Management</h3>
+                            <p class="settings-description">Clear all locally saved data.</p>
+                            <button id="clear-save-btn" class="btn-danger">Clear Save Data</button>
+                            <p class="settings-warning">⚠️ This action cannot be undone</p>
+                        </div>
+                    </div>
+
+                    <!-- Recruiting Tab -->
+                    <div id="recruiting-tab" class="tab-content">
+                        <h2>College Recruiting</h2>
+                        <div class="recruiting-overview">
+                            <div class="recruiting-stat">
+                                <h3>Recruiting Rank</h3>
+                                <p id="recruit-rank">Unranked</p>
+                            </div>
+                            <div class="recruiting-stat">
+                                <h3>Star Rating</h3>
+                                <p id="recruit-stars">⭐</p>
+                            </div>
+                            <div class="recruiting-stat">
+                                <h3>Schools Interested</h3>
+                                <p id="recruit-interest">0</p>
+                            </div>
+                        </div>
+                        <h3>Interested Schools</h3>
+                        <div id="recruiting-list" class="recruiting-list"></div>
+                        <h3>Official Visits (<span id="visit-count">0</span>/5)</h3>
+                        <div id="visit-list" class="visit-list"></div>
+                        <h3>Scholarship Offers</h3>
+                        <div id="offers-list" class="offers-list"></div>
+                    </div>
+
+                    <!-- NIL Tab -->
+                    <div id="nil-tab" class="tab-content">
+                        <h2>NIL Deals</h2>
+                        <div class="nil-overview">
+                            <div class="nil-stat">
+                                <h3>Total Earnings</h3>
+                                <p id="nil-total">$0</p>
+                            </div>
+                            <div class="nil-stat">
+                                <h3>Active Deals</h3>
+                                <p id="nil-active">0</p>
+                            </div>
+                            <div class="nil-stat">
+                                <h3>Market Value</h3>
+                                <p id="nil-value">$10,000</p>
+                            </div>
+                        </div>
+                        <div class="social-media">
+                            <h3>Social Media Following</h3>
+                            <p>Instagram: <span id="followers-ig">1,000</span></p>
+                            <p>Twitter: <span id="followers-tw">500</span></p>
+                            <p>TikTok: <span id="followers-tt">2,000</span></p>
+                        </div>
+                        <h3>Available Opportunities</h3>
+                        <div id="nil-opportunities" class="nil-grid"></div>
+                        <h3>Active NIL Deals</h3>
+                        <div id="nil-active-deals" class="nil-list"></div>
+                    </div>
+
+                    <!-- Draft Tab -->
+                    <div id="draft-tab" class="tab-content">
+                        <h2>NHL Draft</h2>
+                        
+                        <!-- Draft Sub-tabs -->
+                        <div class="draft-subtabs">
+                            <button class="draft-subtab-btn active" data-subtab="overview">Overview</button>
+                            <button class="draft-subtab-btn" data-subtab="rankings">Top 50 Rankings</button>
+                            <button class="draft-subtab-btn" data-subtab="scouting">Scouting Report</button>
+                            <button class="draft-subtab-btn" data-subtab="combine">Combine</button>
+                        </div>
+
+                        <!-- Overview Subtab -->
+                        <div id="draft-overview-subtab" class="draft-subtab-content active">
+                            <div class="draft-overview">
+                                <div class="draft-stat">
+                                    <h3>Draft Year</h3>
+                                    <p id="draft-year">2027</p>
+                                </div>
+                                <div class="draft-stat">
+                                    <h3>Your Ranking</h3>
+                                    <p id="draft-your-rank">Unranked</p>
+                                </div>
+                                <div class="draft-stat">
+                                    <h3>Projected Round</h3>
+                                    <p id="draft-projection">TBD</p>
+                                </div>
+                                <div class="draft-stat">
+                                    <h3>Scouting Grade</h3>
+                                    <p id="draft-grade">C</p>
+                                </div>
+                            </div>
+                            <h3>Central Scouting Ranking</h3>
+                            <div id="central-scouting" class="central-scouting">
+                                <p>Not yet ranked</p>
+                            </div>
+                            <h3>Mock Draft</h3>
+                            <div id="mock-draft" class="mock-draft"></div>
+                        </div>
+
+                        <!-- Rankings Subtab -->
+                        <div id="draft-rankings-subtab" class="draft-subtab-content">
+                            <h3>Top 50 Draft Prospects - <span id="rankings-year">2026</span></h3>
+                            <div class="rankings-filters">
+                                <select id="position-filter">
+                                    <option value="all">All Positions</option>
+                                    <option value="C">Centers</option>
+                                    <option value="LW">Left Wings</option>
+                                    <option value="RW">Right Wings</option>
+                                    <option value="LD">Left Defense</option>
+                                    <option value="RD">Right Defense</option>
+                                    <option value="G">Goalies</option>
+                                </select>
+                                <select id="league-filter">
+                                    <option value="all">All Leagues</option>
+                                    <option value="OHL">OHL</option>
+                                    <option value="WHL">WHL</option>
+                                    <option value="QMJHL">QMJHL</option>
+                                    <option value="USHL">USHL</option>
+                                    <option value="NCAA">NCAA</option>
+                                    <option value="SHL">SHL</option>
+                                </select>
+                                <button id="export-rankings-btn" class="btn-secondary">Export Rankings</button>
+                            </div>
+                            <div id="draft-rankings-list" class="rankings-list">
+                                <div class="rankings-header">
+                                    <span class="rank-col">Rank</span>
+                                    <span class="change-col">Change</span>
+                                    <span class="name-col">Name</span>
+                                    <span class="pos-col">Pos</span>
+                                    <span class="team-col">Team</span>
+                                    <span class="stats-col">Stats</span>
+                                    <span class="grade-col">Grade</span>
+                                </div>
+                                <div id="rankings-prospects"></div>
+                            </div>
+                        </div>
+
+                        <!-- Scouting Report Subtab -->
+                        <div id="draft-scouting-subtab" class="draft-subtab-content">
+                            <h3>Your Scouting Report</h3>
+                            <div id="scouting-report" class="scouting-report">
+                                <p>Complete more seasons to receive a scouting report.</p>
+                            </div>
+                        </div>
+
+                        <!-- Combine Subtab -->
+                        <div id="draft-combine-subtab" class="draft-subtab-content">
+                            <h3>NHL Combine Results</h3>
+                            <div id="combine-results" class="combine-results">
+                                <p>Combine not yet completed</p>
+                            </div>
+                            <button id="run-combine-btn" class="btn-primary" style="display:none;">Attend NHL Combine</button>
+                        </div>
+                    </div>
+                    
+                    <!-- NHL Rosters Tab -->
+                    <div id="nhl-rosters-tab" class="tab-content">
+                        <h2>NHL Team Rosters</h2>
+                        <div class="roster-selector">
+                            <label for="team-select">Select Team:</label>
+                            <select id="team-select" class="team-dropdown">
+                                <option value="">-- Choose an NHL Team --</option>
+                                <option value="1">Boston Bruins</option>
+                                <option value="8">Toronto Maple Leafs</option>
+                                <option value="21">Colorado Avalanche</option>
+                                <option value="22">Edmonton Oilers</option>
+                                <option value="2">New Jersey Devils</option>
+                                <option value="3">New York Rangers</option>
+                                <option value="4">New York Islanders</option>
+                                <option value="5">Pittsburgh Penguins</option>
+                                <option value="6">Philadelphia Flyers</option>
+                                <option value="7">Columbus Blue Jackets</option>
+                                <option value="9">Tampa Bay Lightning</option>
+                                <option value="10">Florida Panthers</option>
+                                <option value="11">Montreal Canadiens</option>
+                                <option value="12">Carolina Hurricanes</option>
+                                <option value="13">Ottawa Senators</option>
+                                <option value="14">Buffalo Sabres</option>
+                                <option value="15">Washington Capitals</option>
+                                <option value="16">Nashville Predators</option>
+                                <option value="17">Chicago Blackhawks</option>
+                                <option value="18">St. Louis Blues</option>
+                                <option value="19">Detroit Red Wings</option>
+                                <option value="20">Minnesota Wild</option>
+                                <option value="23">Dallas Stars</option>
+                                <option value="24">Vancouver Canucks</option>
+                                <option value="25">San Jose Sharks</option>
+                                <option value="26">Vegas Golden Knights</option>
+                                <option value="28">Anaheim Ducks</option>
+                                <option value="29">Los Angeles Kings</option>
+                                <option value="30">Arizona Coyotes</option>
+                                <option value="52">Winnipeg Jets</option>
+                                <option value="53">Seattle Kraken</option>
+                                <option value="54">Calgary Flames</option>
+                            </select>
+                        </div>
+                        
+                        <div id="roster-display" class="roster-display">
+                            <p class="roster-placeholder">Select a team to view their roster</p>
+                        </div>
+                    </div>
+
+                    <!-- Junior Rosters Tab -->
+                    <div id="junior-rosters-tab" class="tab-content">
+                        <h2>Junior Hockey Rosters</h2>
+                        <div class="roster-selector">
+                            <label for="league-select">Select League:</label>
+                            <select id="league-select" class="team-dropdown">
+                                <option value="">-- Choose a League --</option>
+                                <option value="OHL">OHL (Ontario Hockey League)</option>
+                                <option value="WHL">WHL (Western Hockey League)</option>
+                                <option value="QMJHL">QMJHL (Quebec Major Junior Hockey League)</option>
+                                <option value="USHL">USHL (United States Hockey League)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="roster-selector" id="junior-team-selector" style="display: none;">
+                            <label for="junior-team-select">Select Team:</label>
+                            <select id="junior-team-select" class="team-dropdown">
+                                <option value="">-- Choose a Team --</option>
+                            </select>
+                        </div>
+                        
+                        <div id="junior-roster-display" class="roster-display">
+                            <p class="roster-placeholder">Select a league and team to view their roster</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Game Screen -->
+        <div id="live-game-screen" class="screen">
+            <div class="game-container">
+                <!-- Scoreboard -->
+                <div class="scoreboard">
+                    <div class="team home-team">
+                        <span class="team-name" id="home-team-name">HOME</span>
+                        <span class="team-score" id="home-score">0</span>
+                    </div>
+                    <div class="game-info">
+                        <div class="period" id="period-display">1st</div>
+                        <div class="clock" id="game-clock">20:00</div>
+                    </div>
+                    <div class="team away-team">
+                        <span class="team-name" id="away-team-name">AWAY</span>
+                        <span class="team-score" id="away-score">0</span>
+                    </div>
+                </div>
+
+                <!-- Game Canvas -->
+                <div class="rink-container">
+                    <canvas id="game-canvas" width="1000" height="850"></canvas>
+                </div>
+
+                <!-- Game Controls -->
+                <div class="game-controls">
+                    <button id="end-game-btn" class="btn-secondary">End Game</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Modal -->
+        <div id="event-modal" class="modal">
+            <div class="modal-content">
+                <h2 id="event-title">Event</h2>
+                <p id="event-description">Event description</p>
+                <div id="event-options" class="event-options"></div>
+            </div>
+        </div>
+
+        <!-- Draft Day Modal -->
+        <div id="draft-modal" class="modal">
+            <div class="modal-content">
+                <h2>NHL Draft Day</h2>
+                <p id="draft-description">The NHL Draft is today!</p>
+                <div id="draft-result"></div>
+                <button id="draft-continue-btn" class="btn-primary">Continue</button>
+            </div>
+        </div>
+
+        <!-- Career Path Modal -->
+        <div id="career-path-modal" class="modal">
+            <div class="modal-content">
+                <h2>Choose Your Path</h2>
+                <p>You have received offers from the following leagues:</p>
+                <div id="career-paths" class="career-paths"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="player-generator.js"></script>
+    <script src="leagues-comprehensive.js"></script>
+    <script src="nhl-rosters-real.js"></script>
+    <script src="draft-classes-real.js"></script>
+    <script src="roster-manager-comprehensive.js"></script>
+    <script src="draft-rankings-view.js"></script>
+    <script src="recruiting-nil-system.js"></script>
+    <script src="nhl-draft-system.js"></script>
+    <script src="physics-engine.js"></script>
+    <script src="ai-controller.js"></script>
+    <script src="game-scene.js"></script>
+    <script src="game-manager.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
