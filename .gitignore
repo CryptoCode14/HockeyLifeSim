@@ -1,48 +1,23 @@
-# Created by https://www.toptal.com/developers/gitignore/api/swift,xcode
-# Edit at https://www.toptal.com/developers/gitignore?templates=swift,xcode
+# Hockey Life Sim - Web App
+# Node/npm (if we add build tools later)
+node_modules/
+npm-debug.log
+package-lock.json
 
-### Swift ###
-.build/
-Packages/
-*.xcodeproj
-xcuserdata/
-DerivedData/
-*.xcworkspace
-*.swp
-*.out
-*.profraw
-*.dia
-
-### Xcode ###
-# Xcode
-#
-# gitignore contributors: remember to keep this file simple and straightforward
-# See https://github.com/github/gitignore/blob/main/Global/Xcode.gitignore
-#
-# buildSettings.xcsettings
-# Used to store project-specific build settings, which can include sensitive information.
-# We recommend adding this to your user-level gitignore instead.
-#
-# *.buildSettings.xcsettings
-
-## User-specific files
-*.xcuserdatad
-*.xcscmblueprint
-*.xcschememanagement
-*.xctestplan
-
-## Build generated
-DerivedData/
-Build/
-*~.nib/
-
-## Various settings
-*.moved-aside
-*.xcuserstate
-
-# Other
+# OS Files
 .DS_Store
-*.xcodeproj/project.xcworkspace/
-*.xcodeproj/xcuserdata/
+Thumbs.db
 
-# End of https://www.toptal.com/developers/gitignore/api/swift,xcode
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs (if we add a build system)
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.log
