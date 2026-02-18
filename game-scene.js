@@ -935,7 +935,7 @@ class GameScene {
         
         // Home team
         this.ctx.fillStyle = '#2563eb';
-        this.ctx.fillText(this.homeTeam.substring(0, 10), x + 10, y + 8);
+        this.ctx.fillText(this.homeTeam.name.substring(0, 10), x + 10, y + 8);
         this.ctx.font = 'bold 24px Arial';
         this.ctx.fillStyle = '#ffffff';
         this.ctx.fillText(this.homeScore, x + 10, y + 28);
@@ -944,7 +944,7 @@ class GameScene {
         this.ctx.font = 'bold 14px Arial';
         this.ctx.fillStyle = '#ef4444';
         this.ctx.textAlign = 'right';
-        this.ctx.fillText(this.awayTeam.substring(0, 10), x + bugWidth - 10, y + 8);
+        this.ctx.fillText(this.awayTeam.name.substring(0, 10), x + bugWidth - 10, y + 8);
         this.ctx.font = 'bold 24px Arial';
         this.ctx.fillStyle = '#ffffff';
         this.ctx.fillText(this.awayScore, x + bugWidth - 10, y + 28);
