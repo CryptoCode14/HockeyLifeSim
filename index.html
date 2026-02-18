@@ -68,7 +68,6 @@
                     </div>
                 </div>
 
-                <!-- Main Content -->
                 <div class="main-content">
                     <div class="tabs">
                         <button class="tab-btn active" data-tab="schedule">Schedule</button>
@@ -82,6 +81,7 @@
                         <button class="tab-btn" data-tab="junior-rosters">Junior Rosters</button>
                         <button class="tab-btn" data-tab="shop">Shop</button>
                         <button class="tab-btn" data-tab="news">News</button>
+                        <button class="tab-btn" data-tab="settings">Settings</button>
                     </div>
 
                     <!-- Schedule Tab -->
@@ -138,6 +138,23 @@
                     <div id="news-tab" class="tab-content">
                         <h2>Latest News</h2>
                         <div id="news-feed" class="news-feed"></div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settings-tab" class="tab-content">
+                        <h2>Settings</h2>
+                        <div class="settings-section">
+                            <h3>Career Management</h3>
+                            <p class="settings-description">Manage your career save data and progress.</p>
+                            <button id="restart-career-btn" class="btn-danger">Restart Career</button>
+                            <p class="settings-warning">⚠️ This will delete all progress and start a new career</p>
+                        </div>
+                        <div class="settings-section">
+                            <h3>Data Management</h3>
+                            <p class="settings-description">Clear all locally saved data.</p>
+                            <button id="clear-save-btn" class="btn-danger">Clear Save Data</button>
+                            <p class="settings-warning">⚠️ This action cannot be undone</p>
+                        </div>
                     </div>
 
                     <!-- Recruiting Tab -->

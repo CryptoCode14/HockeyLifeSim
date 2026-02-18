@@ -153,6 +153,8 @@ function switchTab(tabName) {
         setupNHLRostersTab();
     } else if (tabName === 'junior-rosters') {
         setupJuniorRostersTab();
+    } else if (tabName === 'settings') {
+        setupSettingsTab();
     }
 }
 
@@ -631,3 +633,39 @@ function displayJuniorRoster(league, teamName) {
     
     rosterDisplay.innerHTML = html;
 }
+
+
+// Setup Settings Tab
+function setupSettingsTab() {
+    // Add event listener for restart career button
+    const restartBtn = document.getElementById('restart-career-btn');
+    const clearBtn = document.getElementById('clear-save-btn');
+    
+    // Remove existing listeners
+    const newRestartBtn = restartBtn.cloneNode(true);
+    restartBtn.parentNode.replaceChild(newRestartBtn, restartBtn);
+    const newClearBtn = clearBtn.cloneNode(true);
+    clearBtn.parentNode.replaceChild(newClearBtn, clearBtn);
+    
+    // Add new listeners
+    document.getElementById('restart-career-btn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to restart your career? This will delete ALL progress and cannot be undone.')) {
+            if (confirm('This is your last chance. All data will be permanently lost. Continue?')) {
+                // Clear localStorage
+                localStorage.clear();
+                // Reload page to start fresh
+                window.location.reload();
+            }
+        }
+    });
+    
+    document.getElementById('clear-save-btn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear all save data? This cannot be undone.')) {
+            // Clear localStorage
+            localStorage.clear();
+            alert('Save data cleared successfully. Page will now reload.');
+            window.location.reload();
+        }
+    });
+}
+
